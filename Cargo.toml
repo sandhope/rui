@@ -1,0 +1,10 @@
+[workspace]
+members = ["crates/story", "crates/ui"]
+
+default-members = ["crates/story"]
+resolver = "2"
+
+[workspace.dependencies]
+gpui = { git = "https://github.com/zed-industries/zed" }
+story = { path = "crates/story" }
+ui = { path = "crates/ui" }

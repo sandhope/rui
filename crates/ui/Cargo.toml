@@ -1,0 +1,12 @@
+[package]
+description = "UI components for the GPUI"
+edition = "2021"
+name = "ui"
+publish = false
+version = "0.1.0"
+
+[lib]
+doctest = false
+
+[dependencies]
+gpui.workspace = true
