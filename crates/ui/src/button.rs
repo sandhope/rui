@@ -1,25 +1,43 @@
-use gpui::{div, prelude::*, rgb, SharedString, WindowContext};
+use gpui::{
+    div, prelude::*, rgb, ClickEvent, Div, ElementId, MouseButton, SharedString, WindowContext,
+};
 
 #[derive(IntoElement)]
 pub struct Button {
-    text: String,
-    on_click: Box<dyn Fn(&mut WindowContext)>,
+    pub(super) base: Div,
+    id: ElementId,
+    label: SharedString,
+    disabled: bool,
+    on_click: Option<Box<dyn Fn(&ClickEvent, &mut WindowContext) + 'static>>,
 }
 
 impl Button {
-    pub fn new(text: &str, on_click: impl Fn(&mut WindowContext) + 'static) -> Self {
+    pub fn new(id: impl Into<ElementId>, label: impl Into<SharedString>) -> Self {
         Self {
-            text: text.to_string(),
-            on_click: Box::new(on_click),
+            base: div(),
+            id: id.into(),
+            label: label.into(),
+            disabled: false,
+            on_click: None,
         }
+    }
+
+    pub fn on_click(mut self, handler: impl Fn(&ClickEvent, &mut WindowContext) + 'static) -> Self {
+        self.on_click = Some(Box::new(handler));
+        self
     }
 }
 
 impl RenderOnce for Button {
     fn render(self, _cx: &mut WindowContext) -> impl IntoElement {
-        let on_click = self.on_click;
-        div()
-            .id(SharedString::from(self.text.clone()))
+        // self.base
+        //     .h_flex()
+        //     .id(self.id.clone())
+        //     .font_ui(cx)
+        //     .group("")
+        //     .flex_none()
+        self.base
+            .id(self.id.clone())
             .flex_none()
             .px_2()
             .bg(rgb(0xf7f7f7))
@@ -28,7 +46,16 @@ impl RenderOnce for Button {
             .border_color(rgb(0xe0e0e0))
             .rounded_md()
             .cursor_pointer()
-            .child(self.text.clone())
-            .on_click(move |_, cx| on_click(cx))
+            .child(self.label.clone())
+            .when_some(
+                self.on_click.filter(|_| !self.disabled),
+                |this, on_click| {
+                    this.on_mouse_down(MouseButton::Left, move |_, window| window.prevent_default())
+                        .on_click(move |event, cx| {
+                            cx.stop_propagation();
+                            (on_click)(event, cx);
+                        })
+                },
+            )
     }
 }

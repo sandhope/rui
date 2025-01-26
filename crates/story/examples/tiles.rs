@@ -2,11 +2,11 @@ use gpui::{div, prelude::*, rgb, App, AppContext, SharedString, ViewContext, Win
 
 use ui::{button::Button, label::Label};
 
-struct HelloWorld {
+struct Tiles {
     text: SharedString,
 }
 
-impl Render for HelloWorld {
+impl Render for Tiles {
     fn render(&mut self, _cx: &mut ViewContext<Self>) -> impl IntoElement {
         div()
             .flex()
@@ -16,6 +16,7 @@ impl Render for HelloWorld {
             .items_center()
             .text_xl()
             .text_color(rgb(0x000000))
+            .child(format!("Hello, {}!", &self.text))
             .child(
                 div()
                     .flex()
@@ -42,15 +43,9 @@ impl Render for HelloWorld {
                     .flex_col()
                     .w_full()
                     .gap_4()
-                    .child(Button::new("Click Me", |_cx| {
-                        println!("Button clicked");
-                    }))
-                    .child(Button::new("Click Me", |_cx| {
-                        println!("Button clicked");
-                    }))
-                    .child(Button::new("Click Me", |_cx| {
-                        println!("Button clicked");
-                    })),
+                    .child(Button::new("btn_id", "Click Me"))
+                    .child(Button::new("btn_id", "Click Me"))
+                    .child(Button::new("btn_id", "Click Me")),
             )
     }
 }
@@ -58,7 +53,7 @@ impl Render for HelloWorld {
 fn main() {
     App::new().run(|cx: &mut AppContext| {
         cx.open_window(WindowOptions::default(), |cx| {
-            cx.new_view(|_cx| HelloWorld {
+            cx.new_view(|_cx| Tiles {
                 text: "World".into(),
             })
         })

@@ -10,14 +10,18 @@ pub fn v_flex() -> Div {
     div().v_flex()
 }
 
-/// Extends [`gpui::Styled`] with specific styling methods.
+/// Extends [`gpui::Styled`] with Zed-specific styling methods.
 pub trait StyledExt: Styled + Sized {
-    /// Apply self into a horizontal flex layout.
+    /// Horizontally stacks elements.
+    ///
+    /// Sets `flex()`, `flex_row()`, `items_center()`
     fn h_flex(self) -> Self {
         self.flex().flex_row().items_center()
     }
 
-    /// Apply self into a vertical flex layout.
+    /// Vertically stacks elements.
+    ///
+    /// Sets `flex()`, `flex_col()`
     fn v_flex(self) -> Self {
         self.flex().flex_col()
     }
