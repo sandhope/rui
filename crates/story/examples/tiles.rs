@@ -43,7 +43,9 @@ impl Render for Tiles {
                     .flex_col()
                     .w_full()
                     .gap_4()
-                    .child(Button::new("btn_id", "Click Me"))
+                    .child(Button::new("btn_id", "Click Me").on_click(|_event, _cx| {
+                        println!("clicked");
+                    }))
                     .child(Button::new("btn_id", "Click Me"))
                     .child(Button::new("btn_id", "Click Me")),
             )

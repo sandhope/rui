@@ -2,6 +2,8 @@ use gpui::{
     div, prelude::*, rgb, ClickEvent, Div, ElementId, MouseButton, SharedString, WindowContext,
 };
 
+use crate::styled::StyledExt;
+
 #[derive(IntoElement)]
 pub struct Button {
     pub(super) base: Div,
@@ -30,14 +32,10 @@ impl Button {
 
 impl RenderOnce for Button {
     fn render(self, _cx: &mut WindowContext) -> impl IntoElement {
-        // self.base
-        //     .h_flex()
-        //     .id(self.id.clone())
-        //     .font_ui(cx)
-        //     .group("")
-        //     .flex_none()
         self.base
+            .h_flex()
             .id(self.id.clone())
+            .group("")
             .flex_none()
             .px_2()
             .bg(rgb(0xf7f7f7))
