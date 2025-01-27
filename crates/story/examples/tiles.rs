@@ -1,6 +1,6 @@
 use gpui::{div, prelude::*, rgb, App, AppContext, SharedString, ViewContext, WindowOptions};
 
-use ui::{button::Button, label::Label};
+use ui::{Button, Label};
 
 struct Tiles {
     text: SharedString,
