@@ -1,8 +1,6 @@
-use gpui::{
-    div, prelude::*, px, rems, rgb, App, AppContext, FontWeight, ViewContext, WindowOptions,
-};
+use gpui::{div, px, rems, rgb, App, AppContext, FontWeight, ViewContext, WindowOptions};
 
-use ui::{button::Button, h_flex, label::Label, v_flex};
+use ui::{button::Button, h_flex, label::Label, prelude::*, v_flex};
 
 use story::section;
 

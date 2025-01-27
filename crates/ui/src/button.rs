@@ -2,7 +2,7 @@ use gpui::{
     div, prelude::*, rgb, ClickEvent, Div, ElementId, MouseButton, SharedString, WindowContext,
 };
 
-use crate::styled::StyledExt;
+use crate::prelude::*;
 
 #[derive(IntoElement)]
 pub struct Button {
