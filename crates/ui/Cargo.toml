@@ -1,12 +1,14 @@
 [package]
+authors = ["fuxingZhang<fuxing.zhang@qq.com>"]
 description = "UI components for the GPUI"
-edition = "2021"
 name = "ui"
-publish = false
 version = "0.1.0"
+edition.workspace = true
+publish.workspace = true
 
 [lib]
 doctest = false
 
 [dependencies]
 gpui.workspace = true
+ui_macros.workspace = true

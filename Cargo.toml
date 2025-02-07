@@ -1,10 +1,18 @@
 [workspace]
-members = ["crates/story", "crates/ui"]
+members = [ "crates/ui_macros","crates/story", "crates/ui"]
 
 default-members = ["crates/story"]
 resolver = "2"
+
+[workspace.package]
+publish = false
+edition = "2021"
 
 [workspace.dependencies]
 gpui = { git = "https://github.com/zed-industries/zed" }
 story = { path = "crates/story" }
 ui = { path = "crates/ui" }
+ui_macros = { path = "crates/ui_macros" }
+syn = "2.0"
+quote = "1.0"
+proc-macro2 = "1.0"

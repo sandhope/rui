@@ -1,5 +1,5 @@
 use gpui::{
-    div, prelude::*, rgb, ClickEvent, Div, ElementId, MouseButton, SharedString, WindowContext,
+    div, prelude::*, rgb, App, ClickEvent, Div, ElementId, MouseButton, SharedString, Window,
 };
 
 use crate::prelude::*;
@@ -10,7 +10,7 @@ pub struct Button {
     id: ElementId,
     label: SharedString,
     disabled: bool,
-    on_click: Option<Box<dyn Fn(&ClickEvent, &mut WindowContext) + 'static>>,
+    on_click: Option<Box<dyn Fn(&ClickEvent, &mut Window, &mut App) + 'static>>,
 }
 
 impl Button {
@@ -24,14 +24,17 @@ impl Button {
         }
     }
 
-    pub fn on_click(mut self, handler: impl Fn(&ClickEvent, &mut WindowContext) + 'static) -> Self {
+    pub fn on_click(
+        mut self,
+        handler: impl Fn(&gpui::ClickEvent, &mut Window, &mut App) + 'static,
+    ) -> Self {
         self.on_click = Some(Box::new(handler));
         self
     }
 }
 
 impl RenderOnce for Button {
-    fn render(self, _cx: &mut WindowContext) -> impl IntoElement {
+    fn render(self, _window: &mut Window, _cx: &mut App) -> impl IntoElement {
         self.base
             .h_flex()
             .id(self.id.clone())
@@ -48,10 +51,10 @@ impl RenderOnce for Button {
             .when_some(
                 self.on_click.filter(|_| !self.disabled),
                 |this, on_click| {
-                    this.on_mouse_down(MouseButton::Left, move |_, window| window.prevent_default())
-                        .on_click(move |event, cx| {
+                    this.on_mouse_down(MouseButton::Left, |_, window, _| window.prevent_default())
+                        .on_click(move |event, window, cx| {
                             cx.stop_propagation();
-                            (on_click)(event, cx);
+                            (on_click)(event, window, cx)
                         })
                 },
             )

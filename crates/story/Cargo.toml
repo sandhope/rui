@@ -4,5 +4,6 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-ui.workspace = true
 gpui.workspace = true
+ui.workspace = true
+ui_macros.workspace = true

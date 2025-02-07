@@ -1,9 +1,8 @@
-use gpui::Div;
-use gpui::{div, IntoElement, ParentElement, Styled as _, WindowContext};
+use gpui::{div, Div, IntoElement, ParentElement, Styled as _, Window};
 
 use ui::h_flex;
 
-pub fn section(title: impl IntoElement, _cx: &WindowContext) -> Div {
+pub fn section(title: impl IntoElement, _cx: &Window) -> Div {
     //use ui::ActiveTheme;
     //let theme = cx.theme();
 

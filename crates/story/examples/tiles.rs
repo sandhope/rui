@@ -1,4 +1,7 @@
-use gpui::{div, prelude::*, rgb, App, AppContext, SharedString, ViewContext, WindowOptions};
+use gpui::{
+    div, prelude::*, px, rgb, size, App, Application, Bounds, Context, SharedString, Window,
+    WindowBounds, WindowOptions,
+};
 
 use ui::{Button, Label};
 
@@ -7,7 +10,7 @@ struct Tiles {
 }
 
 impl Render for Tiles {
-    fn render(&mut self, _cx: &mut ViewContext<Self>) -> impl IntoElement {
+    fn render(&mut self, _window: &mut Window, _cx: &mut Context<Self>) -> impl IntoElement {
         div()
             .flex()
             .bg(rgb(0xffffff))
@@ -43,9 +46,11 @@ impl Render for Tiles {
                     .flex_col()
                     .w_full()
                     .gap_4()
-                    .child(Button::new("btn_id", "Click Me").on_click(|_event, _cx| {
-                        println!("clicked");
-                    }))
+                    .child(
+                        Button::new("btn_id", "Click Me").on_click(|_event, _cx, _app| {
+                            println!("clicked");
+                        }),
+                    )
                     .child(Button::new("btn_id", "Click Me"))
                     .child(Button::new("btn_id", "Click Me")),
             )
@@ -53,12 +58,19 @@ impl Render for Tiles {
 }
 
 fn main() {
-    App::new().run(|cx: &mut AppContext| {
-        cx.open_window(WindowOptions::default(), |cx| {
-            cx.new_view(|_cx| Tiles {
-                text: "World".into(),
-            })
-        })
+    Application::new().run(|cx: &mut App| {
+        let bounds = Bounds::centered(None, size(px(500.), px(500.0)), cx);
+        cx.open_window(
+            WindowOptions {
+                window_bounds: Some(WindowBounds::Windowed(bounds)),
+                ..Default::default()
+            },
+            |_, cx| {
+                cx.new(|_| Tiles {
+                    text: "World".into(),
+                })
+            },
+        )
         .unwrap();
     });
 }

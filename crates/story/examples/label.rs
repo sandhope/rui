@@ -1,6 +1,9 @@
-use gpui::{div, px, rems, rgb, App, AppContext, FontWeight, ViewContext, WindowOptions};
+use gpui::{
+    div, prelude::*, px, rems, rgb, size, App, Application, Bounds, Context, FontWeight, Window,
+    WindowBounds, WindowOptions,
+};
 
-use ui::{h_flex, prelude::*, v_flex, Button, Label};
+use ui::{h_flex, v_flex, Button, Col, Label};
 
 use story::section;
 
@@ -9,21 +12,22 @@ struct LabelStory {
 }
 
 impl Render for LabelStory {
-    fn render(&mut self, cx: &mut ViewContext<Self>) -> impl IntoElement {
+    fn render(&mut self, window: &mut Window, cx: &mut Context<Self>) -> impl IntoElement {
         v_flex()
         .size_full()
         .bg(rgb(0xffffff))
         .gap_6()
         .child(
-            section("Label", cx)
+            section("Label", window)
                 .items_start()
                 .child(
-                    v_flex()
-                        .w_full()
-                        .gap_4()
-                        .child(Label::new("Text align left"))
-                        .child(Label::new("Text align center").text_center())
-                        .child(Label::new("Text align right").text_right()),
+                    Col!{
+                        Label::new("Text align left")
+                        Label::new("Text align center").text_center()
+                        Label::new("Text align right").text_right()
+                    }
+                    .w_full()
+                    .gap_4()
                 )
                 .child(Label::new("Color Label").bg(gpui::blue()).text_color(gpui::red()))
                 .child(Label::new("Font Size Label").text_size(px(20.)).font_weight(FontWeight::SEMIBOLD).line_height(rems(1.8)))
@@ -35,7 +39,7 @@ impl Render for LabelStory {
                 ),
         )
         .child(
-            section("Maksed Label", cx).child(
+            section("Maksed Label", window).child(
                 v_flex()
                     .w_full()
                     .gap_4()
@@ -45,7 +49,7 @@ impl Render for LabelStory {
                             //     self.masked = !self.masked;
                             // })
                             Button::new("button_id", "btn-mask")
-                            .on_click(cx.listener(|this, _, _| {
+                            .on_click(cx.listener(|this, _, _window,_cx| {
                                 this.masked = !this.masked;
                             })),
                         ),
@@ -57,10 +61,15 @@ impl Render for LabelStory {
 }
 
 fn main() {
-    App::new().run(|cx: &mut AppContext| {
-        cx.open_window(WindowOptions::default(), |cx| {
-            cx.new_view(|_cx| LabelStory { masked: true })
-        })
+    Application::new().run(|cx: &mut App| {
+        let bounds = Bounds::centered(None, size(px(500.), px(500.0)), cx);
+        cx.open_window(
+            WindowOptions {
+                window_bounds: Some(WindowBounds::Windowed(bounds)),
+                ..Default::default()
+            },
+            |_, cx| cx.new(|_| LabelStory { masked: true }),
+        )
         .unwrap();
     });
 }

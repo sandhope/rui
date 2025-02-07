@@ -3,14 +3,15 @@ use gpui::{
     WindowOptions,
 };
 
-use ui::{Col, Row, StyledExt, Text};
+use ui::{Row, StyledExt, Text};
+use ui_macros::{col, row};
 
-struct Tiles;
+struct Layout;
 
-impl Render for Tiles {
+impl Render for Layout {
     fn render(&mut self, _window: &mut Window, _cx: &mut Context<Self>) -> impl IntoElement {
-        Col! {
-            Row!{
+        col! {
+            row!{
                 Text::new("row")
                 Text::new("row")
                 Text::new("row")
@@ -42,7 +43,7 @@ fn main() {
                 window_bounds: Some(WindowBounds::Windowed(bounds)),
                 ..Default::default()
             },
-            |_, cx| cx.new(|_| Tiles {}),
+            |_, cx| cx.new(|_| Layout {}),
         )
         .unwrap();
     });

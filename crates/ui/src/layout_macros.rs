@@ -2,7 +2,7 @@
 macro_rules! Col {
     { $( $label:expr )* } => {
         {
-            let mut col = div().flex().flex_col().w_full();
+            let mut col = div().flex().flex_col();
             $(
                 col = col.child($label);
             )*
@@ -15,7 +15,7 @@ macro_rules! Col {
 macro_rules! Row {
     { $( $label:expr )* } => {
         {
-            let mut row = div().flex().flex_row().w_full();
+            let mut row = div().flex().flex_row();
             $(
                 row = row.child($label);
             )*

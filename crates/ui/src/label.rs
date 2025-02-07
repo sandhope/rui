@@ -1,6 +1,6 @@
 use gpui::{
-    div, prelude::FluentBuilder, rems, Div, IntoElement, ParentElement, RenderOnce, SharedString,
-    Styled, WindowContext,
+    div, prelude::FluentBuilder, rems, App, Div, IntoElement, ParentElement, RenderOnce,
+    SharedString, Styled, Window,
 };
 
 // use crate::{h_flex, ActiveTheme};
@@ -67,7 +67,7 @@ impl Styled for Label {
 }
 
 impl RenderOnce for Label {
-    fn render(self, _cx: &mut WindowContext) -> impl IntoElement {
+    fn render(self, _window: &mut Window, _cx: &mut App) -> impl IntoElement {
         let text = self.label;
 
         let text_display = if self.marked {
