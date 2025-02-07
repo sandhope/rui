@@ -3,7 +3,7 @@ use gpui::{
     WindowBounds, WindowOptions,
 };
 
-use ui::{Button, Label};
+use ui::{Button, Col, Label, Row};
 
 struct Tiles {
     text: SharedString,
@@ -11,55 +11,49 @@ struct Tiles {
 
 impl Render for Tiles {
     fn render(&mut self, _window: &mut Window, _cx: &mut Context<Self>) -> impl IntoElement {
-        div()
-            .flex()
-            .bg(rgb(0xffffff))
-            .size_full()
-            .justify_center()
-            .items_center()
-            .text_xl()
-            .text_color(rgb(0x000000))
-            .child(format!("Hello, {}!", &self.text))
-            .child(
-                div()
-                    .flex()
-                    .flex_col()
-                    .w_full()
-                    .gap_4()
-                    .child(Label::new("Text"))
-                    .child(Label::new("Text"))
-                    .child(Label::new("Text")),
-            )
-            .child(
-                div()
-                    .flex()
-                    .flex_col()
-                    .w_full()
-                    .gap_4()
-                    .child(Label::new("Text"))
-                    .child(Label::new("Text"))
-                    .child(Label::new("Text")),
-            )
-            .child(
-                div()
-                    .flex()
-                    .flex_col()
-                    .w_full()
-                    .gap_4()
-                    .child(
-                        Button::new("btn_id", "Click Me").on_click(|_event, _cx, _app| {
-                            println!("clicked");
-                        }),
-                    )
-                    .child(Button::new("btn_id", "Click Me"))
-                    .child(Button::new("btn_id", "Click Me")),
-            )
+        Row! {
+            format!("Hello, {}!", &self.text)
+
+            Col!{
+                Label::new("Text")
+                Label::new("Text")
+                Label::new("Text")
+            }
+            .w_full()
+            .gap_4()
+
+
+            Col!{
+                Label::new("Text")
+                Label::new("Text")
+                Label::new("Text")
+            }
+            .w_full()
+            .gap_4()
+
+            Col!{
+                Button::new("btn_id", "Click Me").on_click(|_event, _cx, _app| {
+                    println!("clicked");
+                })
+                Button::new("btn_id", "Click Me")
+                Button::new("btn_id", "Click Me")
+            }
+            .w_full()
+            .gap_4()
+
+        }
+        .bg(rgb(0xffffff))
+        .size_full()
+        .justify_center()
+        .items_center()
+        .text_xl()
+        .text_color(rgb(0x000000))
     }
 }
 
 fn main() {
     Application::new().run(|cx: &mut App| {
-        let bounds = Bounds::centered(None, size(px(500.), px(500.0)), cx);
+        let bounds = Bounds::centered(None, size(px(1024.), px(700.0)), cx);
         cx.open_window(
             WindowOptions {
                 window_bounds: Some(WindowBounds::Windowed(bounds)),
