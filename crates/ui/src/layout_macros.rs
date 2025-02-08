@@ -1,3 +1,16 @@
+/// A macro to create a column layout with multiple children.
+/// 
+/// This macro takes a list of expressions and adds them as children to a column layout.
+/// 
+/// # Example
+/// 
+/// ```rust
+/// Col! {
+///     child1
+///     child2
+///     child3
+/// }
+/// ```
 #[macro_export]
 macro_rules! Col {
     { $( $label:expr )* } => {
@@ -11,6 +24,19 @@ macro_rules! Col {
     };
 }
 
+/// A macro to create a row layout with multiple children.
+/// 
+/// This macro takes a list of expressions and adds them as children to a row layout.
+/// 
+/// # Example
+/// 
+/// ```rust
+/// Row! {
+///     child1
+///     child2
+///     child3
+/// }
+/// ```
 #[macro_export]
 macro_rules! Row {
     { $( $label:expr )* } => {
