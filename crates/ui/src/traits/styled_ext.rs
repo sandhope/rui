@@ -1,30 +1,24 @@
 use gpui::{px, Styled};
+use ui_macros::box_style_methods;
 
-pub enum Padding {
-    Top(f32),
-    Bottom(f32),
-    Left(f32),
-    Right(f32),
-    Horizontal(f32),
-    Vertical(f32),
-    All(f32, f32, f32, f32),
-}
+// top, right, bottom, left
+pub struct Edge(f32, f32, f32, f32);
 
-impl From<f32> for Padding {
+impl From<f32> for Edge {
     fn from(v: f32) -> Self {
-        Padding::All(v, v, v, v)
+        Edge(v, v, v, v)
     }
 }
 
-impl From<(f32, f32)> for Padding {
+impl From<(f32, f32)> for Edge {
     fn from(v: (f32, f32)) -> Self {
-        Padding::All(v.0, v.1, v.0, v.1)
+        Edge(v.0, v.1, v.0, v.1)
     }
 }
 
-impl From<(f32, f32, f32, f32)> for Padding {
-    fn from(value: (f32, f32, f32, f32)) -> Self {
-        Padding::All(value.0, value.1, value.2, value.3)
+impl From<(f32, f32, f32, f32)> for Edge {
+    fn from(v: (f32, f32, f32, f32)) -> Self {
+        Edge(v.0, v.1, v.2, v.3)
     }
 }
 
@@ -44,30 +38,23 @@ pub trait StyledExt: Styled + Sized {
         self.flex().flex_col()
     }
 
-    fn padding(mut self, value: impl Into<Padding>) -> Self {
-        let style = self.style();
-        match value.into() {
-            Padding::Top(v) => style.padding.top = Some(px(v).into()),
-            Padding::Bottom(v) => style.padding.bottom = Some(px(v).into()),
-            Padding::Left(v) => style.padding.left = Some(px(v).into()),
-            Padding::Right(v) => style.padding.right = Some(px(v).into()),
-            Padding::Horizontal(v) => {
-                style.padding.left = Some(px(v).into());
-                style.padding.right = Some(px(v).into());
-            }
-            Padding::Vertical(v) => {
-                style.padding.top = Some(px(v).into());
-                style.padding.bottom = Some(px(v).into());
-            }
-            Padding::All(top, right, bottom, left) => {
-                style.padding.top = Some(px(top).into());
-                style.padding.right = Some(px(right).into());
-                style.padding.bottom = Some(px(bottom).into());
-                style.padding.left = Some(px(left).into());
-            }
-        }
-        self
+    fn padding(self, value: impl Into<Edge>) -> Self {
+        let v = value.into();
+        self.pt(px(v.0)).pr(px(v.1)).pb(px(v.2)).pl(px(v.3))
+        // let style = self.style();
+        // style.padding.top = Some(px(v.0).into());
+        // style.padding.right = Some(px(v.1).into());
+        // style.padding.bottom = Some(px(v.2).into());
+        // style.padding.left = Some(px(v.3).into());
+        // self
     }
+
+    fn margin(self, value: impl Into<Edge>) -> Self {
+        let v = value.into();
+        self.mt(px(v.0)).mr(px(v.1)).mb(px(v.2)).ml(px(v.3))
+    }
+
+    box_style_methods!();
 }
 
 impl<E: Styled> StyledExt for E {}
