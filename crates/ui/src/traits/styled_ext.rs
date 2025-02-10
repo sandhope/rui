@@ -45,12 +45,12 @@ pub trait StyledExt: Styled + Sized {
         self.flex().flex_col()
     }
 
-    /// Sets the padding of the element.
+    /// Sets the padding of the element, in pixels.
     ///
     /// Converts the input value into an `Edge` and sets padding for top, right, bottom, and left.
-    /// 
+    ///
     /// # Examples
-    /// 
+    ///
     /// ```
     /// element.padding(10.0); // Sets padding for all sides to 10.0
     /// element.padding((10.0, 20.0)); // Sets vertical padding to 10.0 and horizontal padding to 20.0
@@ -67,12 +67,12 @@ pub trait StyledExt: Styled + Sized {
         // self
     }
 
-    /// Sets the margin of the element.
+    /// Sets the margin of the element, in pixels.
     ///
     /// Converts the input value into an `Edge` and sets margin for top, right, bottom, and left.
-    /// 
+    ///
     /// # Examples
-    /// 
+    ///
     /// ```
     /// element.margin(10.0); // Sets margin for all sides to 10.0
     /// element.margin((10.0, 20.0)); // Sets vertical margin to 10.0 and horizontal margin to 20.0

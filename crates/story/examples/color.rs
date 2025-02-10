@@ -1,6 +1,6 @@
 use gpui::{
-    div, hsla, prelude::*, px, rgb, rgba, size, App, Application, Bounds, Context, Hsla,
-    SharedString, Window, WindowBounds, WindowOptions,
+    div, prelude::*, px, rgb, size, App, Application, Bounds, Context, SharedString, Window,
+    WindowBounds, WindowOptions,
 };
 
 struct HelloWorld {
@@ -33,13 +33,13 @@ impl Render for HelloWorld {
                     .child(div().size_8().bg(gpui::yellow()))
                     .child(div().size_8().bg(gpui::black()))
                     .child(div().size_8().bg(gpui::white()))
-                    .child(div().size_8().bg(rgb(0xffffff)))
-                    .child(div().size_8().bg(rgba(0xffffff7f)))
-                    .child(div().size_8().bg(rgb(0xffffff)).opacity(0.5))
+                    .child(div().size_8().bg(gpui::rgb(0xffffff)))
+                    .child(div().size_8().bg(gpui::rgba(0xffffff7f)))
+                    .child(div().size_8().bg(gpui::rgb(0xffffff)).opacity(0.5))
                     .child(div().size_8().bg(ui::rgb(255, 255, 255)).opacity(0.5))
                     .child(div().size_8().bg(ui::rgba(255, 255, 255, 0.5)))
-                    .child(div().size_8().bg(hsla(0., 0., 1., 0.5)))
-                    .child(div().size_8().bg(Hsla {
+                    .child(div().size_8().bg(gpui::hsla(0., 0., 1., 0.5)))
+                    .child(div().size_8().bg(gpui::Hsla {
                         h: 0.,
                         s: 0.,
                         l: 1.,

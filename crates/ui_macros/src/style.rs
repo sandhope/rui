@@ -5,50 +5,66 @@ use syn::Ident;
 
 pub fn generate_box_style_methods(_input: TokenStream) -> TokenStream {
     let methods = vec![
-        ("padding_top", "pt", "Sets the top padding of the element."),
+        (
+            "padding_top",
+            "pt",
+            "Sets the top padding of the element, in pixels.",
+        ),
         (
             "padding_right",
             "pr",
-            "Sets the right padding of the element.",
+            "Sets the right padding of the element, in pixels.",
         ),
         (
             "padding_bottom",
             "pb",
-            "Sets the bottom padding of the element.",
+            "Sets the bottom padding of the element, in pixels.",
         ),
         (
             "padding_left",
             "pl",
-            "Sets the left padding of the element.",
+            "Sets the left padding of the element, in pixels.",
         ),
         (
             "padding_x",
             "px",
-            "Sets the horizontal padding of the element.",
+            "Sets the horizontal padding of the element, in pixels.",
         ),
         (
             "padding_y",
             "py",
-            "Sets the vertical padding of the element.",
+            "Sets the vertical padding of the element, in pixels.",
         ),
-        ("margin_top", "mt", "Sets the top margin of the element."),
+        (
+            "margin_top",
+            "mt",
+            "Sets the top margin of the element, in pixels.",
+        ),
         (
             "margin_right",
             "mr",
-            "Sets the right margin of the element.",
+            "Sets the right margin of the element, in pixels.",
         ),
         (
             "margin_bottom",
             "mb",
-            "Sets the bottom margin of the element.",
+            "Sets the bottom margin of the element, in pixels.",
         ),
-        ("margin_left", "ml", "Sets the left margin of the element."),
+        (
+            "margin_left",
+            "ml",
+            "Sets the left margin of the element, in pixels.",
+        ),
         (
             "margin_x",
             "mx",
-            "Sets the horizontal margin of the element.",
+            "Sets the horizontal margin of the element, in pixels.",
         ),
-        ("margin_y", "my", "Sets the vertical margin of the element."),
+        (
+            "margin_y",
+            "my",
+            "Sets the vertical margin of the element, in pixels.",
+        ),
     ];
 
     let methods = methods
