@@ -36,8 +36,8 @@ impl Render for HelloWorld {
                     .child(div().size_8().bg(gpui::rgb(0xffffff)))
                     .child(div().size_8().bg(gpui::rgba(0xffffff7f)))
                     .child(div().size_8().bg(gpui::rgb(0xffffff)).opacity(0.5))
-                    .child(div().size_8().bg(ui::rgb(255, 255, 255)).opacity(0.5))
-                    .child(div().size_8().bg(ui::rgba(255, 255, 255, 0.5)))
+                    .child(div().size_8().bg(rui::rgb(255, 255, 255)).opacity(0.5))
+                    .child(div().size_8().bg(rui::rgba(255, 255, 255, 0.5)))
                     .child(div().size_8().bg(gpui::hsla(0., 0., 1., 0.5)))
                     .child(div().size_8().bg(gpui::Hsla {
                         h: 0.,

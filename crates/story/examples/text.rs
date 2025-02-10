@@ -1,9 +1,9 @@
 use gpui::{
-    div, prelude::*, px, rgb, size, App, Application, Bounds, Context, Window, WindowBounds,
+    prelude::*, px, rgb, size, App, Application, Bounds, Context, Window, WindowBounds,
     WindowOptions,
 };
 
-use ui::{Col, Row, StyledExt, Text};
+use rui::{prelude::*, Col, Row, Text};
 
 struct Tiles;
 

@@ -1,5 +1,5 @@
 [workspace]
-members = [ "crates/ui_macros","crates/story", "crates/ui"]
+members = [ "crates/rui", "crates/rui_macros","crates/story" ]
 
 default-members = ["crates/story"]
 resolver = "2"
@@ -11,8 +11,8 @@ edition = "2021"
 [workspace.dependencies]
 gpui = { git = "https://github.com/zed-industries/zed" }
 story = { path = "crates/story" }
-ui = { path = "crates/ui" }
-ui_macros = { path = "crates/ui_macros" }
+rui = { path = "crates/rui" }
+rui_macros = { path = "crates/rui_macros" }
 syn = "2.0"
 quote = "1.0"
 proc-macro2 = "1.0"

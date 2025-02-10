@@ -1,5 +1,5 @@
 use gpui::{px, Styled};
-use ui_macros::box_style_methods;
+use rui_macros::box_style_methods;
 
 // top, right, bottom, left
 pub struct Edge(f32, f32, f32, f32);

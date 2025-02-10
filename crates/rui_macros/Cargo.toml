@@ -1,7 +1,5 @@
 [package]
-authors = ["fuxingZhang<fuxing.zhang@qq.com>"]
-description = "UI components for the GPUI"
-name = "ui"
+name = "rui_macros"
 version = "0.1.0"
 edition.workspace = true
 publish.workspace = true
@@ -11,8 +9,11 @@ license = "GPL-3.0-or-later"
 workspace = true
 
 [lib]
+path = "src/lib.rs"
+proc-macro = true
 doctest = false
 
 [dependencies]
-gpui.workspace = true
-ui_macros.workspace = true
+quote.workspace = true
+syn.workspace = true
+proc-macro2.workspace = true

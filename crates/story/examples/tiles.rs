@@ -1,9 +1,9 @@
 use gpui::{
-    div, prelude::*, px, size, App, Application, Bounds, Context, SharedString, Window,
-    WindowBounds, WindowOptions,
+    prelude::*, px, size, App, Application, Bounds, Context, SharedString, Window, WindowBounds,
+    WindowOptions,
 };
 
-use ui::{Button, Col, Label, Row};
+use rui::{prelude::*, Button, Col, Label, Row};
 
 struct Tiles {
     text: SharedString,

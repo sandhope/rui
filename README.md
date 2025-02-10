@@ -25,9 +25,9 @@ Here are some of the components currently available:
   - **`Menu`**: A component for creating navigation menus. __todo__
 
 - **Display Components:**
-  - **`Icon`**: A component for graphical representations.
-  - **`Text`**: A component for displaying text in various styles.
-  - **`Label`**: A component that combines `Text` and an `Icon` for enhanced labeling.
+  - **`Icon`**: A component for graphical representations.  __todo__
+  - **`Text`**: A component for displaying text in various styles.  __todo__
+  - **`Label`**: A component that combines `Text` and an `Icon` for enhanced labeling.  __todo__
 
 > _More components are actively under development and will be added soon!_
 

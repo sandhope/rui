@@ -1,12 +1,12 @@
 use gpui::{
-    div, prelude::*, px, rems, rgb, size, App, Application, Bounds, Context, FontWeight, Window,
+    prelude::*, px, rems, rgb, size, App, Application, Bounds, Context, FontWeight, Window,
     WindowBounds, WindowOptions,
 };
 
-use ui::{Button, Col, Label};
+use rui::{prelude::*, Button, Col, Label};
 
+use rui_macros::{col, row};
 use story::section;
-use ui_macros::{col, row};
 
 struct LabelStory {
     masked: bool,

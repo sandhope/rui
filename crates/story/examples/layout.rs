@@ -1,10 +1,9 @@
 use gpui::{
-    div, prelude::*, px, size, App, Application, Bounds, Context, Window, WindowBounds,
-    WindowOptions,
+    prelude::*, px, size, App, Application, Bounds, Context, Window, WindowBounds, WindowOptions,
 };
 
-use ui::{Col, Row, StyledExt, Text};
-use ui_macros::{col, row};
+use rui::{prelude::*, Col, Row, StyledExt, Text};
+use rui_macros::{col, row};
 
 struct Layout;
 

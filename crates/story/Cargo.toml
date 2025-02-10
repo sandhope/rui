@@ -9,5 +9,5 @@ workspace = true
 
 [dependencies]
 gpui.workspace = true
-ui.workspace = true
-ui_macros.workspace = true
+rui.workspace = true
+rui_macros.workspace = true
