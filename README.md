@@ -1,4 +1,4 @@
-# rui
+## rui
 
 > _This project is in an early stage of development; APIs may change frequently._
 
@@ -80,7 +80,7 @@ As both `GPUI` and `rui` are still in development, you will need to include them
 
 ```toml
 gpui = { git = "https://github.com/zed-industries/zed" }
-ui = { git = "https://github.com/sandhope/rui.git" }
+rui = { git = "https://github.com/sandhope/rui.git" }
 ```
 
 ## Development
