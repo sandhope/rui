@@ -1,5 +1,5 @@
 use gpui::{
-    div, prelude::*, px, rgb, size, App, Application, Bounds, Context, SharedString, Window,
+    div, prelude::*, px, size, App, Application, Bounds, Context, SharedString, Window,
     WindowBounds, WindowOptions,
 };
 
@@ -42,12 +42,12 @@ impl Render for Tiles {
             .gap_4()
 
         }
-        .bg(rgb(0xffffff))
+        .bg(gpui::white())
         .size_full()
         .justify_center()
         .items_center()
         .text_xl()
-        .text_color(rgb(0x000000))
+        .text_color(gpui::black())
     }
 }
 

@@ -1,5 +1,5 @@
 use gpui::{
-    div, prelude::*, px, rgb, size, App, Application, Bounds, Context, Window, WindowBounds,
+    div, prelude::*, px, size, App, Application, Bounds, Context, Window, WindowBounds,
     WindowOptions,
 };
 
@@ -12,37 +12,47 @@ impl Render for Layout {
     fn render(&mut self, _window: &mut Window, _cx: &mut Context<Self>) -> impl IntoElement {
         col! {
             row!{
-                Text::new("row").padding(0.).border_1().border_color(rgb(0x000000))
-                Text::new("row").padding((0., 10.0)).border_1().border_color(rgb(0x000000))
-                Text::new("row").padding((0.,0.,0.0,20.)).border_1().border_color(rgb(0x000000))
+                Text::new("row").padding(0.).border_1().border_color(gpui::black())
+                Text::new("row").padding((0., 10.0)).border_1().border_color(gpui::black())
+                Text::new("row").padding((0.,0.,0.0,20.)).border_1().border_color(gpui::black())
             }
             Row!{
-                Text::new("row").padding(0.).border_1().border_color(rgb(0x000000))
-                Text::new("row").padding_x(10.0).border_1().border_color(rgb(0x000000))
-                Text::new("row").padding_left(20.0).border_1().border_color(rgb(0x000000))
+                Text::new("row").padding(0.).border_1().border_color(gpui::black())
+                Text::new("row").padding_x(10.0).border_1().border_color(gpui::black())
+                Text::new("row").padding_left(20.0).border_1().border_color(gpui::black())
             }
             Col!{
-                Text::new("row").padding(0.).border_1().border_color(rgb(0x000000))
-                Text::new("row").padding_y(10.).border_1().border_color(rgb(0x000000))
-                Text::new("row").padding_left(20.).border_1().border_color(rgb(0x000000))
+                Text::new("row").padding(0.).border_1().border_color(gpui::black())
+                Text::new("row").padding_y(10.).border_1().border_color(gpui::black())
+                Text::new("row").padding_left(20.).border_1().border_color(gpui::black())
             }
             Col!{
-                Text::new("row").margin(0.).border_1().border_color(rgb(0x000000))
-                Text::new("row").margin_y(10.).border_1().border_color(rgb(0x000000))
-                Text::new("row").margin_left(20.).border_1().border_color(rgb(0x000000))
+                Text::new("row").margin(0.).border_1().border_color(gpui::black())
+                Text::new("row").margin_y(10.).border_1().border_color(gpui::black())
+                Text::new("row").margin_left(20.).border_1().border_color(gpui::black())
             }
 
-            Text::new("Text").border_1().border_color(rgb(0x000000))
-            Text::new("Text").padding(10.0).border_1().border_color(rgb(0x000000))
-            Text::new("Text").padding_left(20.).border_1().border_color(rgb(0x000000))
+            Text::new("Text").border_1().border_color(gpui::black())
+            Text::new("Text").padding(10.0).border_1().border_color(gpui::black())
+            Text::new("Text").padding_left(20.).border_1().border_color(gpui::black())
+
+            div()
+                .flex()
+                .gap_2()
+                .child(div().size_8().bg(gpui::red()))
+                .child(div().size_8().bg(gpui::green()))
+                .child(div().size_8().bg(gpui::blue()))
+                .child(div().size_8().bg(gpui::yellow()))
+                .child(div().size_8().bg(gpui::black()))
+                .child(div().size_8().bg(gpui::white()))
         }
         .flex()
-        .bg(rgb(0xffffff))
+        .bg(gpui::white())
         .size_full()
         .justify_center()
         .items_start()
         .text_xl()
-        .text_color(rgb(0x000000))
+        .text_color(gpui::black())
     }
 }
 
