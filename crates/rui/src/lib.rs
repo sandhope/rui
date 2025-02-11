@@ -1,17 +1,10 @@
-mod button;
-mod label;
-mod text;
-#[macro_use]
-mod layout_macros;
-mod color;
-mod stack;
+mod components;
+mod macros;
 mod traits;
+mod utils;
 
 pub mod prelude;
 
-pub use button::*;
-pub use color::*;
-pub use label::*;
+pub use components::*;
 pub use prelude::*;
-pub use stack::*;
-pub use text::*;
+pub use utils::*;

@@ -4,7 +4,7 @@ use gpui::{
 };
 
 // use crate::{h_flex, ActiveTheme};
-use crate::stack::*;
+use crate::h_flex;
 
 const MASKED: &'static str = "•";
 
