@@ -13,9 +13,13 @@ gpui = { git = "https://github.com/zed-industries/zed" }
 story = { path = "crates/story" }
 rui = { path = "crates/rui" }
 rui_macros = { path = "crates/rui_macros" }
-syn = "2.0"
+syn = { version = "1.0.72", features = ["full", "extra-traits"] }
 quote = "1.0"
 proc-macro2 = "1.0"
+anyhow = "1.0.95"
+rust-embed="8.5.0"
+convert_case = "0.7.0"
+strum = { version = "0.26.0", features = ["derive"] }
 
 [workspace.lints.clippy]
 dbg_macro = "deny"

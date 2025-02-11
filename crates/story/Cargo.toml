@@ -11,3 +11,4 @@ workspace = true
 gpui.workspace = true
 rui.workspace = true
 rui_macros.workspace = true
+strum = { workspace = true, features = ["derive"] }

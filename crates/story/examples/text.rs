@@ -24,7 +24,6 @@ impl Render for Tiles {
             Text::new("Text").padding(10.0)
             Text::new("Text")
         }
-        .flex()
         .bg(gpui::white())
         .size_full()
         .justify_center()

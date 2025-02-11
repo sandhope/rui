@@ -16,3 +16,6 @@ doctest = false
 [dependencies]
 gpui.workspace = true
 rui_macros.workspace = true
+anyhow.workspace = true
+rust-embed.workspace = true
+strum = { workspace = true, features = ["derive"] }
