@@ -3,7 +3,7 @@ use gpui::{px, rgb, size, Application, Bounds, Context, WindowBounds, WindowOpti
 use rui::{prelude::*, Col, Radio, RadioGroup, Section, Text};
 
 struct RadioStory {
-    checked: bool,
+    disabled: bool,
     selected_index: Option<usize>,
 }
 
@@ -11,11 +11,11 @@ impl Render for RadioStory {
     fn render(&mut self, _window: &mut Window, cx: &mut Context<Self>) -> impl IntoElement {
         Col! {
             Radio::new("radio")
-            .text(Text::new("radio"))
-            .checked(self.checked)
+            .text(Text::new("disabled"))
+            .checked(self.disabled)
             .on_click(cx.listener(|this, val, _window, _app| {
                 // this.checked = !this.checked
-                this.checked = *val
+                this.disabled = *val
             }))
 
             Section! {
@@ -32,7 +32,7 @@ impl Render for RadioStory {
                 "Radio Group Vertical";
                 RadioGroup::new()
                     .direction(gpui::Axis::Vertical)
-                    .disabled(true)
+                    .disabled(self.disabled)
                     .child(Radio::new("one1").text(Text::new("one1")))
                     .child(Radio::new("one2").text(Text::new("one2")))
                     .child(Radio::new("one3").text(Text::new("one3")))
@@ -62,7 +62,7 @@ fn main() {
             },
             |_, cx| {
                 cx.new(|_| RadioStory {
-                    checked: false,
+                    disabled: true,
                     selected_index: None,
                 })
             },

@@ -52,10 +52,11 @@ impl RenderOnce for Radio {
         let inner_diameter = rems_from_px(6.);
         let outer_diameter = rems_from_px(16.);
         let border_width = rems_from_px(1.);
+
         h_flex()
             .id(self.id)
             .gap_x_2()
-            .group("") // If you remove it, there is no hover effect
+            .group("")
             //.line_height(relative(1.))
             .child(
                 div()
@@ -63,7 +64,17 @@ impl RenderOnce for Radio {
                     .rounded(outer_diameter / 2.)
                     .border_color(gpui::black())
                     .border(border_width)
-                    .group_hover("", |el| el.bg(gpui::black()))
+                    // .when(self.disabled, |el| el.opacity(0.5))
+                    // .when(!self.disabled, |el| {
+                    //     el.group_hover("", |el| el.border_color(gpui::blue()))
+                    // })
+                    .map(|el| {
+                        if self.disabled {
+                            el.opacity(0.5)
+                        } else {
+                            el.group_hover("", |el| el.border_color(gpui::blue()))
+                        }
+                    })
                     .when(self.checked, |el| {
                         el.child(
                             div()
