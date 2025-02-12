@@ -15,6 +15,7 @@ pub fn section(title: impl IntoElement, _cx: &Window) -> Div {
         //.rounded(cx.theme().radius)
         .border_1()
         //.border_color(theme.border)
+        .border_color(gpui::black())
         .flex_wrap()
         .justify_around()
         .child(div().flex_none().w_full().child(title))

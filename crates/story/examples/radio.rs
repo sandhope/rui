@@ -1,6 +1,6 @@
 use gpui::{px, rgb, size, Application, Bounds, Context, WindowBounds, WindowOptions};
 
-use rui::{prelude::*, Col, Radio, RadioGroup, Text};
+use rui::{prelude::*, Col, Radio, RadioGroup, Section, Text};
 
 struct RadioStory {
     checked: bool,
@@ -18,23 +18,29 @@ impl Render for RadioStory {
                 this.checked = *val
             }))
 
-            RadioGroup::new()
-                .children(["One", "Two", "Three"])
-                .selected_index(self.selected_index)
-                .on_change(cx.listener(|this, selected_index: &usize, _, _| {
-                    this.selected_index = Some(*selected_index);
-                }))
+            Section! {
+                "Radio Group";
+                RadioGroup::new()
+                    .children(["One", "Two", "Three"])
+                    .selected_index(self.selected_index)
+                    .on_change(cx.listener(|this, selected_index: &usize, _, _| {
+                        this.selected_index = Some(*selected_index);
+                    }))
+            }
 
-            RadioGroup::new()
-                .direction(gpui::Axis::Vertical)
-                .disabled(true)
-                .child(Radio::new("one1").text(Text::new("one1")))
-                .child(Radio::new("one2").text(Text::new("one2")))
-                .child(Radio::new("one3").text(Text::new("one3")))
-                .selected_index(self.selected_index)
-                .on_change(cx.listener(|this, selected_index: &usize, _, _| {
-                    this.selected_index = Some(*selected_index);
-                }))
+            Section! {
+                "Radio Group Vertical";
+                RadioGroup::new()
+                    .direction(gpui::Axis::Vertical)
+                    .disabled(true)
+                    .child(Radio::new("one1").text(Text::new("one1")))
+                    .child(Radio::new("one2").text(Text::new("one2")))
+                    .child(Radio::new("one3").text(Text::new("one3")))
+                    .selected_index(self.selected_index)
+                    .on_change(cx.listener(|this, selected_index: &usize, _, _| {
+                        this.selected_index = Some(*selected_index);
+                    }))
+            }
         }
         .bg(gpui::white())
         .size_full()

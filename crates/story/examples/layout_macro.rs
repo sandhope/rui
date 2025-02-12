@@ -1,28 +1,29 @@
 use gpui::{px, size, Application, Bounds, Context, WindowBounds, WindowOptions};
 
-use rui::{prelude::*, Col, Row, StyledExt, Text};
+use rui::{prelude::*, StyledExt, Text};
+use rui_macros::{col, row};
 
 struct LayoutStory;
 
 impl Render for LayoutStory {
     fn render(&mut self, _window: &mut Window, _cx: &mut Context<Self>) -> impl IntoElement {
-        Col! {
-            Row!{
+        col! {
+            row!{
                 Text::new("row").padding(0.).border_1().border_color(gpui::black())
                 Text::new("row").padding((0., 10.0)).border_1().border_color(gpui::black())
                 Text::new("row").padding((0.,0.,0.0,20.)).border_1().border_color(gpui::black())
             }
-            Row!{
+            row!{
                 Text::new("row").padding(0.).border_1().border_color(gpui::black())
                 Text::new("row").padding_x(10.0).border_1().border_color(gpui::black())
                 Text::new("row").padding_left(20.0).border_1().border_color(gpui::black())
             }
-            Col!{
+            col!{
                 Text::new("row").padding(0.).border_1().border_color(gpui::black())
                 Text::new("row").padding_y(10.).border_1().border_color(gpui::black())
                 Text::new("row").padding_left(20.).border_1().border_color(gpui::black())
             }
-            Col!{
+            col!{
                 Text::new("row").margin(0.).border_1().border_color(gpui::black())
                 Text::new("row").margin_y(10.).border_1().border_color(gpui::black())
                 Text::new("row").margin_left(20.).border_1().border_color(gpui::black())

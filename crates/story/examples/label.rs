@@ -2,21 +2,17 @@ use gpui::{
     px, rems, rgb, size, Application, Bounds, Context, FontWeight, WindowBounds, WindowOptions,
 };
 
-use rui::{prelude::*, Button, Col, Label};
-
-use rui_macros::{col, row};
-use story::section;
+use rui::{prelude::*, Button, Col, Label, Row, Section};
 
 struct LabelStory {
     masked: bool,
 }
 
 impl Render for LabelStory {
-    fn render(&mut self, window: &mut Window, cx: &mut Context<Self>) -> impl IntoElement {
-        col!{
-            section("Label", window)
-            .items_start()
-            .child(
+    fn render(&mut self, _window: &mut Window, cx: &mut Context<Self>) -> impl IntoElement {
+        Col!{
+            Section! {
+                "Label";
                 Col!{
                     Label::new("Text align left")
                     Label::new("Text align center").text_center()
@@ -38,11 +34,13 @@ impl Render for LabelStory {
                 }
                 .w_full()
                 .gap_4()
-            )
+            }
+            .items_start()
 
-            section("Maksed Label", window).child(
-                col! {
-                    row!{
+            Section! {
+                "Maksed Label";
+                Col! {
+                    Row!{
                         Label::new("9,182,1 USD").text_2xl().masked(self.masked)
 
                         Button::new("button_id", "btn-mask")
@@ -50,11 +48,12 @@ impl Render for LabelStory {
                             this.masked = !this.masked;
                         }))
                     }
+
                     Label::new("500 USD").text_xl().masked(self.masked)
                 }
                 .w_full()
                 .gap_4()
-            )
+            }
         }
         .size_full()
         .bg(rgb(0xffffff))
