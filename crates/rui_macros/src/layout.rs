@@ -1,6 +1,6 @@
 use proc_macro::TokenStream;
 use quote::quote;
-use syn::{parse::Parse, parse::ParseStream, parse_macro_input, Expr, Result};
+use syn::{parse::Parse, parse::ParseStream, parse_macro_input, Expr, Result, Token};
 
 struct LayoutInput {
     exprs: Vec<Expr>,
@@ -51,15 +51,54 @@ pub fn row(input: TokenStream) -> TokenStream {
 
     let output = exprs.iter().map(|expr| {
         quote! {
-            col = col.child(#expr);
+            row = row.child(#expr);
         }
     });
 
     let expanded = quote! {
         {
-            let mut col = div().flex().flex_row();
+            let mut row = div().flex().flex_row();
             #(#output)*
-            col
+            row
+        }
+    };
+
+    TokenStream::from(expanded)
+}
+
+struct SectionInput {
+    title: Expr,
+    children: Vec<Expr>,
+}
+
+impl Parse for SectionInput {
+    fn parse(input: ParseStream) -> syn::Result<Self> {
+        let title: Expr = input.parse()?;
+        input.parse::<Token![;]>()?;
+        let mut children = Vec::new();
+        while !input.is_empty() {
+            children.push(input.parse()?);
+        }
+        Ok(SectionInput { title, children })
+    }
+}
+
+pub fn section(input: TokenStream) -> TokenStream {
+    let SectionInput { title, children } = parse_macro_input!(input as SectionInput);
+
+    let output = children.iter().map(|child| {
+        quote! {
+            section = section.child(#child);
+        }
+    });
+
+    let expanded = quote! {
+        {
+            let mut section = div().flex().flex_col().p_4().m_4()
+                .rounded_md().border_1().border_color(gpui::black())
+                .child(div().flex_none().w_full().child(#title));
+            #(#output)*
+            section
         }
     };
 

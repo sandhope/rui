@@ -70,20 +70,8 @@ macro_rules! Row {
 macro_rules! Section {
     { $title:expr; $( $label:expr )* } => {
         {
-            //use ui::ActiveTheme;
-            //let theme = cx.theme();
-            let mut section = div().h_flex()
-                .items_center()
-                .gap_4()
-                .p_4()
-                .w_full()
-                .rounded_lg()
-                //.rounded(cx.theme().radius)
-                .border_1()
-                //.border_color(theme.border)
-                .border_color(gpui::black())
-                .flex_wrap()
-                .justify_around()
+            let mut section = div().flex().flex_col().p_4().m_4()
+                .rounded_md().border_1().border_color(gpui::black())
                 .child(div().flex_none().w_full().child($title));
             $(
                 section = section.child($label);

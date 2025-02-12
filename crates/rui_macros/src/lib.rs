@@ -40,6 +40,25 @@ pub fn col(input: TokenStream) -> TokenStream {
     layout::col(input)
 }
 
+/// A macro to create a section layout with a title and multiple children.
+///
+/// This macro takes a title and a list of expressions and adds them as children to a section layout.
+///
+/// # Example
+///
+/// ```rust
+/// section! {
+///     "title";
+///     child1
+///     child2
+///     child3
+/// }
+/// ```
+#[proc_macro]
+pub fn section(input: TokenStream) -> TokenStream {
+    layout::section(input)
+}
+
 /// Generates methods for box styles.
 #[proc_macro]
 pub fn box_style_methods(input: TokenStream) -> TokenStream {

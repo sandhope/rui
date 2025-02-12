@@ -1,6 +1,6 @@
 use gpui::{px, size, Application, Bounds, Context, WindowBounds, WindowOptions};
 
-use rui::{prelude::*, Col, Row, StyledExt, Text};
+use rui::{prelude::*, Col, Row, Section, StyledExt, Text};
 
 struct LayoutStory;
 
@@ -17,12 +17,14 @@ impl Render for LayoutStory {
                 Text::new("row").padding_x(10.0).border_1().border_color(gpui::black())
                 Text::new("row").padding_left(20.0).border_1().border_color(gpui::black())
             }
-            Col!{
+            Section!{
+                "padding";
                 Text::new("row").padding(0.).border_1().border_color(gpui::black())
                 Text::new("row").padding_y(10.).border_1().border_color(gpui::black())
                 Text::new("row").padding_left(20.).border_1().border_color(gpui::black())
             }
-            Col!{
+            Section!{
+                "margin";
                 Text::new("row").margin(0.).border_1().border_color(gpui::black())
                 Text::new("row").margin_y(10.).border_1().border_color(gpui::black())
                 Text::new("row").margin_left(20.).border_1().border_color(gpui::black())
