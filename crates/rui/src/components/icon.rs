@@ -1,10 +1,6 @@
-use gpui::{
-    img, svg, App, Hsla, IntoElement, Pixels, Rems, RenderOnce, SharedString, Transformation,
-    Window,
-};
+use gpui::{img, svg, Hsla, Rems, Transformation};
 
 use crate::prelude::*;
-use crate::rems_from_px;
 use rui_macros::DerivePathStr;
 use std::path::{Path, PathBuf};
 use std::sync::Arc;
@@ -25,7 +21,7 @@ pub enum IconSize {
     Large,
     /// 48px
     XLarge,
-    Custom(Pixels),
+    Custom(Rems),
 }
 
 impl IconSize {
@@ -37,7 +33,7 @@ impl IconSize {
             IconSize::Medium => rems_from_px(16.),
             IconSize::Large => rems_from_px(24.),
             IconSize::XLarge => rems_from_px(48.),
-            IconSize::Custom(size) => rems_from_px(size.into()),
+            IconSize::Custom(size) => size,
         }
     }
 }

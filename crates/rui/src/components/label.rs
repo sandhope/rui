@@ -1,10 +1,6 @@
-use gpui::{
-    div, prelude::FluentBuilder, rems, App, Div, IntoElement, ParentElement, RenderOnce,
-    SharedString, Styled, Window,
-};
+use gpui::{prelude::FluentBuilder, rems};
 
-// use crate::{h_flex, ActiveTheme};
-use crate::h_flex;
+use crate::prelude::*;
 
 const MASKED: &'static str = "•";
 

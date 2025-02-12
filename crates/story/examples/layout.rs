@@ -1,13 +1,11 @@
-use gpui::{
-    prelude::*, px, size, App, Application, Bounds, Context, Window, WindowBounds, WindowOptions,
-};
+use gpui::{px, size, Application, Bounds, Context, WindowBounds, WindowOptions};
 
 use rui::{prelude::*, Col, Row, StyledExt, Text};
 use rui_macros::{col, row};
 
-struct Layout;
+struct LayoutStory;
 
-impl Render for Layout {
+impl Render for LayoutStory {
     fn render(&mut self, _window: &mut Window, _cx: &mut Context<Self>) -> impl IntoElement {
         col! {
             row!{
@@ -63,7 +61,7 @@ fn main() {
                 window_bounds: Some(WindowBounds::Windowed(bounds)),
                 ..Default::default()
             },
-            |_, cx| cx.new(|_| Layout {}),
+            |_, cx| cx.new(|_| LayoutStory {}),
         )
         .unwrap();
     });

@@ -1,14 +1,11 @@
-use gpui::{
-    prelude::*, px, rgb, size, App, Application, Bounds, Context, Window, WindowBounds,
-    WindowOptions,
-};
+use gpui::{px, rgb, size, Application, Bounds, Context, WindowBounds, WindowOptions};
 
 use rui::{prelude::*, Assets, Col, Icon, IconName, Row, Text};
 use strum::IntoEnumIterator;
 
-struct Tiles;
+struct IconStory;
 
-impl Render for Tiles {
+impl Render for IconStory {
     fn render(&mut self, _window: &mut Window, _cx: &mut Context<Self>) -> impl IntoElement {
         Col! {
             Row! {
@@ -38,7 +35,7 @@ fn main() {
                 window_bounds: Some(WindowBounds::Windowed(bounds)),
                 ..Default::default()
             },
-            |_, cx| cx.new(|_| Tiles {}),
+            |_, cx| cx.new(|_| IconStory {}),
         )
         .unwrap();
     });

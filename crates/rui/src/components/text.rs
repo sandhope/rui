@@ -1,6 +1,4 @@
-use gpui::{div, App, Div, IntoElement, ParentElement, RenderOnce, SharedString, Styled, Window};
-
-// use crate::{h_flex, ActiveTheme};
+use crate::prelude::*;
 
 #[derive(IntoElement)]
 pub struct Text {

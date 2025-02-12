@@ -1,18 +1,15 @@
-use gpui::{
-    div, prelude::*, px, rgb, size, App, Application, Bounds, Context, SharedString, Window,
-    WindowBounds, WindowOptions,
-};
-use rui::{Col, Row, Text};
+use gpui::{px, rgb, size, Application, Bounds, Context, WindowBounds, WindowOptions};
+use rui::{prelude::*, Col, Row, Text};
 
-struct HelloWorld {
-    text: SharedString,
+struct ColorStory {
+    title: SharedString,
 }
 
-impl Render for HelloWorld {
+impl Render for ColorStory {
     fn render(&mut self, _window: &mut Window, _cx: &mut Context<Self>) -> impl IntoElement {
         Col! {
             Row! {
-                Text::new(self.text.clone())
+                Text::new(self.title.clone())
             }
             Row! {
                 div().size_8().bg(gpui::red())
@@ -58,8 +55,8 @@ fn main() {
                 ..Default::default()
             },
             |_, cx| {
-                cx.new(|_| HelloWorld {
-                    text: "Color exmaples!".into(),
+                cx.new(|_| ColorStory {
+                    title: "Color exmaples!".into(),
                 })
             },
         )

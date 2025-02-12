@@ -1,7 +1,4 @@
-use gpui::{
-    prelude::*, px, size, App, Application, Bounds, Context, SharedString, Window, WindowBounds,
-    WindowOptions,
-};
+use gpui::{px, size, Application, Bounds, Context, WindowBounds, WindowOptions};
 
 use rui::{prelude::*, Button, Col, Label, Row};
 

@@ -1,6 +1,4 @@
-use gpui::{
-    div, prelude::*, rgb, App, ClickEvent, Div, ElementId, MouseButton, SharedString, Window,
-};
+use gpui::{rgb, ClickEvent, MouseButton};
 
 use crate::prelude::*;
 

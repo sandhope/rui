@@ -1,6 +1,5 @@
 use gpui::{
-    prelude::*, px, rems, rgb, size, App, Application, Bounds, Context, FontWeight, Window,
-    WindowBounds, WindowOptions,
+    px, rems, rgb, size, Application, Bounds, Context, FontWeight, WindowBounds, WindowOptions,
 };
 
 use rui::{prelude::*, Button, Col, Label};
