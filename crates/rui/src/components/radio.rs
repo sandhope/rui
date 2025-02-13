@@ -26,8 +26,8 @@ impl Radio {
         }
     }
 
-    pub fn text(mut self, text: Text) -> Self {
-        self.text = Some(text);
+    pub fn text(mut self, text: impl Into<Text>) -> Self {
+        self.text = Some(text.into());
         self
     }
 

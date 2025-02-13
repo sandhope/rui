@@ -11,7 +11,7 @@ impl Render for RadioStory {
     fn render(&mut self, _window: &mut Window, cx: &mut Context<Self>) -> impl IntoElement {
         Col! {
             Radio::new("radio")
-            .text(Text::new("disabled"))
+            .text("disabled") // or .text(Text::new("disabled"))
             .checked(self.disabled)
             .on_click(cx.listener(|this, val, _window, _app| {
                 // this.checked = !this.checked
@@ -33,8 +33,8 @@ impl Render for RadioStory {
                 RadioGroup::new()
                     .direction(gpui::Axis::Vertical)
                     .disabled(self.disabled)
-                    .child(Radio::new("one1").text(Text::new("one1")))
-                    .child(Radio::new("one2").text(Text::new("one2")))
+                    .child(Radio::new("one1").text("one1"))
+                    .child(Radio::new("one2").text("one2"))
                     .child(Radio::new("one3").text(Text::new("one3")))
                     .selected_index(self.selected_index)
                     .on_change(cx.listener(|this, selected_index: &usize, _, _| {

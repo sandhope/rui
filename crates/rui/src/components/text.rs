@@ -1,9 +1,12 @@
 use crate::prelude::*;
 
+const MASKED: &'static str = "•";
+
 #[derive(IntoElement)]
 pub struct Text {
     base: Div,
     text: SharedString,
+    marked: bool,
 }
 
 impl Text {
@@ -11,7 +14,13 @@ impl Text {
         Self {
             base: div(),
             text: text.into(),
+            marked: false,
         }
+    }
+
+    pub fn masked(mut self, masked: bool) -> Self {
+        self.marked = masked;
+        self
     }
 }
 
@@ -25,6 +34,29 @@ impl RenderOnce for Text {
     fn render(self, _window: &mut Window, _cx: &mut App) -> impl IntoElement {
         // theme
         // self.base.text_color(cx.theme().foreground)
-        self.base.child(self.text)
+        let text_display = if self.marked {
+            MASKED.repeat(self.text.chars().count())
+        } else {
+            self.text.to_string()
+        };
+        self.base.child(text_display)
+    }
+}
+
+impl From<&'static str> for Text {
+    fn from(text: &'static str) -> Self {
+        Self::new(text)
+    }
+}
+
+impl From<SharedString> for Text {
+    fn from(text: SharedString) -> Self {
+        Self::new(text)
+    }
+}
+
+impl From<String> for Text {
+    fn from(text: String) -> Self {
+        Self::new(text)
     }
 }

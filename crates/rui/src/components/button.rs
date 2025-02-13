@@ -31,6 +31,12 @@ impl Button {
     }
 }
 
+impl Styled for Button {
+    fn style(&mut self) -> &mut gpui::StyleRefinement {
+        self.base.style()
+    }
+}
+
 impl RenderOnce for Button {
     fn render(self, _window: &mut Window, _cx: &mut App) -> impl IntoElement {
         self.base
