@@ -1,9 +1,8 @@
 use gpui::{
-    black, px, rems, rgb, size, Application, Bounds, Context, FontWeight, WindowBounds,
-    WindowOptions,
+    px, rems, rgb, size, Application, Bounds, Context, FontWeight, WindowBounds, WindowOptions,
 };
 
-use rui::{prelude::*, Assets, Button, Col, Icon, IconName, Label, Row, Section, Text};
+use rui::{prelude::*, Assets, Button, Col, Icon, IconName, IconSize, Label, Row, Section, Text};
 
 struct LabelStory {
     masked: bool,
@@ -16,23 +15,20 @@ impl Render for LabelStory {
                 "Label row";
                 Row!{
                     Label::new(IconName::Eye, "simple")
-                    Label::new(IconName::Eye, "icon right")
-                        .icon_right()
-                        .border_1()
-                        .border_color(gpui::black())
                     Label::new(Icon::new(IconName::Bell), "icon new")
                     Label::new(Icon::new(IconName::Ai).color(gpui::blue()), "icon color")
-
+                    Label::new(Icon::new(IconName::Ai).color(gpui::blue()), "icon right").icon_right()
                     Label::new(IconName::AiOpenAi, Text::new("text new"))
-                    Label::new(IconName::AiOpenAi, Text::new("text color").text_color(gpui::red()).bg(black().opacity(0.5)))
-
+                    Label::new(IconName::AiOpenAi, Text::new("text color").text_color(gpui::red()))
+                    Label::new(IconName::AiOpenAi, "label color").color(gpui::blue())
                     Label::new(
-                        Icon::new(IconName::Ai).color(gpui::blue()),
+                        Icon::new(IconName::Ai).size(IconSize::Large).color(gpui::blue()),
                         Text::new("complex")
                             .text_color(gpui::red())
                             .text_size(px(20.))
                             .font_weight(FontWeight::SEMIBOLD)
                     )
+                    .line_height(rems(1.8))
                 }
                 .gap_4()
             }
@@ -41,18 +37,14 @@ impl Render for LabelStory {
                 "Label col";
                 Col!{
                     Label::new(IconName::Eye, "simple")
-                    Label::new(IconName::Eye, "icon right")
-                        .icon_right()
-                        .border_1()
-                        .border_color(gpui::black())
                     Label::new(Icon::new(IconName::Bell), "icon new")
                     Label::new(Icon::new(IconName::Ai).color(gpui::blue()), "icon color")
-
+                    Label::new(Icon::new(IconName::Ai).color(gpui::blue()), "icon right").icon_right()
                     Label::new(IconName::AiOpenAi, Text::new("text new"))
                     Label::new(IconName::AiOpenAi, Text::new("text color").text_color(gpui::red()))
-
+                    Label::new(IconName::AiOpenAi, "label color").color(gpui::blue())
                     Label::new(
-                        Icon::new(IconName::Ai).color(gpui::blue()),
+                        Icon::new(IconName::Ai).size(IconSize::Large).color(gpui::blue()),
                         Text::new("complex")
                             .text_color(gpui::red())
                             .text_size(px(20.))
@@ -60,7 +52,7 @@ impl Render for LabelStory {
                     )
                     .line_height(rems(1.8))
                 }
-                .gap_2()
+                .gap_3()
             }
 
             Section! {
@@ -81,6 +73,7 @@ impl Render for LabelStory {
                 .gap_2()
             }
         }
+        .font_family(".SystemUIFont")
         .size_full()
         .bg(rgb(0xffffff))
         .gap_1()

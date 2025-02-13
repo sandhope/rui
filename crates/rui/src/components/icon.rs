@@ -123,13 +123,11 @@ impl RenderOnce for Icon {
                 .flex_none()
                 .path(path)
                 .text_color(self.color)
-                .bg(gpui::black().opacity(0.5))
                 .into_any_element(),
             IconSource::Image(path) => img(path)
                 .size(self.size)
                 .flex_none()
                 .text_color(self.color)
-                .bg(gpui::red().opacity(0.5))
                 .into_any_element(),
         }
     }
