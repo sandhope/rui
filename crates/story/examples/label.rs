@@ -1,8 +1,9 @@
 use gpui::{
-    px, rems, rgb, size, Application, Bounds, Context, FontWeight, WindowBounds, WindowOptions,
+    black, px, rems, rgb, size, Application, Bounds, Context, FontWeight, WindowBounds,
+    WindowOptions,
 };
 
-use rui::{prelude::*, Button, Col, Label, Row, Section};
+use rui::{prelude::*, Assets, Button, Col, Icon, IconName, Label, Row, Section, Text};
 
 struct LabelStory {
     masked: bool,
@@ -10,38 +11,63 @@ struct LabelStory {
 
 impl Render for LabelStory {
     fn render(&mut self, _window: &mut Window, cx: &mut Context<Self>) -> impl IntoElement {
-        Col!{
+        Col! {
             Section! {
-                "Label";
-                Col!{
-                    Label::new("Text align left")
-                    Label::new("Text align center").text_center()
-                    Label::new("Text align right").text_right()
+                "Label row";
+                Row!{
+                    Label::new(IconName::Eye, "simple")
+                    Label::new(IconName::Eye, "icon right")
+                        .icon_right()
+                        .border_1()
+                        .border_color(gpui::black())
+                    Label::new(Icon::new(IconName::Bell), "icon new")
+                    Label::new(Icon::new(IconName::Ai).color(gpui::blue()), "icon color")
 
-                    Label::new("Color Label")
-                        .bg(gpui::blue())
-                        .text_color(gpui::red())
+                    Label::new(IconName::AiOpenAi, Text::new("text new"))
+                    Label::new(IconName::AiOpenAi, Text::new("text color").text_color(gpui::red()).bg(black().opacity(0.5)))
 
-                    Label::new("Font Size Label")
-                        .text_size(px(20.))
-                        .font_weight(FontWeight::SEMIBOLD)
-                        .line_height(rems(1.8))
-
-                    div().w(px(200.)).child(
-                        Label::new("Label should support text wrap in default, if the text is too long, it should wrap to the next line.")
-                            .line_height(rems(1.8)),
+                    Label::new(
+                        Icon::new(IconName::Ai).color(gpui::blue()),
+                        Text::new("complex")
+                            .text_color(gpui::red())
+                            .text_size(px(20.))
+                            .font_weight(FontWeight::SEMIBOLD)
                     )
                 }
-                .w_full()
                 .gap_4()
             }
-            .items_start()
+
+            Section! {
+                "Label col";
+                Col!{
+                    Label::new(IconName::Eye, "simple")
+                    Label::new(IconName::Eye, "icon right")
+                        .icon_right()
+                        .border_1()
+                        .border_color(gpui::black())
+                    Label::new(Icon::new(IconName::Bell), "icon new")
+                    Label::new(Icon::new(IconName::Ai).color(gpui::blue()), "icon color")
+
+                    Label::new(IconName::AiOpenAi, Text::new("text new"))
+                    Label::new(IconName::AiOpenAi, Text::new("text color").text_color(gpui::red()))
+
+                    Label::new(
+                        Icon::new(IconName::Ai).color(gpui::blue()),
+                        Text::new("complex")
+                            .text_color(gpui::red())
+                            .text_size(px(20.))
+                            .font_weight(FontWeight::SEMIBOLD)
+                    )
+                    .line_height(rems(1.8))
+                }
+                .gap_2()
+            }
 
             Section! {
                 "Maksed Label";
                 Col! {
                     Row!{
-                        Label::new("9,182,1 USD").text_2xl().masked(self.masked)
+                        Text::new("9,182,1 USD").text_2xl().masked(self.masked)
 
                         Button::new("button_id", "btn-mask")
                         .on_click(cx.listener(|this, _, _window,_cx| {
@@ -49,20 +75,20 @@ impl Render for LabelStory {
                         }))
                     }
 
-                    Label::new("500 USD").text_xl().masked(self.masked)
+                    Text::new("500 USD").text_xl().masked(self.masked)
                 }
                 .w_full()
-                .gap_4()
+                .gap_2()
             }
         }
         .size_full()
         .bg(rgb(0xffffff))
-        .gap_6()
+        .gap_1()
     }
 }
 
 fn main() {
-    Application::new().run(|cx: &mut App| {
+    Application::new().with_assets(Assets).run(|cx: &mut App| {
         let bounds = Bounds::centered(None, size(px(1024.), px(700.0)), cx);
         cx.open_window(
             WindowOptions {

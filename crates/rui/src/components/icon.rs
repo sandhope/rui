@@ -38,6 +38,103 @@ impl IconSize {
     }
 }
 
+/// The source of an icon.
+enum IconSource {
+    /// An SVG embedded in the Zed binary.
+    Svg(SharedString),
+    /// An image file located at the specified path.
+    ///
+    /// Currently our SVG renderer is missing support for the following features:
+    /// 1. Loading SVGs from external files.
+    /// 2. Rendering polychrome SVGs.
+    ///
+    /// In order to support icon themes, we render the icons as images instead.
+    Image(Arc<Path>),
+}
+
+impl IconSource {
+    fn from_path(path: impl Into<SharedString>) -> Self {
+        let path = path.into();
+        if path.starts_with("icons/file_icons") {
+            Self::Svg(path)
+        } else {
+            Self::Image(Arc::from(PathBuf::from(path.as_ref())))
+        }
+    }
+}
+
+#[derive(IntoElement)]
+pub struct Icon {
+    source: IconSource,
+    color: Hsla,
+    size: Rems,
+    transformation: Transformation,
+}
+
+impl Icon {
+    pub fn new(icon: IconName) -> Self {
+        Self {
+            source: IconSource::Svg(icon.path().into()),
+            color: gpui::black(),
+            size: IconSize::default().rems(),
+            transformation: Transformation::default(),
+        }
+    }
+
+    pub fn from_path(path: impl Into<SharedString>) -> Self {
+        Self {
+            source: IconSource::from_path(path),
+            color: gpui::black(),
+            size: IconSize::default().rems(),
+            transformation: Transformation::default(),
+        }
+    }
+
+    pub fn color(mut self, color: impl Into<Hsla>) -> Self {
+        self.color = color.into();
+        self
+    }
+
+    pub fn size(mut self, size: IconSize) -> Self {
+        self.size = size.rems();
+        self
+    }
+
+    /// Sets a custom size for the icon, in [`Rems`].
+    ///
+    /// Not to be exposed outside of the `ui` crate.
+    // pub(crate) fn custom_size(mut self, size: Rems) -> Self {
+    //     self.size = size;
+    //     self
+    // }
+
+    pub fn transform(mut self, transformation: Transformation) -> Self {
+        self.transformation = transformation;
+        self
+    }
+}
+
+impl RenderOnce for Icon {
+    fn render(self, _: &mut Window, _cx: &mut App) -> impl IntoElement {
+        match self.source {
+            IconSource::Svg(path) => svg()
+                .with_transformation(self.transformation)
+                .size(self.size)
+                .flex_none()
+                .path(path)
+                .text_color(self.color)
+                .bg(gpui::black().opacity(0.5))
+                .into_any_element(),
+            IconSource::Image(path) => img(path)
+                .size(self.size)
+                .flex_none()
+                .text_color(self.color)
+                .bg(gpui::red().opacity(0.5))
+                .into_any_element(),
+        }
+    }
+}
+
 #[derive(Debug, Copy, Clone, EnumIter, EnumString, IntoStaticStr, DerivePathStr)]
 #[strum(serialize_all = "snake_case")]
 #[path_str(prefix = "icons", suffix = ".svg")]
@@ -248,100 +345,5 @@ pub enum IconName {
 impl From<IconName> for Icon {
     fn from(icon: IconName) -> Self {
         Icon::new(icon)
-    }
-}
-
-/// The source of an icon.
-enum IconSource {
-    /// An SVG embedded in the Zed binary.
-    Svg(SharedString),
-    /// An image file located at the specified path.
-    ///
-    /// Currently our SVG renderer is missing support for the following features:
-    /// 1. Loading SVGs from external files.
-    /// 2. Rendering polychrome SVGs.
-    ///
-    /// In order to support icon themes, we render the icons as images instead.
-    Image(Arc<Path>),
-}
-
-impl IconSource {
-    fn from_path(path: impl Into<SharedString>) -> Self {
-        let path = path.into();
-        if path.starts_with("icons/file_icons") {
-            Self::Svg(path)
-        } else {
-            Self::Image(Arc::from(PathBuf::from(path.as_ref())))
-        }
-    }
-}
-
-#[derive(IntoElement)]
-pub struct Icon {
-    source: IconSource,
-    color: Hsla,
-    size: Rems,
-    transformation: Transformation,
-}
-
-impl Icon {
-    pub fn new(icon: IconName) -> Self {
-        Self {
-            source: IconSource::Svg(icon.path().into()),
-            color: gpui::black(),
-            size: IconSize::default().rems(),
-            transformation: Transformation::default(),
-        }
-    }
-
-    pub fn from_path(path: impl Into<SharedString>) -> Self {
-        Self {
-            source: IconSource::from_path(path),
-            color: gpui::black(),
-            size: IconSize::default().rems(),
-            transformation: Transformation::default(),
-        }
-    }
-
-    pub fn color(mut self, color: impl Into<Hsla>) -> Self {
-        self.color = color.into();
-        self
-    }
-
-    pub fn size(mut self, size: IconSize) -> Self {
-        self.size = size.rems();
-        self
-    }
-
-    /// Sets a custom size for the icon, in [`Rems`].
-    ///
-    /// Not to be exposed outside of the `ui` crate.
-    // pub(crate) fn custom_size(mut self, size: Rems) -> Self {
-    //     self.size = size;
-    //     self
-    // }
-
-    pub fn transform(mut self, transformation: Transformation) -> Self {
-        self.transformation = transformation;
-        self
-    }
-}
-
-impl RenderOnce for Icon {
-    fn render(self, _: &mut Window, _cx: &mut App) -> impl IntoElement {
-        match self.source {
-            IconSource::Svg(path) => svg()
-                .with_transformation(self.transformation)
-                .size(self.size)
-                .flex_none()
-                .path(path)
-                .text_color(self.color)
-                .into_any_element(),
-            IconSource::Image(path) => img(path)
-                .size(self.size)
-                .flex_none()
-                .text_color(self.color)
-                .into_any_element(),
-        }
     }
 }

@@ -31,7 +31,7 @@ impl Render for RadioStory {
             Section! {
                 "Radio Group Vertical";
                 RadioGroup::new()
-                    .direction(gpui::Axis::Vertical)
+                    .direction_vertical()
                     .disabled(self.disabled)
                     .child(Radio::new("one1").text("one1"))
                     .child(Radio::new("one2").text("one2"))

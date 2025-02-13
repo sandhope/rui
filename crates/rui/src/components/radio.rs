@@ -1,9 +1,9 @@
 #![allow(missing_docs)]
 
-use gpui::Axis;
 use std::sync::Arc;
 
 use crate::prelude::*;
+use crate::Direction;
 use crate::Text;
 
 #[derive(IntoElement)]
@@ -119,7 +119,7 @@ impl From<String> for Radio {
 #[derive(IntoElement)]
 pub struct RadioGroup {
     radios: Vec<Radio>,
-    direction: Axis,
+    direction: Direction,
     selected_index: Option<usize>,
     disabled: bool,
     on_change: Option<Arc<dyn Fn(&usize, &mut Window, &mut App) + 'static>>,
@@ -129,16 +129,30 @@ impl RadioGroup {
     pub fn new() -> Self {
         Self {
             on_change: None,
-            direction: Axis::Horizontal,
+            direction: Direction::Horizontal,
             selected_index: None,
             disabled: false,
             radios: vec![],
         }
     }
 
-    /// Set the direction of the Radio group. Default is `Axis::Horizontal`.
-    pub fn direction(mut self, direction: Axis) -> Self {
+    /// Set the direction of the Radio group. Default is `Direction::Horizontal`.
+    pub fn direction(mut self, direction: Direction) -> Self {
         self.direction = direction;
+        self
+    }
+
+    /// Sets the direction of the Radio group to vertical.
+    /// This is a convenience method for setting the direction to vertical without passing an argument.
+    pub fn direction_vertical(mut self) -> Self {
+        self.direction = Direction::Vertical;
+        self
+    }
+
+    /// Sets the direction of the Radio group to horizontal.
+    /// This is a convenience method for setting the direction to horizontal without passing an argument.
+    pub fn direction_horizontal(mut self) -> Self {
+        self.direction = Direction::Horizontal;
         self
     }
 
@@ -179,7 +193,7 @@ impl RenderOnce for RadioGroup {
         let disabled = self.disabled;
         let selected_index = self.selected_index;
 
-        let base = if self.direction == Axis::Vertical {
+        let base = if self.direction == Direction::Vertical {
             v_flex()
         } else {
             h_flex().flex_wrap()

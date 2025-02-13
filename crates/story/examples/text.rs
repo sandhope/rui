@@ -35,7 +35,7 @@ impl Render for TextStory {
 
 
             Section! {
-                "Maksed Label";
+                "Maksed Text";
                 Col! {
                     Row!{
                         Text::new("9,182,1 USD").text_2xl().masked(self.masked)
