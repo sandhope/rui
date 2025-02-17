@@ -1,4 +1,4 @@
-use gpui::Rgba;
+use gpui::{hsla, point, BoxShadow, Hsla, Pixels, Rgba};
 
 /// Create an RGBA color from RGB components.
 ///
@@ -48,5 +48,53 @@ pub fn rgba(r: u8, g: u8, b: u8, a: f32) -> Rgba {
         g: (g as f32 / 255.),
         b: (b as f32 / 255.),
         a,
+    }
+}
+
+/// Make a [gpui::Hsla] color.
+///
+/// - h: 0..360.0
+/// - s: 0.0..100.0
+/// - l: 0.0..100.0
+pub fn hsl(h: f32, s: f32, l: f32) -> Hsla {
+    hsla(h / 360., s / 100.0, l / 100.0, 1.0)
+}
+
+/// Make a BoxShadow like CSS
+///
+/// e.g:
+///
+/// If CSS is `box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);`
+///
+/// Then the equivalent in Rust is
+/// - `box_shadow(0., 0., 10., 0., rui::rgba(0, 0, 0, 0.1))`
+/// - `box_shadow(0., 0., 10., 0., rui::rgba(0., 0., 0., 0.1))`
+/// - `box_shadow(0., 0., 10., 0., gpui::hsla(0., 0., 0., 0.1))`
+pub fn box_shadow(
+    x: impl Into<Pixels>,
+    y: impl Into<Pixels>,
+    blur: impl Into<Pixels>,
+    spread: impl Into<Pixels>,
+    color: impl Into<Hsla>,
+) -> BoxShadow {
+    BoxShadow {
+        offset: point(x.into(), y.into()),
+        blur_radius: blur.into(),
+        spread_radius: spread.into(),
+        color: color.into(),
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_color() {
+        let color: Hsla = rgb(84, 169, 255).into();
+        println!(
+            "hsla({:.2}, {:.2}, {:.2}, {:.2})",
+            color.h, color.l, color.s, color.a
+        );
     }
 }

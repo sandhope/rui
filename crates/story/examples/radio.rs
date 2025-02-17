@@ -54,6 +54,7 @@ impl Render for RadioStory {
 
 fn main() {
     Application::new().run(|cx: &mut App| {
+        rui::init(cx);
         let bounds = Bounds::centered(None, size(px(1024.), px(700.0)), cx);
         cx.open_window(
             WindowOptions {

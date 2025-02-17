@@ -48,7 +48,7 @@ impl Radio {
 }
 
 impl RenderOnce for Radio {
-    fn render(self, _window: &mut Window, _cx: &mut App) -> impl IntoElement {
+    fn render(self, _window: &mut Window, cx: &mut App) -> impl IntoElement {
         let inner_diameter = rems_from_px(6.);
         let outer_diameter = rems_from_px(16.);
         let border_width = rems_from_px(1.);
@@ -62,17 +62,17 @@ impl RenderOnce for Radio {
                 div()
                     .size(outer_diameter)
                     .rounded(outer_diameter / 2.)
-                    .border_color(gpui::black())
+                    .border_color(cx.theme().border)
                     .border(border_width)
                     // .when(self.disabled, |el| el.opacity(0.5))
                     // .when(!self.disabled, |el| {
-                    //     el.group_hover("", |el| el.border_color(gpui::blue()))
+                    //     el.group_hover("", |el| el.border_color(cx.theme().element_hover))
                     // })
                     .map(|el| {
                         if self.disabled {
                             el.opacity(0.5)
                         } else {
-                            el.group_hover("", |el| el.border_color(gpui::blue()))
+                            el.group_hover("", |el| el.border_color(cx.theme().element_hover))
                         }
                     })
                     .when(self.checked, |el| {
@@ -81,7 +81,7 @@ impl RenderOnce for Radio {
                                 .m((outer_diameter - inner_diameter) / 2. - border_width)
                                 .size(inner_diameter)
                                 .rounded(inner_diameter / 2.)
-                                .bg(gpui::blue()),
+                                .bg(cx.theme().icon_accent),
                         )
                     }),
             )
