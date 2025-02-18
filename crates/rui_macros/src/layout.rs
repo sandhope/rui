@@ -92,8 +92,7 @@ pub fn section(input: TokenStream) -> TokenStream {
 
     let expanded = quote! {
         {
-            div().flex().flex_col().p_4().m_4()
-                .rounded_md().border_1().border_color(gpui::black())
+            Card::new()
                 .child(div().flex_none().w_full().child(#title))
             #(#output)*
         }

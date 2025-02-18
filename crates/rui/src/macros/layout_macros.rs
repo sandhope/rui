@@ -75,7 +75,6 @@ macro_rules! Row {
 macro_rules! Section {
     { $title:expr; $( $child:expr )* } => {
         {
-            use rui::Card;
             Card::new()
                 .child(div().flex_none().w_full().child(Text::new($title)))
             $(
