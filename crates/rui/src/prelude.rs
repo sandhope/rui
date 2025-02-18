@@ -7,4 +7,5 @@ pub use gpui::{
 pub use crate::styles::{rems_from_px, vh, vw, PlatformStyle};
 pub use crate::traits::styled_ext::*;
 pub use crate::ActiveTheme;
+pub use crate::Card;
 pub use crate::{h_flex, v_flex};

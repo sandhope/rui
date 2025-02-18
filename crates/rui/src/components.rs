@@ -1,4 +1,5 @@
 mod button;
+mod card;
 mod icon;
 mod label;
 mod radio;
@@ -7,6 +8,7 @@ mod stack;
 mod text;
 
 pub use button::*;
+pub use card::*;
 pub use icon::*;
 pub use label::*;
 pub use radio::*;

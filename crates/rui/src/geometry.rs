@@ -12,6 +12,12 @@ pub enum Direction {
     Horizontal,
 }
 
+impl Direction {
+    pub fn is_vertical(self) -> bool {
+        self == Self::Vertical
+    }
+}
+
 /// Represents the position relative to a reference point,
 /// such as in a graphical layout or user interface.
 /// This enum defines four cardinal positions:
