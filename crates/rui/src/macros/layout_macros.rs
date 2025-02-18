@@ -68,13 +68,13 @@ macro_rules! Row {
 /// ```
 #[macro_export]
 macro_rules! Section {
-    { $title:expr; $( $label:expr )* } => {
+    { $title:expr; $( $child:expr )* } => {
         {
             let mut section = div().flex().flex_col().p_4().m_4()
                 .rounded_md().border_1().border_color(gpui::black())
                 .child(div().flex_none().w_full().child($title));
             $(
-                section = section.child($label);
+                section = section.child($child);
             )*
             section
         }
