@@ -3,27 +3,31 @@ use gpui::{px, size, Application, Bounds, Context, WindowBounds, WindowOptions};
 use rui::{prelude::*, Col, Radio, RadioGroup, Section, Text};
 
 struct RadioStory {
-    disabled: bool,
+    enabled: bool,
     selected_index: Option<usize>,
 }
 
 impl Render for RadioStory {
     fn render(&mut self, _window: &mut Window, cx: &mut Context<Self>) -> impl IntoElement {
         Col! {
-            Radio::new("radio")
-            .text("disabled") // or .text(Text::new("disabled"))
-            .checked(self.disabled)
-            .on_click(cx.listener(|this, val, _window, _app| {
-                // this.checked = !this.checked
-                this.disabled = *val
-            }))
-
             Radio::new("appearance, to do: change to switch")
             .text(cx.theme().appearance.to_string())
             .checked(cx.theme().appearance.is_light())
             .on_click(cx.listener(|_, _, window, cx| {
                 cx.theme_mut().toggle_appearance(window);
                 println!("{:?}", cx.theme().appearance);
+            }))
+
+            Radio::new("radio")
+            .text(if self.enabled {
+                "enabled"
+            } else {
+                "disabled"
+            })
+            .checked(self.enabled)
+            .on_click(cx.listener(|this, val, _window, _app| {
+                // this.checked = !this.checked
+                this.enabled = *val
             }))
 
             Section! {
@@ -40,7 +44,7 @@ impl Render for RadioStory {
                 "Radio Group Vertical";
                 RadioGroup::new()
                     .direction_vertical()
-                    .disabled(self.disabled)
+                    .disabled(!self.enabled)
                     .child(Radio::new("one1").text("one1"))
                     .child(Radio::new("one2").text("one2"))
                     .child(Radio::new("one3").text(Text::new("one3")))
@@ -70,7 +74,7 @@ fn main() {
             },
             |_, cx| {
                 cx.new(|_| RadioStory {
-                    disabled: true,
+                    enabled: false,
                     selected_index: None,
                 })
             },

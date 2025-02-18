@@ -1,30 +1,32 @@
 use gpui::{px, size, Application, Bounds, Context, WindowBounds, WindowOptions};
 
-use rui::{prelude::*, Col, Radio, RadioGroup, Section, Text};
+use rui::{prelude::*, Assets, Col, IconName, Label, Radio, RadioGroup, Row, Section, Text};
 
 struct RadioStory {
-    disabled: bool,
+    enabled: bool,
     selected_index: Option<usize>,
 }
 
 impl Render for RadioStory {
     fn render(&mut self, _window: &mut Window, cx: &mut Context<Self>) -> impl IntoElement {
         Col! {
-            Radio::new("radio")
-            .text("disabled")
-            .checked(self.disabled)
-            .on_click(cx.listener(|this, val, _window, _app| {
-                // this.checked = !this.checked
-                this.disabled = *val
-            }))
+            Row! {
+                Text::new("Appearance: ")
+                Radio::new("appearance, to do: change to switch")
+                .text(cx.theme().appearance.to_string())
+                .checked(cx.theme().appearance.is_light())
+                .on_click(cx.listener(|_, _, window, cx| {
+                    cx.theme_mut().toggle_appearance(window);
+                    println!("{:?}", cx.theme().appearance);
+                }))
+            }
+            .gap_4()
 
-            Radio::new("appearance, to do: change to switch")
-            .text(cx.theme().appearance.to_string())
-            .checked(cx.theme().appearance.is_light())
-            .on_click(cx.listener(|_, _, window, cx| {
-                cx.theme_mut().toggle_appearance(window);
-                println!("{:?}", cx.theme().appearance);
-            }))
+            Row! {
+               Text::new("label with theme")
+                Label::new(IconName::AiZed, "label")
+            }
+            .gap_4()
 
             Section! {
                 "Radio Group";
@@ -35,12 +37,29 @@ impl Render for RadioStory {
                         this.selected_index = Some(*selected_index);
                     }))
             }
+            .gap_4()
+
+            Row! {
+                Text::new("RadioGroup disabled contol (Vertical)")
+                Radio::new("radio")
+                .text(if self.enabled {
+                    "enabled"
+                } else {
+                    "disabled"
+                })
+                .checked(self.enabled)
+                .on_click(cx.listener(|this, val, _window, _app| {
+                    // this.checked = !this.checked
+                    this.enabled = *val
+                }))
+            }
+            .gap_4()
 
             Section! {
                 "Radio Group Vertical";
                 RadioGroup::new()
                     .direction_vertical()
-                    .disabled(self.disabled)
+                    .disabled(!self.enabled)
                     .child(Radio::new("one1").text("one1"))
                     .child(Radio::new("one2").text("one2"))
                     .child(Radio::new("one3").text(Text::new("one3")))
@@ -60,7 +79,7 @@ impl Render for RadioStory {
 }
 
 fn main() {
-    Application::new().run(|cx: &mut App| {
+    Application::new().with_assets(Assets).run(|cx: &mut App| {
         rui::init(cx);
         let bounds = Bounds::centered(None, size(px(1024.), px(700.0)), cx);
         cx.open_window(
@@ -70,7 +89,7 @@ fn main() {
             },
             |_, cx| {
                 cx.new(|_| RadioStory {
-                    disabled: true,
+                    enabled: false,
                     selected_index: None,
                 })
             },

@@ -75,9 +75,9 @@ macro_rules! Row {
 macro_rules! Section {
     { $title:expr; $( $child:expr )* } => {
         {
-            div().flex().flex_col().p_4().m_4()
-                .rounded_md().border_1().border_color(gpui::black())
-                .child(div().flex_none().w_full().child($title))
+            use rui::Card;
+            Card::new()
+                .child(div().flex_none().w_full().child(Text::new($title)))
             $(
                 .child($child)
             )*
