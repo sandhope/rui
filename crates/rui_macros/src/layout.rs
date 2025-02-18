@@ -30,15 +30,14 @@ pub fn col(input: TokenStream) -> TokenStream {
 
     let output = exprs.iter().map(|expr| {
         quote! {
-            col = col.child(#expr);
+            .child(#expr)
         }
     });
 
     let expanded = quote! {
         {
-            let mut col = div().flex().flex_col();
+            div().flex().flex_col()
             #(#output)*
-            col
         }
     };
 
@@ -51,15 +50,14 @@ pub fn row(input: TokenStream) -> TokenStream {
 
     let output = exprs.iter().map(|expr| {
         quote! {
-            row = row.child(#expr);
+            .child(#expr)
         }
     });
 
     let expanded = quote! {
         {
-            let mut row = div().flex().flex_row();
+            div().flex().flex_row()
             #(#output)*
-            row
         }
     };
 
@@ -88,17 +86,16 @@ pub fn section(input: TokenStream) -> TokenStream {
 
     let output = children.iter().map(|child| {
         quote! {
-            section = section.child(#child);
+            .child(#child)
         }
     });
 
     let expanded = quote! {
         {
-            let mut section = div().flex().flex_col().p_4().m_4()
+            div().flex().flex_col().p_4().m_4()
                 .rounded_md().border_1().border_color(gpui::black())
-                .child(div().flex_none().w_full().child(#title));
+                .child(div().flex_none().w_full().child(#title))
             #(#output)*
-            section
         }
     };
 

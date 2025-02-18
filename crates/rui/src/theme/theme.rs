@@ -48,8 +48,6 @@ impl Theme {
 
     /// Sync the theme with the system appearance
     fn sync_system_appearance(cx: &mut App) {
-        Theme::sync_scrollbar_appearance(cx);
-
         let appearance = Appearance::from(cx.window_appearance());
 
         if !cx.has_global::<Theme>() {

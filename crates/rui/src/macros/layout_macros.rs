@@ -15,11 +15,10 @@
 macro_rules! Col {
     { $( $child:expr )* } => {
         {
-            let mut col = div().flex().flex_col();
+            div().flex().flex_col()
             $(
-                col = col.child($child);
+                .child($child)
             )*
-            col
         }
     };
 }
@@ -41,13 +40,19 @@ macro_rules! Col {
 macro_rules! Row {
     { $( $child:expr )* } => {
         {
-            let mut row = div().flex().flex_row();
             // All elements must be of the same type
-            // row = row.children(vec![$($child),*]);
+            // div().flex().flex_row().children(vec![$($child),*])
+
+            // let mut row = div().flex().flex_row();
+            // $(
+            //     row = row.child($child);
+            // )*
+            // row
+
+            div().flex().flex_row()
             $(
-                row = row.child($child);
+                .child($child)
             )*
-            row
         }
     };
 }
@@ -70,13 +75,12 @@ macro_rules! Row {
 macro_rules! Section {
     { $title:expr; $( $child:expr )* } => {
         {
-            let mut section = div().flex().flex_col().p_4().m_4()
+            div().flex().flex_col().p_4().m_4()
                 .rounded_md().border_1().border_color(gpui::black())
-                .child(div().flex_none().w_full().child($title));
+                .child(div().flex_none().w_full().child($title))
             $(
-                section = section.child($child);
+                .child($child)
             )*
-            section
         }
     };
 }
