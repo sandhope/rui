@@ -62,7 +62,7 @@ impl RenderOnce for Radio {
                 div()
                     .size(outer_diameter)
                     .rounded(outer_diameter / 2.)
-                    .border_color(cx.theme().border)
+                    .border_color(cx.theme().colors.border)
                     .border(border_width)
                     // .when(self.disabled, |el| el.opacity(0.5))
                     // .when(!self.disabled, |el| {
@@ -72,7 +72,9 @@ impl RenderOnce for Radio {
                         if self.disabled {
                             el.opacity(0.5)
                         } else {
-                            el.group_hover("", |el| el.border_color(cx.theme().element_hover))
+                            el.group_hover("", |el| {
+                                el.border_color(cx.theme().colors.element_hover)
+                            })
                         }
                     })
                     .when(self.checked, |el| {
@@ -81,7 +83,7 @@ impl RenderOnce for Radio {
                                 .m((outer_diameter - inner_diameter) / 2. - border_width)
                                 .size(inner_diameter)
                                 .rounded(inner_diameter / 2.)
-                                .bg(cx.theme().icon_accent),
+                                .bg(cx.theme().colors.icon_accent),
                         )
                     }),
             )

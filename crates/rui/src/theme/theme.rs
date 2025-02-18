@@ -1,4 +1,4 @@
-use std::ops::{Deref, DerefMut};
+// use std::ops::{Deref, DerefMut};
 
 use gpui::{px, App, Global, Hsla, Pixels, SharedString, Window};
 
@@ -13,17 +13,24 @@ pub fn init(cx: &mut App) {
 
 pub trait ActiveTheme {
     fn theme(&self) -> &Theme;
+    fn theme_mut(&mut self) -> &mut Theme;
 }
 
 impl ActiveTheme for App {
     fn theme(&self) -> &Theme {
-        Theme::global(self)
+        //Theme::global(self)
+        self.global::<Theme>()
+    }
+
+    fn theme_mut(&mut self) -> &mut Theme {
+        //Theme::global_mut(self)
+        self.global_mut::<Theme>()
     }
 }
 
 #[derive(Debug, Clone)]
 pub struct Theme {
-    colors: ThemeColor,
+    pub colors: ThemeColor,
 
     pub appearance: Appearance,
     pub font_family: SharedString,
@@ -39,19 +46,41 @@ pub struct Theme {
     pub tile_shadow: bool,
 }
 
-impl Deref for Theme {
-    type Target = ThemeColor;
+impl Theme {
+    pub fn toggle_appearance(&mut self, window: &mut Window) {
+        self.appearance.toggle();
+        self.colors = self.appearance.into();
+        window.refresh();
+    }
 
-    fn deref(&self) -> &Self::Target {
-        &self.colors
+    pub fn set_appearance(&mut self, appearance: Appearance, window: &mut Window) {
+        self.appearance = appearance;
+        self.colors = ThemeColor::from(appearance);
+        window.refresh();
+    }
+
+    pub fn set_appearance_light(&mut self, window: &mut Window) {
+        self.set_appearance(Appearance::Light, window);
+    }
+
+    pub fn set_appearance_dark(&mut self, window: &mut Window) {
+        self.set_appearance(Appearance::Dark, window);
     }
 }
 
-impl DerefMut for Theme {
-    fn deref_mut(&mut self) -> &mut Self::Target {
-        &mut self.colors
-    }
-}
+// impl Deref for Theme {
+//     type Target = ThemeColor;
+
+//     fn deref(&self) -> &Self::Target {
+//         &self.colors
+//     }
+// }
+
+// impl DerefMut for Theme {
+//     fn deref_mut(&mut self) -> &mut Self::Target {
+//         &mut self.colors
+//     }
+// }
 
 impl Global for Theme {}
 
@@ -68,7 +97,21 @@ impl Theme {
 
     /// Sync the theme with the system appearance
     pub fn sync_system_appearance(window: Option<&mut Window>, cx: &mut App) {
-        Self::set_appearance(cx.window_appearance().into(), window, cx)
+        let appearance = Appearance::from(cx.window_appearance());
+
+        if !cx.has_global::<Theme>() {
+            let theme = Theme::from(appearance);
+            cx.set_global(theme);
+        }
+
+        let theme = cx.global_mut::<Theme>();
+
+        theme.appearance = appearance;
+        theme.colors = appearance.into();
+
+        if let Some(window) = window {
+            window.refresh();
+        }
     }
 
     /// Sync the Scrollbar showing behavior with the system
@@ -79,33 +122,12 @@ impl Theme {
             cx.global_mut::<Theme>().scrollbar_show = ScrollbarShow::Always;
         }
     }
-
-    pub fn set_appearance(appearance: Appearance, window: Option<&mut Window>, cx: &mut App) {
-        let colors = match appearance {
-            Appearance::Light => ThemeColor::light(),
-            Appearance::Dark => ThemeColor::dark(),
-        };
-
-        if !cx.has_global::<Theme>() {
-            let theme = Theme::from(colors);
-            cx.set_global(theme);
-        }
-
-        let theme = cx.global_mut::<Theme>();
-
-        theme.appearance = appearance;
-        theme.colors = colors;
-
-        if let Some(window) = window {
-            window.refresh();
-        }
-    }
 }
 
-impl From<ThemeColor> for Theme {
-    fn from(colors: ThemeColor) -> Self {
+impl From<Appearance> for Theme {
+    fn from(appearance: Appearance) -> Self {
         Theme {
-            appearance: Appearance::Light,
+            appearance,
             transparent: Hsla::transparent_black(),
             font_size: px(16.),
             font_family: ".SystemUIFont".into(),
@@ -114,7 +136,7 @@ impl From<ThemeColor> for Theme {
             scrollbar_show: ScrollbarShow::default(),
             tile_grid_size: px(8.),
             tile_shadow: true,
-            colors,
+            colors: appearance.into(),
         }
     }
 }

@@ -31,15 +31,16 @@ impl Styled for Text {
 }
 
 impl RenderOnce for Text {
-    fn render(self, _window: &mut Window, _cx: &mut App) -> impl IntoElement {
-        // theme
-        // self.base.text_color(cx.theme().foreground)
-        let text_display = if self.marked {
-            MASKED.repeat(self.text.chars().count())
+    fn render(self, _window: &mut Window, cx: &mut App) -> impl IntoElement {
+        let text = if self.marked {
+            SharedString::from(MASKED.repeat(self.text.chars().count()))
         } else {
-            self.text.to_string()
+            self.text
         };
-        self.base.child(text_display)
+
+        div()
+            .text_color(cx.theme().colors.text)
+            .child(self.base.child(text))
     }
 }
 

@@ -2,6 +2,8 @@ use gpui::Hsla;
 
 use crate::hsl;
 
+use super::Appearance;
+
 #[derive(Debug, Clone, Copy, Default)]
 pub struct ThemeColor {
     pub primary: Hsla,
@@ -15,6 +17,8 @@ pub struct ThemeColor {
     ///
     /// Hover states are triggered by the mouse entering an element, or a finger touching an element on a touch screen.
     pub element_hover: Hsla,
+
+    pub text: Hsla,
 }
 
 /// The default colors for the theme.
@@ -25,6 +29,7 @@ impl ThemeColor {
             border: hsl(210., 1., 67.),
             icon_accent: hsl(216., 100., 49.),
             element_hover: hsl(216., 100., 49.),
+            text: hsl(214., 11., 12.),
         }
     }
 
@@ -34,6 +39,16 @@ impl ThemeColor {
             border: hsl(0., 0., 98.),
             icon_accent: hsl(210., 100., 66.),
             element_hover: hsl(210., 100., 66.),
+            text: hsl(0., 0., 98.),
+        }
+    }
+}
+
+impl From<Appearance> for ThemeColor {
+    fn from(appearance: Appearance) -> Self {
+        match appearance {
+            Appearance::Light => ThemeColor::light(),
+            Appearance::Dark => ThemeColor::dark(),
         }
     }
 }

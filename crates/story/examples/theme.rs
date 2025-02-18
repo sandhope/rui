@@ -11,7 +11,7 @@ impl Render for RadioStory {
     fn render(&mut self, _window: &mut Window, cx: &mut Context<Self>) -> impl IntoElement {
         Col! {
             Radio::new("radio")
-            .text("disabled") // or .text(Text::new("disabled"))
+            .text("disabled")
             .checked(self.disabled)
             .on_click(cx.listener(|this, val, _window, _app| {
                 // this.checked = !this.checked

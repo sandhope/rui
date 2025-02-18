@@ -1,4 +1,4 @@
-use gpui::WindowAppearance;
+use gpui::{Hsla, WindowAppearance};
 
 /// The appearance of the theme.
 #[derive(Debug, PartialEq, Clone, Copy)]
@@ -15,6 +15,29 @@ impl Appearance {
         match self {
             Self::Light => true,
             Self::Dark => false,
+        }
+    }
+
+    /// Converts the Appearance to its string representation.
+    pub fn to_string(&self) -> &'static str {
+        match self {
+            Self::Light => "Light",
+            Self::Dark => "Dark",
+        }
+    }
+
+    /// Toggles the appearance between Light and Dark.
+    pub fn toggle(&mut self) {
+        *self = match *self {
+            Self::Light => Self::Dark,
+            Self::Dark => Self::Light,
+        };
+    }
+
+    pub fn bg_color(&self) -> Hsla {
+        match self {
+            Self::Light => gpui::white(),
+            Self::Dark => gpui::black(),
         }
     }
 }
