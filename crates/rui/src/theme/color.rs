@@ -1,4 +1,4 @@
-use gpui::Hsla;
+use gpui::{hsla, Hsla};
 
 use crate::hsl;
 
@@ -19,6 +19,7 @@ pub struct ThemeColor {
     pub element_hover: Hsla,
 
     pub text: Hsla,
+    pub bg: Hsla,
 }
 
 /// The default colors for the theme.
@@ -30,6 +31,7 @@ impl ThemeColor {
             icon_accent: hsl(216., 100., 49.),
             element_hover: hsl(216., 100., 49.),
             text: hsl(214., 11., 12.),
+            bg: hsla(0., 0., 0., 1.),
         }
     }
 
@@ -40,6 +42,7 @@ impl ThemeColor {
             icon_accent: hsl(210., 100., 66.),
             element_hover: hsl(210., 100., 66.),
             text: hsl(0., 0., 98.),
+            bg: hsla(0., 0., 0., 1.),
         }
     }
 }
