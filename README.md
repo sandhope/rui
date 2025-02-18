@@ -11,23 +11,27 @@ Here are some of the components currently available:
 - **Layout Components:**
   - **`Col`**: A column layout for arranging child components vertically.
   - **`Row`**: A row layout for arranging child components horizontally.
+  - **`Root`**: A macro to create a root layout with multiple children.
+  - **`Section`**: A macro to create a section layout with a title and multiple children.
+
+- **Display Components:**
+  - **`Icon`**: A vector graphic component.
+  - **`Text`**: A component for displaying text.
+  - **`Label`**: A component that combines `Text` and an `Icon`.
+  - **`Card`**: A bordered card component.
 
 - **Interactive Components:**
-  - **`Button`**: A clickable button component.
+  - **`Button`**: A clickable button component. __todo__
   - **`Input`**: A component for user input. __todo__
   - **`Switch`**: A toggle switch component. __todo__
-  - **`Radio`**: A radio button component for selecting one option from a group. __todo__
+  - **`Radio`**: A component for toggling between selected and unselected states.
+  - **`RadioGroup`**: A set of radio buttons allowing only one to be selected at a time.
   - **`Checkbox`**: A checkbox component for selecting multiple options. __todo__
   - **`Link`**: A hyperlink component for navigation. __todo__
   - **`Slider`**: A component for selecting a value from a range. __todo__
 
 - **Navigation Components:**
   - **`Menu`**: A component for creating navigation menus. __todo__
-
-- **Display Components:**
-  - **`Icon`**: A component for graphical representations.  __todo__
-  - **`Text`**: A component for displaying text in various styles.  __todo__
-  - **`Label`**: A component that combines `Text` and an `Icon` for enhanced labeling.  __todo__
 
 > _More components are actively under development and will be added soon!_
 
