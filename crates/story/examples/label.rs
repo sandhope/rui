@@ -1,8 +1,8 @@
-use gpui::{
-    px, rems, rgb, size, Application, Bounds, Context, FontWeight, WindowBounds, WindowOptions,
-};
+use gpui::{px, rems, size, Application, Bounds, Context, FontWeight, WindowBounds, WindowOptions};
 
-use rui::{prelude::*, Assets, Button, Col, Icon, IconName, IconSize, Label, Row, Section, Text};
+use rui::{
+    prelude::*, Assets, Button, Col, Icon, IconName, IconSize, Label, Root, Row, Section, Text,
+};
 
 struct LabelStory {
     masked: bool,
@@ -10,7 +10,7 @@ struct LabelStory {
 
 impl Render for LabelStory {
     fn render(&mut self, _window: &mut Window, cx: &mut Context<Self>) -> impl IntoElement {
-        Col! {
+        Root! {
             Section! {
                 "Label row";
                 Row!{
@@ -74,8 +74,6 @@ impl Render for LabelStory {
             }
         }
         .font_family(".SystemUIFont")
-        .size_full()
-        .bg(rgb(0xffffff))
         .gap_1()
     }
 }

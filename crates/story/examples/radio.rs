@@ -1,6 +1,6 @@
 use gpui::{px, size, Application, Bounds, Context, WindowBounds, WindowOptions};
 
-use rui::{prelude::*, Col, Radio, RadioGroup, Section, Text};
+use rui::{prelude::*, Radio, RadioGroup, Root, Section, Text};
 
 struct RadioStory {
     enabled: bool,
@@ -9,7 +9,7 @@ struct RadioStory {
 
 impl Render for RadioStory {
     fn render(&mut self, _window: &mut Window, cx: &mut Context<Self>) -> impl IntoElement {
-        Col! {
+        Root! {
             Radio::new("appearance, to do: change to switch")
             .text(cx.theme().appearance.to_string())
             .checked(cx.theme().appearance.is_light())
@@ -54,8 +54,6 @@ impl Render for RadioStory {
                     }))
             }
         }
-        .bg(cx.theme().appearance.bg_color())
-        .size_full()
         .justify_start()
         .items_start()
         .text_lg()

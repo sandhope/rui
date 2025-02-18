@@ -31,7 +31,7 @@ impl ThemeColor {
             icon_accent: hsl(216., 100., 49.),
             element_hover: hsl(216., 100., 49.),
             text: hsl(214., 11., 12.),
-            bg: hsla(0., 0., 0., 1.),
+            bg: hsla(0., 0., 1., 1.),
         }
     }
 

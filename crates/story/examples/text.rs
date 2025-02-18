@@ -1,8 +1,6 @@
-use gpui::{
-    px, rems, rgb, size, Application, Bounds, Context, FontWeight, WindowBounds, WindowOptions,
-};
+use gpui::{px, rems, size, Application, Bounds, Context, FontWeight, WindowBounds, WindowOptions};
 
-use rui::{prelude::*, Button, Col, Row, Section, Text};
+use rui::{prelude::*, Button, Col, Root, Row, Section, Text};
 
 struct TextStory {
     masked: bool,
@@ -10,7 +8,7 @@ struct TextStory {
 
 impl Render for TextStory {
     fn render(&mut self, _window: &mut Window, cx: &mut Context<Self>) -> impl IntoElement {
-        Col! {
+        Root! {
             Section! {
                 "label";
                 Row!{
@@ -33,7 +31,6 @@ impl Render for TextStory {
                 )
             }
 
-
             Section! {
                 "Maksed Text";
                 Col! {
@@ -52,10 +49,7 @@ impl Render for TextStory {
                 .gap_4()
             }
         }
-        .bg(gpui::white())
-        .size_full()
         .text_xl()
-        .text_color(rgb(0x000000))
     }
 }
 

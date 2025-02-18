@@ -1,6 +1,6 @@
 use gpui::{px, size, Application, Bounds, Context, WindowBounds, WindowOptions};
 
-use rui::{prelude::*, Assets, Col, IconName, Label, Radio, RadioGroup, Row, Section, Text};
+use rui::{prelude::*, Assets, IconName, Label, Radio, RadioGroup, Root, Row, Section, Text};
 
 struct RadioStory {
     enabled: bool,
@@ -9,9 +9,9 @@ struct RadioStory {
 
 impl Render for RadioStory {
     fn render(&mut self, _window: &mut Window, cx: &mut Context<Self>) -> impl IntoElement {
-        Col! {
+        Root! {
             Row! {
-                Text::new("Appearance: ")
+                Text::new("Appearance: ").w_1_4()
                 Radio::new("appearance, to do: change to switch")
                 .text(cx.theme().appearance.to_string())
                 .checked(cx.theme().appearance.is_light())
@@ -20,13 +20,13 @@ impl Render for RadioStory {
                     println!("{:?}", cx.theme().appearance);
                 }))
             }
-            .gap_4()
+            .w_full()
 
             Row! {
-               Text::new("label with theme")
+                Text::new("label with theme").w(relative(0.25))
                 Label::new(IconName::AiZed, "label")
             }
-            .gap_4()
+            .w_full()
 
             Section! {
                 "Radio Group";
@@ -40,7 +40,7 @@ impl Render for RadioStory {
             .gap_4()
 
             Row! {
-                Text::new("RadioGroup disabled contol (Vertical)")
+                Text::new("disable RadioGroup").w_1_4()
                 Radio::new("radio")
                 .text(if self.enabled {
                     "enabled"
@@ -53,7 +53,7 @@ impl Render for RadioStory {
                     this.enabled = *val
                 }))
             }
-            .gap_4()
+            .w_full()
 
             Section! {
                 "Radio Group Vertical";
@@ -69,8 +69,6 @@ impl Render for RadioStory {
                     }))
             }
         }
-        .bg(cx.theme().appearance.bg_color())
-        .size_full()
         .justify_start()
         .items_start()
         .text_lg()

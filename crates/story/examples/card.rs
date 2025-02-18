@@ -1,12 +1,12 @@
-use gpui::{px, rgb, size, Application, Bounds, Context, WindowBounds, WindowOptions};
+use gpui::{px, size, Application, Bounds, Context, WindowBounds, WindowOptions};
 
-use rui::{prelude::*, Col};
+use rui::{prelude::*, Root};
 
 struct CardStory;
 
 impl Render for CardStory {
-    fn render(&mut self, _window: &mut Window, cx: &mut Context<Self>) -> impl IntoElement {
-        Col! {
+    fn render(&mut self, _window: &mut Window, _cx: &mut Context<Self>) -> impl IntoElement {
+        Root! {
             Card::new()
                 .child("Vertical")
 
@@ -14,10 +14,6 @@ impl Render for CardStory {
                 .direction_horizontal()
                 .child("horizontal")
         }
-        .bg(cx.theme().appearance.bg_color())
-        .size_full()
-        .text_xl()
-        .text_color(rgb(0x000000))
     }
 }
 

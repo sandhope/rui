@@ -49,7 +49,32 @@ macro_rules! Row {
             // )*
             // row
 
-            div().flex().flex_row()
+            div().flex().flex_row().items_center()
+            $(
+                .child($child)
+            )*
+        }
+    };
+}
+
+/// A macro to create a root layout with multiple children.
+///
+/// This macro takes a list of expressions and adds them as children to a root layout.
+///
+/// # Example
+///
+/// ```rust
+/// Root! {
+///     child1
+///     child2
+///     child3
+/// }
+/// ```
+#[macro_export]
+macro_rules! Root {
+    { $( $child:expr )* } => {
+        {
+            RootView::new()
             $(
                 .child($child)
             )*

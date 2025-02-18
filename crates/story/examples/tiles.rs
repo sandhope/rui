@@ -1,6 +1,6 @@
 use gpui::{px, size, Application, Bounds, Context, WindowBounds, WindowOptions};
 
-use rui::{prelude::*, Button, Col, Row, Text};
+use rui::{prelude::*, Button, Root, Row, Text};
 
 struct Tiles {
     text: SharedString,
@@ -8,7 +8,7 @@ struct Tiles {
 
 impl Render for Tiles {
     fn render(&mut self, _window: &mut Window, _cx: &mut Context<Self>) -> impl IntoElement {
-        Col! {
+        Root! {
             Text::new(self.text.clone())
 
             Row!{
@@ -22,10 +22,7 @@ impl Render for Tiles {
                 println!("clicked");
             })
         }
-        .bg(gpui::white())
-        .size_full()
         .text_xl()
-        .text_color(gpui::black())
     }
 }
 

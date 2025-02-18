@@ -6,6 +6,7 @@ const MASKED: &'static str = "•";
 pub struct Text {
     base: Div,
     text: SharedString,
+    color: Option<Hsla>,
     marked: bool,
 }
 
@@ -14,12 +15,18 @@ impl Text {
         Self {
             base: div(),
             text: text.into(),
+            color: None,
             marked: false,
         }
     }
 
     pub fn masked(mut self, masked: bool) -> Self {
         self.marked = masked;
+        self
+    }
+
+    pub fn text_color(mut self, color: impl Into<Hsla>) -> Self {
+        self.color = Some(color.into());
         self
     }
 }
@@ -38,9 +45,9 @@ impl RenderOnce for Text {
             self.text
         };
 
-        div()
-            .text_color(cx.theme().colors.text)
-            .child(self.base.child(text))
+        let color = self.color.unwrap_or_else(|| cx.theme().colors.text);
+
+        self.base.text_color(color).child(text)
     }
 }
 

@@ -1,13 +1,13 @@
 use gpui::{px, size, Application, Bounds, Context, WindowBounds, WindowOptions};
 
 use rui::{prelude::*, StyledExt, Text};
-use rui_macros::{col, row, section};
+use rui_macros::{root, row, section};
 
 struct LayoutStory;
 
 impl Render for LayoutStory {
     fn render(&mut self, _window: &mut Window, _cx: &mut Context<Self>) -> impl IntoElement {
-        col! {
+        root! {
             row!{
                 Text::new("row").padding(0.).border_1().border_color(gpui::black())
                 Text::new("row").padding((0., 10.0)).border_1().border_color(gpui::black())
@@ -45,13 +45,9 @@ impl Render for LayoutStory {
                 .child(div().size_8().bg(gpui::black()))
                 .child(div().size_8().bg(gpui::white()))
         }
-        .flex()
-        .bg(gpui::white())
-        .size_full()
         .justify_center()
         .items_start()
         .text_xl()
-        .text_color(gpui::black())
     }
 }
 

@@ -2,23 +2,23 @@ use crate::prelude::*;
 use gpui::AnyElement;
 
 #[derive(IntoElement)]
-pub struct Root {
+pub struct RootView {
     base: Div,
 }
 
-impl Root {
+impl RootView {
     pub fn new() -> Self {
         Self { base: div() }
     }
 }
 
-impl Styled for Root {
+impl Styled for RootView {
     fn style(&mut self) -> &mut gpui::StyleRefinement {
         self.base.style()
     }
 }
 
-impl RenderOnce for Root {
+impl RenderOnce for RootView {
     fn render(self, _window: &mut Window, cx: &mut App) -> impl IntoElement {
         self.base
             .flex()
@@ -28,7 +28,7 @@ impl RenderOnce for Root {
     }
 }
 
-impl ParentElement for Root {
+impl ParentElement for RootView {
     fn extend(&mut self, elements: impl IntoIterator<Item = AnyElement>) {
         self.base.extend(elements);
     }

@@ -1,13 +1,13 @@
-use gpui::{px, rgb, size, Application, Bounds, Context, WindowBounds, WindowOptions};
+use gpui::{px, size, Application, Bounds, Context, WindowBounds, WindowOptions};
 
-use rui::{prelude::*, Assets, Col, Icon, IconName, Row, Text};
+use rui::{prelude::*, Assets, Icon, IconName, Root, Row, Text};
 use strum::IntoEnumIterator;
 
 struct IconStory;
 
 impl Render for IconStory {
     fn render(&mut self, _window: &mut Window, _cx: &mut Context<Self>) -> impl IntoElement {
-        Col! {
+        Root! {
             Row! {
                 Text::new("All Icons")
             }
@@ -18,12 +18,8 @@ impl Render for IconStory {
             .flex_wrap()
             .gap_3()
         }
-        .bg(gpui::white())
-        .size_full()
         .justify_center()
         .items_center()
-        .text_xl()
-        .text_color(rgb(0x000000))
     }
 }
 
