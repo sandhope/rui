@@ -66,7 +66,7 @@ impl IconSource {
 #[derive(IntoElement)]
 pub struct Icon {
     source: IconSource,
-    color: Hsla,
+    color: Option<Hsla>,
     size: Rems,
     transformation: Transformation,
 }
@@ -75,7 +75,7 @@ impl Icon {
     pub fn new(icon: IconName) -> Self {
         Self {
             source: IconSource::Svg(icon.path().into()),
-            color: gpui::black(),
+            color: None,
             size: IconSize::default().rems(),
             transformation: Transformation::default(),
         }
@@ -84,14 +84,14 @@ impl Icon {
     pub fn from_path(path: impl Into<SharedString>) -> Self {
         Self {
             source: IconSource::from_path(path),
-            color: gpui::black(),
+            color: None,
             size: IconSize::default().rems(),
             transformation: Transformation::default(),
         }
     }
 
     pub fn color(mut self, color: impl Into<Hsla>) -> Self {
-        self.color = color.into();
+        self.color = Some(color.into());
         self
     }
 
@@ -115,19 +115,21 @@ impl Icon {
 }
 
 impl RenderOnce for Icon {
-    fn render(self, _: &mut Window, _cx: &mut App) -> impl IntoElement {
+    fn render(self, _: &mut Window, cx: &mut App) -> impl IntoElement {
+        let color = self.color.unwrap_or_else(|| cx.theme().colors.text);
+
         match self.source {
             IconSource::Svg(path) => svg()
                 .with_transformation(self.transformation)
                 .size(self.size)
                 .flex_none()
                 .path(path)
-                .text_color(self.color)
+                .text_color(color)
                 .into_any_element(),
             IconSource::Image(path) => img(path)
                 .size(self.size)
                 .flex_none()
-                .text_color(self.color)
+                .text_color(color)
                 .into_any_element(),
         }
     }
