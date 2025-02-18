@@ -6,11 +6,6 @@ use super::ThemeColor;
 use crate::Appearance;
 use crate::ScrollbarShow;
 
-pub fn init(cx: &mut App) {
-    Theme::sync_system_appearance(None, cx);
-    Theme::sync_scrollbar_appearance(cx);
-}
-
 pub trait ActiveTheme {
     fn theme(&self) -> &Theme;
     fn theme_mut(&mut self) -> &mut Theme;
@@ -95,8 +90,16 @@ impl Theme {
         cx.global_mut::<Theme>()
     }
 
+    /// Initializes the [`Theme`] for the application.
+    pub fn init(cx: &mut App) {
+        Self::sync_system_appearance(cx);
+        Self::sync_scrollbar_appearance(cx);
+    }
+
     /// Sync the theme with the system appearance
-    pub fn sync_system_appearance(window: Option<&mut Window>, cx: &mut App) {
+    pub fn sync_system_appearance(cx: &mut App) {
+        Theme::sync_scrollbar_appearance(cx);
+
         let appearance = Appearance::from(cx.window_appearance());
 
         if !cx.has_global::<Theme>() {
@@ -108,10 +111,6 @@ impl Theme {
 
         theme.appearance = appearance;
         theme.colors = appearance.into();
-
-        if let Some(window) = window {
-            window.refresh();
-        }
     }
 
     /// Sync the Scrollbar showing behavior with the system

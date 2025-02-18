@@ -18,5 +18,5 @@ pub use theme::*;
 pub use utils::*;
 
 pub fn init(cx: &mut App) {
-    theme::init(cx);
+    Theme::init(cx);
 }
