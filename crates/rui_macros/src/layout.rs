@@ -112,8 +112,7 @@ pub fn section(input: TokenStream) -> TokenStream {
 
     let expanded = quote! {
         {
-            Card::new()
-                .child(div().flex_none().w_full().child(#title))
+            Card::new().child(#title)
             #(#output)*
         }
     };

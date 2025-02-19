@@ -72,7 +72,7 @@ impl Render for RadioStory {
         .justify_start()
         .items_start()
         .text_lg()
-        .p_10()
+        .p_8()
     }
 }
 

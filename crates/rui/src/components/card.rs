@@ -1,5 +1,5 @@
-use crate::{box_shadow, prelude::*, Direction};
-use gpui::{px, AnyElement, Pixels};
+use crate::{box_shadow, prelude::*, Direction, Text};
+use gpui::{px, AnyElement, FontWeight, Pixels};
 
 #[derive(IntoElement)]
 pub struct Card {
@@ -27,6 +27,15 @@ impl Card {
             shadow: false,
             shadow_hover: false,
         }
+    }
+
+    pub fn title(mut self, title: impl Into<SharedString>) -> Self {
+        self.base = self.base.child(
+            Text::new(title)
+                .margin((-10., 0., 10., 0.))
+                .font_weight(FontWeight::SEMIBOLD),
+        );
+        self
     }
 
     /// Set the direction of the Radio group. Default is `Direction::Horizontal`.
@@ -88,7 +97,6 @@ impl RenderOnce for Card {
                     this.flex_row()
                 }
             })
-            .flex_col()
             .padding(self.padding)
             .margin(self.margin)
             .rounded(self.radius)

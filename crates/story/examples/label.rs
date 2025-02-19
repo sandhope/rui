@@ -57,24 +57,20 @@ impl Render for LabelStory {
 
             Section! {
                 "Maksed Label";
-                Col! {
-                    Row!{
-                        Text::new("9,182,1 USD").text_2xl().masked(self.masked)
+                Row!{
+                    Text::new("9,182,1 USD").text_2xl().masked(self.masked)
 
-                        Button::new("button_id", "btn-mask")
-                        .on_click(cx.listener(|this, _, _window,_cx| {
-                            this.masked = !this.masked;
-                        }))
-                    }
-
-                    Text::new("500 USD").text_xl().masked(self.masked)
+                    Button::new("button_id", "btn-mask")
+                    .on_click(cx.listener(|this, _, _window,_cx| {
+                        this.masked = !this.masked;
+                    }))
                 }
-                .w_full()
-                .gap_2()
+
+                Text::new("500 USD").text_xl().masked(self.masked)
             }
         }
         .font_family(".SystemUIFont")
-        .gap_1()
+        .px_8()
     }
 }
 

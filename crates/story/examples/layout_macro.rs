@@ -48,6 +48,7 @@ impl Render for LayoutStory {
         .justify_center()
         .items_start()
         .text_xl()
+        .px_4()
     }
 }
 
