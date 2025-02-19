@@ -1,6 +1,7 @@
-use gpui::{px, App, Global, Hsla, Pixels, SharedString, Window};
+use gpui::{App, Global, SharedString, Window};
 
-use super::ThemeColor;
+use super::ThemeColors;
+use super::ThemeStyles;
 use crate::Appearance;
 use crate::ScrollbarShow;
 
@@ -23,20 +24,14 @@ impl ActiveTheme for App {
 
 #[derive(Debug, Clone)]
 pub struct Theme {
-    pub colors: ThemeColor,
-
+    /// The unique identifier for the theme.
+    pub id: String,
+    /// The name of the theme.
+    pub name: SharedString,
+    /// The appearance of the theme (light or dark).
     pub appearance: Appearance,
-    pub font_family: SharedString,
-    pub font_size: Pixels,
-    pub radius: Pixels,
-    pub shadow: bool,
-    pub transparent: Hsla,
-    /// Show the scrollbar mode, default: Scrolling
-    pub scrollbar_show: ScrollbarShow,
-    /// Tile grid size, default is 4px.
-    pub tile_grid_size: Pixels,
-    /// The shadow of the tile panel.
-    pub tile_shadow: bool,
+    pub colors: ThemeColors,
+    pub styles: ThemeStyles,
 }
 
 impl Theme {
@@ -49,6 +44,11 @@ impl Theme {
         }
 
         Self::sync_scrollbar_appearance(cx);
+    }
+
+    // set ActiveTheme
+    pub fn set(cx: &mut App, theme: Theme) {
+        cx.set_global(theme);
     }
 
     /// Sync the theme with the system appearance
@@ -69,9 +69,9 @@ impl Theme {
     /// Sync the Scrollbar showing behavior with the system
     fn sync_scrollbar_appearance(cx: &mut App) {
         if cx.should_auto_hide_scrollbars() {
-            cx.global_mut::<Theme>().scrollbar_show = ScrollbarShow::Scrolling;
+            cx.global_mut::<Theme>().styles.scrollbar_show = ScrollbarShow::Scrolling;
         } else {
-            cx.global_mut::<Theme>().scrollbar_show = ScrollbarShow::Always;
+            cx.global_mut::<Theme>().styles.scrollbar_show = ScrollbarShow::Always;
         }
     }
 }
@@ -95,7 +95,7 @@ impl Theme {
     /// - `window`: A mutable reference to the window that needs to be refreshed.
     pub fn set_appearance(&mut self, appearance: Appearance, window: &mut Window) {
         self.appearance = appearance;
-        self.colors = ThemeColor::from(appearance);
+        self.colors = ThemeColors::from(appearance);
         window.refresh();
     }
 
@@ -153,16 +153,11 @@ impl Theme {
 impl From<Appearance> for Theme {
     fn from(appearance: Appearance) -> Self {
         Theme {
+            id: String::from(appearance.to_string()),
+            name: SharedString::from(appearance.to_string()),
             appearance,
-            transparent: Hsla::transparent_black(),
-            font_size: px(16.),
-            font_family: ".SystemUIFont".into(),
-            radius: px(4.),
-            shadow: true,
-            scrollbar_show: ScrollbarShow::default(),
-            tile_grid_size: px(8.),
-            tile_shadow: true,
             colors: appearance.into(),
+            styles: ThemeStyles::default(),
         }
     }
 }

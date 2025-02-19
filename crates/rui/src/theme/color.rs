@@ -4,8 +4,8 @@ use crate::hsl;
 
 use super::Appearance;
 
-#[derive(Debug, Clone, Copy, Default)]
-pub struct ThemeColor {
+#[derive(Debug, Clone, Copy)]
+pub struct ThemeColors {
     pub primary: Hsla,
     /// Border color. Used for most borders, is usually a high contrast color.
     pub border: Hsla,
@@ -23,7 +23,7 @@ pub struct ThemeColor {
 }
 
 /// The default colors for the theme.
-impl ThemeColor {
+impl ThemeColors {
     pub fn light() -> Self {
         Self {
             primary: hsl(216., 100., 49.),
@@ -47,11 +47,11 @@ impl ThemeColor {
     }
 }
 
-impl From<Appearance> for ThemeColor {
+impl From<Appearance> for ThemeColors {
     fn from(appearance: Appearance) -> Self {
         match appearance {
-            Appearance::Light => ThemeColor::light(),
-            Appearance::Dark => ThemeColor::dark(),
+            Appearance::Light => ThemeColors::light(),
+            Appearance::Dark => ThemeColors::dark(),
         }
     }
 }
