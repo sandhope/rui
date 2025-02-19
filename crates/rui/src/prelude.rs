@@ -9,4 +9,5 @@ pub use crate::traits::styled_ext::*;
 pub use crate::ActiveTheme;
 pub use crate::Card;
 pub use crate::RootView;
+pub use crate::Theme;
 pub use crate::{h_flex, v_flex, Col, Row};

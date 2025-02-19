@@ -48,7 +48,7 @@ impl Render for ColorStory {
 
 fn main() {
     Application::new().run(|cx: &mut App| {
-        rui::init(cx);
+        Theme::init(cx, None);
         let bounds = Bounds::centered(None, size(px(600.), px(600.0)), cx);
         cx.open_window(
             WindowOptions {

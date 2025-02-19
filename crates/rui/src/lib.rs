@@ -16,7 +16,3 @@ pub use prelude::*;
 pub use styles::*;
 pub use theme::*;
 pub use utils::*;
-
-pub fn init(cx: &mut App) {
-    Theme::init(cx);
-}

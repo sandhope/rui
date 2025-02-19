@@ -41,8 +41,13 @@ pub struct Theme {
 
 impl Theme {
     /// Initializes the [`Theme`] for the application.
-    pub fn init(cx: &mut App) {
-        Self::sync_system_appearance(cx);
+    pub fn init(cx: &mut App, theme: Option<Theme>) {
+        if let Some(theme) = theme {
+            cx.set_global(theme);
+        } else {
+            Self::sync_system_appearance(cx);
+        }
+
         Self::sync_scrollbar_appearance(cx);
     }
 

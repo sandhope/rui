@@ -80,7 +80,7 @@ impl Render for LabelStory {
 
 fn main() {
     Application::new().with_assets(Assets).run(|cx: &mut App| {
-        rui::init(cx);
+        Theme::init(cx, None);
         let bounds = Bounds::centered(None, size(px(1024.), px(700.0)), cx);
         cx.open_window(
             WindowOptions {
