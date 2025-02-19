@@ -1,4 +1,4 @@
-use gpui::{px, size, Application, Bounds, Context, WindowBounds, WindowOptions};
+use gpui::{px, size, Application, Bounds, Context, FontWeight, WindowBounds, WindowOptions};
 
 use rui::{prelude::*, StyledExt, Text};
 use rui_macros::{root, row, section};
@@ -19,7 +19,7 @@ impl Render for LayoutStory {
                 Text::new("row").padding_left(20.0).border_1().border_color(gpui::black())
             }
             section!{
-                "padding";
+                Text::new("padding(custom title)").margin((-10., 0., 10., 0.)).font_weight(FontWeight::SEMIBOLD)
                 Text::new("row").padding(0.).border_1().border_color(gpui::black())
                 Text::new("row").padding_y(10.).border_1().border_color(gpui::black())
                 Text::new("row").padding_left(20.).border_1().border_color(gpui::black())

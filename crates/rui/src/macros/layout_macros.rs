@@ -88,10 +88,10 @@ macro_rules! Root {
 /// The title can be given as a string or omitted, in which case the section will appear without a title.
 ///
 /// The layout applies the following default styles to the section:
-/// - Padding: `px(16.0)`
-/// - Margin: `(16.0, 0.0)`
-/// - Border Radius: `px(4.0)`
-/// - Border Width: `px(1.0)`
+/// - Padding: `16.0 px`
+/// - Margin: `(16.0, 0.0, 16.0, 0.0) px`
+/// - Border Radius: `4.0 px`
+/// - Border Width: `1.0 px`
 
 /// # Example
 /// Using the macro with a title:

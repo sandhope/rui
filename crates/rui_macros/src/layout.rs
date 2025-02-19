@@ -1,6 +1,6 @@
 use proc_macro::TokenStream;
 use quote::quote;
-use syn::{parse::Parse, parse::ParseStream, parse_macro_input, Expr, Result, Token};
+use syn::{parse::Parse, parse::ParseStream, parse_macro_input, Expr, LitStr, Result, Token};
 
 struct LayoutInput {
     exprs: Vec<Expr>,
@@ -85,14 +85,20 @@ pub fn root(input: TokenStream) -> TokenStream {
 }
 
 struct SectionInput {
-    title: Expr,
+    title: Option<LitStr>,
     children: Vec<Expr>,
 }
 
 impl Parse for SectionInput {
-    fn parse(input: ParseStream) -> syn::Result<Self> {
-        let title: Expr = input.parse()?;
-        input.parse::<Token![;]>()?;
+    fn parse(input: ParseStream) -> Result<Self> {
+        let title = if input.peek(LitStr) {
+            let t = input.parse::<LitStr>()?;
+            input.parse::<Token![;]>()?;
+            Some(t)
+        } else {
+            None
+        };
+
         let mut children = Vec::new();
         while !input.is_empty() {
             children.push(input.parse()?);
@@ -110,9 +116,14 @@ pub fn section(input: TokenStream) -> TokenStream {
         }
     });
 
+    let title_iter = title.iter();
+
     let expanded = quote! {
         {
-            Card::new().child(#title)
+            Card::new()
+            #(
+                .title(#title_iter)
+            )*
             #(#output)*
         }
     };

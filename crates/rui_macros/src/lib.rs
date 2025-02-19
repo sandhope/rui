@@ -60,13 +60,29 @@ pub fn root(input: TokenStream) -> TokenStream {
 
 /// A macro to create a section layout with a title and multiple children.
 ///
-/// This macro takes a title and a list of expressions and adds them as children to a section layout.
+/// This macro allows you to create a layout section that includes a title and a list of child components.
+/// The title can be given as a string or omitted, in which case the section will appear without a title.
 ///
+/// The layout applies the following default styles to the section:
+/// - Padding: `16.0 px`
+/// - Margin: `(16.0, 0.0, 16.0, 0.0) px`
+/// - Border Radius: `4.0 px`
+/// - Border Width: `1.0 px`
+
 /// # Example
-///
+/// Using the macro with a title:
 /// ```rust
-/// section! {
-///     "title";
+/// Section! {
+///     "My Section";
+///     child1
+///     child2
+///     child3
+/// }
+/// ```
+///
+/// Using the macro without a title:
+/// ```rust
+/// Section! {
 ///     child1
 ///     child2
 ///     child3
