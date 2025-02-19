@@ -28,16 +28,14 @@ pub fn col(input: TokenStream) -> TokenStream {
     let exprs = parse_macro_input!(input with parse_input);
     // let LayoutInput { exprs } = parse_macro_input!(input as LayoutInput);
 
-    let output = exprs.iter().map(|expr| {
-        quote! {
-            .child(#expr)
-        }
-    });
+    let child = exprs.iter();
 
     let expanded = quote! {
         {
             div().flex().flex_col()
-            #(#output)*
+            #(
+                .child(#child)
+            )*
         }
     };
 
@@ -48,16 +46,14 @@ pub fn row(input: TokenStream) -> TokenStream {
     // let exprs = parse_macro_input!(input with parse_input);
     let LayoutInput { exprs } = parse_macro_input!(input as LayoutInput);
 
-    let output = exprs.iter().map(|expr| {
-        quote! {
-            .child(#expr)
-        }
-    });
+    let child = exprs.iter();
 
     let expanded = quote! {
         {
             div().flex().flex_row()
-            #(#output)*
+            #(
+                .child(#child)
+            )*
         }
     };
 
@@ -68,16 +64,26 @@ pub fn root(input: TokenStream) -> TokenStream {
     // let exprs = parse_macro_input!(input with parse_input);
     let LayoutInput { exprs } = parse_macro_input!(input as LayoutInput);
 
-    let output = exprs.iter().map(|expr| {
-        quote! {
-            .child(#expr)
-        }
-    });
+    // let children = exprs.iter().map(|expr| {
+    //     quote! {
+    //         .child(#expr)
+    //     }
+    // });
+    // let expanded = quote! {
+    //     {
+    //         RootView::new()
+    //         #(#children)*
+    //     }
+    // };
+    //
+    let child = exprs.iter();
 
     let expanded = quote! {
         {
             RootView::new()
-            #(#output)*
+            #(
+                .child(#child)
+            )*
         }
     };
 
@@ -110,21 +116,32 @@ impl Parse for SectionInput {
 pub fn section(input: TokenStream) -> TokenStream {
     let SectionInput { title, children } = parse_macro_input!(input as SectionInput);
 
-    let output = children.iter().map(|child| {
-        quote! {
-            .child(#child)
-        }
-    });
+    // let children = children.iter().map(|child| {
+    //     quote! {
+    //         .child(#child)
+    //     }
+    // });
+    // let title = title.iter().map(|t| quote! { .title(#t) });
+    // let expanded = quote! {
+    //     {
+    //         Card::new()
+    //         #(#title)*
+    //         #(#children)*
+    //     }
+    // };
 
-    let title_iter = title.iter();
+    let child = children.iter();
+    let title = title.iter();
 
     let expanded = quote! {
         {
             Card::new()
             #(
-                .title(#title_iter)
+                .title(#title)
             )*
-            #(#output)*
+            #(
+                .child(#child)
+            )*
         }
     };
 
