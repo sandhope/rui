@@ -14,6 +14,7 @@ impl Render for CardStory {
                 .direction_horizontal()
                 .child("horizontal")
         }
+        .p_4()
     }
 }
 

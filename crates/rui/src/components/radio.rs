@@ -64,21 +64,21 @@ impl RenderOnce for Radio {
                     .rounded(outer_diameter / 2.)
                     .border_color(cx.theme().colors.border)
                     .border(border_width)
-                    // .when(self.disabled, |el| el.opacity(0.5))
-                    // .when(!self.disabled, |el| {
-                    //     el.group_hover("", |el| el.border_color(cx.theme().element_hover))
+                    // .when(self.disabled, |this| this.opacity(0.5))
+                    // .when(!self.disabled, |this| {
+                    //     this.group_hover("", |this| this.border_color(cx.theme().element_hover))
                     // })
-                    .map(|el| {
+                    .map(|this| {
                         if self.disabled {
-                            el.opacity(0.5)
+                            this.opacity(0.5)
                         } else {
-                            el.group_hover("", |el| {
-                                el.border_color(cx.theme().colors.element_hover)
+                            this.group_hover("", |this| {
+                                this.border_color(cx.theme().colors.element_hover)
                             })
                         }
                     })
-                    .when(self.checked, |el| {
-                        el.child(
+                    .when(self.checked, |this| {
+                        this.child(
                             div()
                                 .m((outer_diameter - inner_diameter) / 2. - border_width)
                                 .size(inner_diameter)

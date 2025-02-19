@@ -1,15 +1,17 @@
-use crate::{prelude::*, Direction};
+use crate::{box_shadow, prelude::*, Direction};
 use gpui::{px, AnyElement, Pixels};
 
 #[derive(IntoElement)]
 pub struct Card {
     base: Div,
     direction: Direction,
-    padding: Pixels,
-    margin: Pixels,
+    padding: Edge,
+    margin: Edge,
     radius: Pixels,
     border_width: Pixels,
     border_color: Option<Hsla>,
+    shadow: bool,
+    shadow_hover: bool,
 }
 
 impl Card {
@@ -17,11 +19,13 @@ impl Card {
         Self {
             base: div(),
             direction: Direction::Vertical,
-            padding: px(16.0),
-            margin: px(16.0),
+            padding: 16.0.into(),
+            margin: (16.0, 0.0).into(),
             radius: px(4.0),
             border_width: px(1.0),
             border_color: None,
+            shadow: false,
+            shadow_hover: false,
         }
     }
 
@@ -37,13 +41,13 @@ impl Card {
         self
     }
 
-    pub fn padding(mut self, v: f32) -> Self {
-        self.padding = px(v);
+    pub fn padding(mut self, v: impl Into<Edge>) -> Self {
+        self.padding = v.into();
         self
     }
 
-    pub fn margin(mut self, v: f32) -> Self {
-        self.margin = px(v);
+    pub fn margin(mut self, v: impl Into<Edge>) -> Self {
+        self.margin = v.into();
         self
     }
 
@@ -71,7 +75,9 @@ impl Styled for Card {
 
 impl RenderOnce for Card {
     fn render(self, _window: &mut Window, cx: &mut App) -> impl IntoElement {
-        let color = self.border_color.unwrap_or_else(|| cx.theme().colors.text);
+        let color = self
+            .border_color
+            .unwrap_or_else(|| cx.theme().colors.border_variant);
 
         self.base
             .flex()
@@ -83,11 +89,33 @@ impl RenderOnce for Card {
                 }
             })
             .flex_col()
-            .p(self.padding)
-            .m(self.margin)
+            .padding(self.padding)
+            .margin(self.margin)
             .rounded(self.radius)
             .border(self.border_width)
             .border_color(color)
+            .when(self.shadow, |this| {
+                // this.shadow_sm()
+                this.shadow(smallvec::smallvec![box_shadow(
+                    0.,
+                    4.,
+                    20.,
+                    0.,
+                    crate::rgba(0, 0, 0, 0.1)
+                )])
+            })
+            .when(self.shadow_hover, |this| {
+                this.hover(|this| {
+                    // this.shadow_md()
+                    this.shadow(smallvec::smallvec![box_shadow(
+                        0.,
+                        8.,
+                        30.,
+                        0.,
+                        crate::rgba(0, 0, 0, 0.2)
+                    )])
+                })
+            })
     }
 }
 

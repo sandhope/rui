@@ -9,6 +9,8 @@ pub struct ThemeColors {
     pub primary: Hsla,
     /// Border color. Used for most borders, is usually a high contrast color.
     pub border: Hsla,
+    /// Border color. Used for deemphasized borders, like a visual divider between two sections
+    pub border_variant: Hsla,
     /// Fill Color. Used for the accent fill color of an icon.
     ///
     /// This might be used to show when a toggleable icon button is selected.
@@ -28,6 +30,7 @@ impl ThemeColors {
         Self {
             primary: hsl(216., 100., 49.),
             border: hsl(210., 1., 67.),
+            border_variant: hsl(240.0, 5.9, 90.0),
             icon_accent: hsl(216., 100., 49.),
             element_hover: hsl(216., 100., 49.),
             text: hsl(214., 11., 12.),
@@ -39,6 +42,7 @@ impl ThemeColors {
         Self {
             primary: hsl(210., 100., 66.),
             border: hsl(0., 0., 98.),
+            border_variant: hsl(240.0, 3.7, 16.9),
             icon_accent: hsl(210., 100., 66.),
             element_hover: hsl(210., 100., 66.),
             text: hsl(0., 0., 98.),
