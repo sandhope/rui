@@ -39,10 +39,9 @@ impl Theme {
     pub fn init(cx: &mut App, theme: Option<Theme>) {
         if let Some(theme) = theme {
             cx.set_global(theme);
-        } else {
-            Self::sync_system_appearance(cx);
+            return;
         }
-
+        Self::sync_system_appearance(cx);
         Self::sync_scrollbar_appearance(cx);
     }
 
@@ -53,17 +52,12 @@ impl Theme {
 
     /// Sync the theme with the system appearance
     fn sync_system_appearance(cx: &mut App) {
-        let appearance = Appearance::from(cx.window_appearance());
-
-        if !cx.has_global::<Theme>() {
-            let theme = Theme::from(appearance);
-            cx.set_global(theme);
+        if cx.has_global::<Theme>() {
+            return;
         }
-
-        let theme = cx.global_mut::<Theme>();
-
-        theme.appearance = appearance;
-        theme.colors = appearance.into();
+        let appearance = Appearance::from(cx.window_appearance());
+        let theme = Theme::from(appearance);
+        cx.set_global(theme);
     }
 
     /// Sync the Scrollbar showing behavior with the system
