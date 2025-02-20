@@ -16,7 +16,7 @@ impl Render for RadioStory {
                 .text(cx.theme().appearance.to_string())
                 .checked(cx.theme().appearance.is_light())
                 .on_click(cx.listener(|_, _, window, cx| {
-                    cx.theme_mut().toggle_appearance(window);
+                    cx.theme_mut().toggle_builtin_appearance(window);
                     println!("{:?}", cx.theme().appearance);
                 }))
             }
@@ -78,7 +78,7 @@ impl Render for RadioStory {
 
 fn main() {
     Application::new().with_assets(Assets).run(|cx: &mut App| {
-        Theme::init(cx, None);
+        Theme::init(cx, None, None);
         let bounds = Bounds::centered(None, size(px(1024.), px(700.0)), cx);
         cx.open_window(
             WindowOptions {
