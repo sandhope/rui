@@ -1,7 +1,8 @@
 use gpui::{px, size, Application, Bounds, Context, WindowBounds, WindowOptions};
 
 use rui::{
-    prelude::*, Assets, IconName, Label, Radio, RadioGroup, Root, Row, Section, Text, ThemeMode,
+    prelude::*, Assets, IconName, Label, Radio, RadioGroup, Root, Row, Section, Switch, Text,
+    ThemeMode,
 };
 
 struct RadioStory {
@@ -14,9 +15,8 @@ impl Render for RadioStory {
         Root! {
             Row! {
                 Text::new("Appearance: ").w_1_4()
-                Radio::new("appearance, to do: change to switch")
+                Switch::new("appearance", cx.theme().appearance.is_light())
                 .text(cx.theme().appearance.to_string())
-                .checked(cx.theme().appearance.is_light())
                 .on_click(cx.listener(|_, _, window, cx| {
                     cx.theme_mut().toggle_builtin_appearance(window);
                     println!("{:?}", cx.theme().appearance);
@@ -43,16 +43,15 @@ impl Render for RadioStory {
 
             Row! {
                 Text::new("disable RadioGroup").w_1_4()
-                Radio::new("radio")
+                Switch::new("radio", self.enabled)
                 .text(if self.enabled {
                     "enabled"
                 } else {
                     "disabled"
                 })
-                .checked(self.enabled)
-                .on_click(cx.listener(|this, val, _window, _app| {
-                    // this.checked = !this.checked
-                    this.enabled = *val
+                .on_click(cx.listener(|this, s: &ToggleState, _window, _app| {
+                    // this.enabled = !this.enabled
+                    this.enabled = s.selected();
                 }))
             }
             .w_full()

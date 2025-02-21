@@ -1,6 +1,5 @@
 use crate::{prelude::*, Text};
 use gpui::px;
-use std::sync::Arc;
 
 /// # Switch
 ///
@@ -11,15 +10,15 @@ pub struct Switch {
     toggle_state: ToggleState,
     disabled: bool,
     on_click: Option<Box<dyn Fn(&ToggleState, &mut Window, &mut App) + 'static>>,
-    text: Option<SharedString>,
+    text: Option<Text>,
 }
 
 impl Switch {
     /// Creates a new [`Switch`].
-    pub fn new(id: impl Into<ElementId>, state: ToggleState) -> Self {
+    pub fn new(id: impl Into<ElementId>, state: impl Into<ToggleState>) -> Self {
         Self {
             id: id.into(),
-            toggle_state: state,
+            toggle_state: state.into(),
             disabled: false,
             on_click: None,
             text: None,
@@ -42,7 +41,7 @@ impl Switch {
     }
 
     /// Sets the text of the [`Switch`].
-    pub fn text(mut self, text: impl Into<SharedString>) -> Self {
+    pub fn text(mut self, text: impl Into<Text>) -> Self {
         self.text = Some(text.into());
         self
     }
@@ -130,66 +129,6 @@ impl RenderOnce for Switch {
                     })
                 },
             )
-            .when_some(self.text, |this, text| {
-                this.child(Text::new(text).text_xs())
-            })
-    }
-}
-
-/// A [`Switch`] that has a [`Text`].
-#[derive(IntoElement)]
-// #[component(scope = "input")]
-pub struct SwitchWithText {
-    id: ElementId,
-    text: Text,
-    toggle_state: ToggleState,
-    on_click: Arc<dyn Fn(&ToggleState, &mut Window, &mut App) + 'static>,
-    disabled: bool,
-}
-
-impl SwitchWithText {
-    /// Creates a switch with an attached text.
-    pub fn new(
-        id: impl Into<ElementId>,
-        text: Text,
-        toggle_state: impl Into<ToggleState>,
-        on_click: impl Fn(&ToggleState, &mut Window, &mut App) + 'static,
-    ) -> Self {
-        Self {
-            id: id.into(),
-            text,
-            toggle_state: toggle_state.into(),
-            on_click: Arc::new(on_click),
-            disabled: false,
-        }
-    }
-
-    /// Sets the disabled state of the [`SwitchWithText`].
-    pub fn disabled(mut self, disabled: bool) -> Self {
-        self.disabled = disabled;
-        self
-    }
-}
-
-impl RenderOnce for SwitchWithText {
-    fn render(self, _window: &mut Window, _cx: &mut App) -> impl IntoElement {
-        h_flex()
-            .id(SharedString::from(format!("{}-container", self.id)))
-            .gap(px(6.))
-            .child(
-                Switch::new(self.id.clone(), self.toggle_state)
-                    .disabled(self.disabled)
-                    .on_click({
-                        let on_click = self.on_click.clone();
-                        move |checked, window, cx| {
-                            (on_click)(checked, window, cx);
-                        }
-                    }),
-            )
-            .child(
-                div()
-                    .id(SharedString::from(format!("{}-text", self.id)))
-                    .child(self.text),
-            )
+            .when_some(self.text, |this, text| this.child(text.text_xs()))
     }
 }

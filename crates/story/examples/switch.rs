@@ -1,6 +1,6 @@
 use gpui::{px, size, Application, Bounds, Context, WindowBounds, WindowOptions};
 
-use rui::{prelude::*, Root, Section, Switch, SwitchWithText, Text};
+use rui::{prelude::*, Root, Section, Switch, Text};
 
 struct SwitchStory {
     state: ToggleState,
@@ -21,7 +21,7 @@ impl Render for SwitchStory {
                         this.disabled = !this.disabled;
                     }))
 
-                Switch::new("row", self.state_bool.into())
+                Switch::new("row", self.state_bool)
                     .text(if self.disabled { "disabled" } else { "enabled" })
                     .disabled(self.disabled)
                     .on_click(cx.listener(|this, s: &ToggleState, _window, _cx| {
@@ -29,15 +29,13 @@ impl Render for SwitchStory {
                         this.state_bool = s.selected();
                     }))
 
-                SwitchWithText::new(
-                    "SwitchWithText",
-                    Text::new("xx").text_color(gpui::blue()).text_xs(),
-                    self.state_bool,
-                    cx.listener(|this, s: &ToggleState, _window, _cx| {
+                Switch::new("id", self.state_bool)
+                    .text(Text::new("xx").text_color(gpui::blue()).text_xs())
+                    .disabled(self.disabled)
+                    .on_click(cx.listener(|this, s: &ToggleState, _window, _cx| {
                         println!("{}", s.selected());
                         this.state_bool = s.selected();
                     }))
-                    .disabled(self.disabled)
             }
             .gap_1()
         }
