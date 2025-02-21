@@ -3,8 +3,8 @@ use gpui::{px, size, Application, Bounds, Context, WindowBounds, WindowOptions};
 use rui::{prelude::*, Root, Section, Switch, Text};
 
 struct SwitchStory {
-    state: ToggleState,
-    state_bool: bool,
+    state: bool,
+    second_state: bool,
     disabled: bool,
 }
 
@@ -13,29 +13,34 @@ impl Render for SwitchStory {
         Root! {
             Section! {
                 "switch";
-                Switch::new("row", self.state)
+                Switch::new("id")
+                    .checked(self.state)
                     .text("change disabled")
-                    .on_click(cx.listener(|this, s: &ToggleState, _window, _cx| {
-                        println!("{}", s.selected());
-                        this.state = *s;
+                    .on_click(cx.listener(|this, v, _window, _cx| {
+                        this.state = *v;
                         this.disabled = !this.disabled;
                     }))
 
-                Switch::new("row", self.state_bool)
+                Switch::new("id")
+                    .checked(self.second_state)
                     .text(if self.disabled { "disabled" } else { "enabled" })
                     .disabled(self.disabled)
-                    .on_click(cx.listener(|this, s: &ToggleState, _window, _cx| {
-                        println!("{}", s.selected());
-                        this.state_bool = s.selected();
+                    .on_click(cx.listener(|this, v, _window, _cx| {
+                        this.second_state = *v;
                     }))
 
-                Switch::new("id", self.state_bool)
-                    .text(Text::new("xx").text_color(gpui::blue()).text_xs())
-                    .disabled(self.disabled)
-                    .on_click(cx.listener(|this, s: &ToggleState, _window, _cx| {
-                        println!("{}", s.selected());
-                        this.state_bool = s.selected();
+                Switch::new("id")
+                    .checked(cx.theme().appearance.is_light())
+                    .text(Text::new("appearance").text_color(gpui::blue()))
+                    .on_click(cx.listener(|_, _v, window, cx| {
+                        cx.theme_mut().toggle_builtin_appearance(window);
                     }))
+
+                // If Switch set the text size by matching self.size, the text size cannot be set externally
+                Switch::new("id").text(Text::new("XSmall").text_xs()).size(Size::XSmall)
+                Switch::new("id").text(Text::new("Small").text_sm()).size(Size::Small)
+                Switch::new("id").text("Medium").size(Size::Medium)
+                Switch::new("id").text(Text::new("Large").text_xl()).size(Size::Large)
             }
             .gap_1()
         }
@@ -54,8 +59,8 @@ fn main() {
             },
             |_, cx| {
                 cx.new(|_| SwitchStory {
-                    state: ToggleState::Unselected,
-                    state_bool: false,
+                    state: false,
+                    second_state: false,
                     disabled: true,
                 })
             },

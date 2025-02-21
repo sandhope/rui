@@ -15,12 +15,13 @@ impl Render for RadioStory {
         Root! {
             Row! {
                 Text::new("Appearance: ").w_1_4()
-                Switch::new("appearance", cx.theme().appearance.is_light())
-                .text(cx.theme().appearance.to_string())
-                .on_click(cx.listener(|_, _, window, cx| {
-                    cx.theme_mut().toggle_builtin_appearance(window);
-                    println!("{:?}", cx.theme().appearance);
-                }))
+                Switch::new("appearance")
+                    .checked(cx.theme().appearance.is_light())
+                    .text(cx.theme().appearance.to_string())
+                    .on_click(cx.listener(|_, _, window, cx| {
+                        cx.theme_mut().toggle_builtin_appearance(window);
+                        println!("{:?}", cx.theme().appearance);
+                    }))
             }
             .w_full()
 
@@ -43,16 +44,17 @@ impl Render for RadioStory {
 
             Row! {
                 Text::new("disable RadioGroup").w_1_4()
-                Switch::new("radio", self.enabled)
-                .text(if self.enabled {
-                    "enabled"
-                } else {
-                    "disabled"
-                })
-                .on_click(cx.listener(|this, s: &ToggleState, _window, _app| {
-                    // this.enabled = !this.enabled
-                    this.enabled = s.selected();
-                }))
+                Switch::new("radio")
+                    .checked(self.enabled)
+                    .text(if self.enabled {
+                        "enabled"
+                    } else {
+                        "disabled"
+                    })
+                    .on_click(cx.listener(|this, v, _window, _app| {
+                        // this.enabled = !this.enabled
+                        this.enabled = *v;
+                    }))
             }
             .w_full()
 

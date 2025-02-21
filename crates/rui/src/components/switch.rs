@@ -1,4 +1,4 @@
-use crate::{prelude::*, Text};
+use crate::{prelude::*, Size, Text};
 use gpui::px;
 
 /// # Switch
@@ -7,22 +7,29 @@ use gpui::px;
 #[derive(IntoElement)]
 pub struct Switch {
     id: ElementId,
-    toggle_state: ToggleState,
+    checked: bool,
     disabled: bool,
-    on_click: Option<Box<dyn Fn(&ToggleState, &mut Window, &mut App) + 'static>>,
+    on_click: Option<Box<dyn Fn(&bool, &mut Window, &mut App) + 'static>>,
     text: Option<Text>,
+    size: Size,
 }
 
 impl Switch {
     /// Creates a new [`Switch`].
-    pub fn new(id: impl Into<ElementId>, state: impl Into<ToggleState>) -> Self {
+    pub fn new(id: impl Into<ElementId>) -> Self {
         Self {
             id: id.into(),
-            toggle_state: state.into(),
+            checked: false,
             disabled: false,
             on_click: None,
             text: None,
+            size: Size::default(),
         }
+    }
+
+    pub fn checked(mut self, checked: bool) -> Self {
+        self.checked = checked;
+        self
     }
 
     /// Sets the disabled state of the [`Switch`].
@@ -32,10 +39,7 @@ impl Switch {
     }
 
     /// Binds a handler to the [`Switch`] that will be called when clicked.
-    pub fn on_click(
-        mut self,
-        handler: impl Fn(&ToggleState, &mut Window, &mut App) + 'static,
-    ) -> Self {
+    pub fn on_click(mut self, handler: impl Fn(&bool, &mut Window, &mut App) + 'static) -> Self {
         self.on_click = Some(Box::new(handler));
         self
     }
@@ -45,11 +49,16 @@ impl Switch {
         self.text = Some(text.into());
         self
     }
+
+    pub fn size(mut self, size: impl Into<Size>) -> Self {
+        self.size = size.into();
+        self
+    }
 }
 
 impl RenderOnce for Switch {
     fn render(self, _window: &mut Window, cx: &mut App) -> impl IntoElement {
-        let is_on = self.toggle_state == ToggleState::Selected;
+        let is_on = self.checked;
         let adjust_ratio = if cx.theme().appearance.is_light() {
             1.5
         } else {
@@ -84,37 +93,41 @@ impl RenderOnce for Switch {
 
         let group_id = format!("switch_group_{:?}", self.id);
 
-        let switch = h_flex()
-            .w(px(32.))
-            .h(px(20.))
-            .group(group_id.clone())
-            .child(
-                h_flex()
-                    .when(is_on, |on| on.justify_end())
-                    .when(!is_on, |off| off.justify_start())
-                    .items_center()
-                    .size_full()
-                    .rounded_full()
-                    .px(px(1.))
-                    .bg(bg_color)
-                    .border_1()
-                    .border_color(border_color)
-                    .when(!self.disabled, |this| {
-                        this.group_hover(group_id.clone(), |el| {
-                            el.border_color(border_hover_color).bg(bg_hover_color)
-                        })
+        let (width, height, thumb_size) = match self.size {
+            Size::XSmall => (px(20.), px(14.), px(10.)),
+            Size::Small => (px(26.), px(16.), px(12.)),
+            Size::Medium => (px(32.), px(20.), px(14.)),
+            Size::Large => (px(40.), px(24.), px(18.)),
+            _ => (px(32.), px(20.), px(14.)),
+        };
+
+        let switch = h_flex().w(width).h(height).group(group_id.clone()).child(
+            h_flex()
+                .when(is_on, |on| on.justify_end())
+                .when(!is_on, |off| off.justify_start())
+                .items_center()
+                .size_full()
+                .rounded_full()
+                .px(px(1.))
+                .bg(bg_color)
+                .border_1()
+                .border_color(border_color)
+                .when(!self.disabled, |this| {
+                    this.group_hover(group_id.clone(), |el| {
+                        el.border_color(border_hover_color).bg(bg_hover_color)
                     })
-                    .child(
-                        div()
-                            .size(px(14.))
-                            .rounded_full()
-                            .bg(thumb_color)
-                            .when(!self.disabled, |this| {
-                                this.group_hover(group_id.clone(), |el| el.bg(thumb_hover_color))
-                            })
-                            .opacity(thumb_opacity),
-                    ),
-            );
+                })
+                .child(
+                    div()
+                        .size(thumb_size)
+                        .rounded_full()
+                        .bg(thumb_color)
+                        .when(!self.disabled, |this| {
+                            this.group_hover(group_id.clone(), |el| el.bg(thumb_hover_color))
+                        })
+                        .opacity(thumb_opacity),
+                ),
+        );
 
         h_flex()
             .id(self.id)
@@ -124,11 +137,17 @@ impl RenderOnce for Switch {
             .when_some(
                 self.on_click.filter(|_| !self.disabled),
                 |this, on_click| {
-                    this.on_click(move |_, window, cx| {
-                        on_click(&self.toggle_state.inverse(), window, cx)
-                    })
+                    this.on_click(move |_, window, cx| on_click(&!self.checked, window, cx))
                 },
             )
-            .when_some(self.text, |this, text| this.child(text.text_xs()))
+            // If Switch set the text size by matching self.size, the text size cannot be set externally
+            // .when_some(self.text, |this, text| match self.size {
+            //     Size::XSmall => this.child(text.text_xs()),
+            //     Size::Small => this.child(text.text_sm()),
+            //     Size::Medium => this.child(text.text_base()),
+            //     Size::Large => this.child(text.text_lg()),
+            //     _ => this.child(text.text_sm()),
+            // })
+            .when_some(self.text, |this, text| this.child(text))
     }
 }
