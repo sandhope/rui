@@ -6,6 +6,7 @@ mod radio;
 mod root;
 mod scrollbar;
 mod stack;
+mod switch;
 mod text;
 
 pub use button::*;
@@ -16,4 +17,5 @@ pub use radio::*;
 pub use root::*;
 pub use scrollbar::*;
 pub use stack::*;
+pub use switch::*;
 pub use text::*;
