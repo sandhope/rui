@@ -1,6 +1,8 @@
 use gpui::{px, size, Application, Bounds, Context, WindowBounds, WindowOptions};
 
-use rui::{prelude::*, Assets, IconName, Label, Radio, RadioGroup, Root, Row, Section, Text};
+use rui::{
+    prelude::*, Assets, IconName, Label, Radio, RadioGroup, Root, Row, Section, Text, ThemeMode,
+};
 
 struct RadioStory {
     enabled: bool,
@@ -78,7 +80,7 @@ impl Render for RadioStory {
 
 fn main() {
     Application::new().with_assets(Assets).run(|cx: &mut App| {
-        Theme::init(cx, None, None);
+        Theme::init(cx, None, Some(ThemeMode::Dark));
         let bounds = Bounds::centered(None, size(px(1024.), px(700.0)), cx);
         cx.open_window(
             WindowOptions {

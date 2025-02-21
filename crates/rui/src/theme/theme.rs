@@ -1,10 +1,6 @@
-use gpui::{App, Global, SharedString};
+use gpui::{App, SharedString};
 
-use super::ThemeColors;
-use super::ThemeStyles;
-use crate::Appearance;
-use crate::ThemeMode;
-use crate::ThemeSetting;
+use crate::{Appearance, ThemeColors, ThemeMode, ThemeSetting, ThemeStyles};
 use std::sync::Arc;
 
 pub trait ActiveTheme {
@@ -31,8 +27,6 @@ impl ActiveTheme for App {
 
 #[derive(Debug, Clone)]
 pub struct Theme {
-    /// The unique identifier for the theme.
-    pub id: String,
     /// The name of the theme.
     pub name: SharedString,
     /// The appearance of the theme (light or dark).
@@ -69,24 +63,23 @@ impl Theme {
 //     }
 // }
 
-impl Global for Theme {}
+// impl Global for Theme {}
 
-impl Theme {
-    /// Returns the global theme reference
-    pub fn global(cx: &App) -> &Theme {
-        cx.global::<Theme>()
-    }
+// impl Theme {
+//     /// Returns the global theme reference
+//     pub fn global(cx: &App) -> &Theme {
+//         cx.global::<Theme>()
+//     }
 
-    /// Returns the global theme mutable reference
-    pub fn global_mut(cx: &mut App) -> &mut Theme {
-        cx.global_mut::<Theme>()
-    }
-}
+//     /// Returns the global theme mutable reference
+//     pub fn global_mut(cx: &mut App) -> &mut Theme {
+//         cx.global_mut::<Theme>()
+//     }
+// }
 
 impl From<Appearance> for Theme {
     fn from(appearance: Appearance) -> Self {
         Theme {
-            id: String::from(appearance.to_string()),
             name: SharedString::from(appearance.to_string()),
             appearance,
             colors: appearance.into(),
