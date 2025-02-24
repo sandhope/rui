@@ -1,5 +1,5 @@
 use crate::{prelude::*, Size, Text};
-use gpui::px;
+use gpui::{px, CursorStyle};
 
 /// # Switch
 ///
@@ -58,64 +58,46 @@ impl Switch {
 
 impl RenderOnce for Switch {
     fn render(self, _window: &mut Window, cx: &mut App) -> impl IntoElement {
-        let is_on = self.checked;
-        let adjust_ratio = if cx.theme().appearance.is_light() {
-            1.5
-        } else {
-            1.0
-        };
         let base_color = cx.theme().colors.bg;
 
-        let bg_color = if is_on {
-            cx.theme().colors.switch_bg.blend(base_color.opacity(0.08))
-        } else {
-            cx.theme().colors.element_background.opacity(0.6)
+        let bg_color = match (self.checked, self.disabled) {
+            (true, true) => cx.theme().colors.switch_checked_bg.opacity(0.7),
+            (true, false) => cx.theme().colors.switch_checked_bg,
+            (false, true) => cx.theme().colors.switch_unchecked_bg.opacity(0.4),
+            (false, false) => cx.theme().colors.switch_unchecked_bg,
         };
-        let bg_hover_color = if is_on {
-            cx.theme().colors.switch_hover_bg
+        let bg_hover_color = if self.checked {
+            cx.theme().colors.switch_checked_hover_bg
         } else {
-            cx.theme().colors.element_background
+            cx.theme().colors.switch_unchecked_hover_bg
         };
-        let thumb_color = base_color.opacity(0.9);
+        let thumb_color = base_color.opacity(0.95);
         let thumb_hover_color = base_color.opacity(1.0);
-        let border_color = cx.theme().colors.border_variant;
-        // Lighter themes need higher contrast borders
-        let border_hover_color = if is_on {
-            border_color.blend(base_color.opacity(0.16 * adjust_ratio))
-        } else {
-            border_color.blend(base_color.opacity(0.05 * adjust_ratio))
-        };
-        let thumb_opacity = match (is_on, self.disabled) {
-            (_, true) => 0.6,
-            (true, false) => 1.0,
-            (false, false) => 1.0,
-        };
 
         let group_id = format!("switch_group_{:?}", self.id);
 
         let (width, height, thumb_size) = match self.size {
-            Size::XSmall => (px(20.), px(14.), px(10.)),
-            Size::Small => (px(26.), px(16.), px(12.)),
-            Size::Medium => (px(32.), px(20.), px(14.)),
-            Size::Large => (px(40.), px(24.), px(18.)),
-            _ => (px(32.), px(20.), px(14.)),
+            Size::XSmall => (rems_from_px(20.), rems_from_px(14.), rems_from_px(10.)),
+            Size::Small => (rems_from_px(26.), rems_from_px(16.), rems_from_px(12.)),
+            Size::Medium => (rems_from_px(32.), rems_from_px(20.), rems_from_px(14.)),
+            Size::Large => (rems_from_px(40.), rems_from_px(24.), rems_from_px(18.)),
+            _ => (rems_from_px(32.), rems_from_px(20.), rems_from_px(14.)),
         };
 
         let switch = h_flex().w(width).h(height).group(group_id.clone()).child(
             h_flex()
-                .when(is_on, |on| on.justify_end())
-                .when(!is_on, |off| off.justify_start())
+                .when(self.checked, |on| on.justify_end())
+                .when(!self.checked, |off| off.justify_start())
                 .items_center()
                 .size_full()
                 .rounded_full()
-                .px(px(1.))
+                .px(px(2.))
                 .bg(bg_color)
-                .border_1()
-                .border_color(border_color)
+                .when(self.disabled, |this| {
+                    this.cursor(CursorStyle::OperationNotAllowed)
+                })
                 .when(!self.disabled, |this| {
-                    this.group_hover(group_id.clone(), |el| {
-                        el.border_color(border_hover_color).bg(bg_hover_color)
-                    })
+                    this.group_hover(group_id.clone(), |el| el.bg(bg_hover_color))
                 })
                 .child(
                     div()
@@ -124,14 +106,13 @@ impl RenderOnce for Switch {
                         .bg(thumb_color)
                         .when(!self.disabled, |this| {
                             this.group_hover(group_id.clone(), |el| el.bg(thumb_hover_color))
-                        })
-                        .opacity(thumb_opacity),
+                        }),
                 ),
         );
 
         h_flex()
             .id(self.id)
-            .gap(px(6.))
+            .gap(rems_from_px(6.))
             .cursor_pointer()
             .child(switch)
             .when_some(
