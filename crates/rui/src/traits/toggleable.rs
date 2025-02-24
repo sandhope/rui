@@ -46,6 +46,10 @@ impl ToggleState {
             ToggleState::Selected => true,
         }
     }
+
+    pub fn unselected(&self) -> bool {
+        *self == ToggleState::Unselected
+    }
 }
 
 impl From<bool> for ToggleState {
