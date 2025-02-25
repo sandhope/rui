@@ -1,12 +1,25 @@
 use gpui::{px, size, Application, Bounds, Context, WindowBounds, WindowOptions};
 
-use rui::{prelude::*, Assets, Checkbox, CheckboxGroup, Root, Section, Text, ToggleState};
+use rui::{prelude::*, Assets, Checkbox, CheckboxGroup, Divider, Root, Section, Text, ToggleState};
 
 struct CheckboxStory {
     state: bool,
     second_state: bool,
     disabled: bool,
-    selected_indexes: Vec<usize>,
+    checked_indexes: Vec<usize>,
+    all_state: ToggleState,
+}
+
+impl CheckboxStory {
+    fn change_handler(&mut self, value: &Vec<usize>) {
+        println!("{:?}", *value);
+        self.checked_indexes = value.clone();
+        match self.checked_indexes.len() {
+            3 => self.all_state = ToggleState::Selected,
+            0 => self.all_state = ToggleState::Unselected,
+            _ => self.all_state = ToggleState::Indeterminate,
+        }
+    }
 }
 
 impl Render for CheckboxStory {
@@ -42,14 +55,29 @@ impl Render for CheckboxStory {
             }
             .gap_1()
 
+
             Section! {
                 "Checkbox Group";
+
+                Checkbox::new("id")
+                    .checked(self.all_state)
+                    .text("Checkall")
+                    .on_click(cx.listener(|this, _v, _window, _cx| {
+                    if this.all_state.selected() {
+                        this.checked_indexes.clear();
+                        this.all_state = false.into();
+                    } else {
+                        this.checked_indexes = vec![0, 1, 2];
+                        this.all_state = true.into();
+                    }
+                }))
+                Divider::new().text("divider")
+
                 CheckboxGroup::new()
-                    .selected_indexes(self.selected_indexes.clone())
+                    .checked_indexes(self.checked_indexes.clone())
                     .children(["One", "Two", "Three"])
-                    .on_change(cx.listener(|this, selected_indexes: &Vec<usize>, _, _| {
-                        println!("{:?}",*selected_indexes);
-                        this.selected_indexes = selected_indexes.clone();
+                    .on_change(cx.listener(|this, checked_indexes: &Vec<usize>, _, _| {
+                        this.change_handler(checked_indexes)
                     }))
             }
 
@@ -58,13 +86,12 @@ impl Render for CheckboxStory {
                 CheckboxGroup::new()
                     .direction_vertical()
                     .disabled(self.disabled)
-                    .selected_indexes(self.selected_indexes.clone())
+                    .checked_indexes(self.checked_indexes.clone())
                     .child(Checkbox::new("one1").text("one1"))
                     .child(Checkbox::new("one2").text("one2"))
                     .child(Checkbox::new("one3").text(Text::new("one3")))
-                    .on_change(cx.listener(|this, selected_indexes: &Vec<usize>, _, _| {
-                        println!("{:?}",*selected_indexes);
-                        this.selected_indexes = selected_indexes.clone();
+                    .on_change(cx.listener(|this, checked_indexes: &Vec<usize>, _, _| {
+                        this.change_handler(checked_indexes)
                     }))
             }
         }
@@ -86,7 +113,8 @@ fn main() {
                     state: false,
                     second_state: false,
                     disabled: true,
-                    selected_indexes: Vec::new(),
+                    checked_indexes: Vec::new(),
+                    all_state: ToggleState::Unselected,
                 })
             },
         )

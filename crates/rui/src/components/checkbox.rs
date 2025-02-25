@@ -165,7 +165,7 @@ impl From<String> for Checkbox {
 pub struct CheckboxGroup {
     checkboxes: Vec<Checkbox>,
     direction: Direction,
-    selected_indexes: Vec<usize>,
+    checked_indexes: Vec<usize>,
     disabled: bool,
     on_change: Option<Rc<dyn Fn(&Vec<usize>, &mut Window, &mut App) + 'static>>,
 }
@@ -175,7 +175,7 @@ impl CheckboxGroup {
         Self {
             on_change: None,
             direction: Direction::Horizontal,
-            selected_indexes: vec![],
+            checked_indexes: vec![],
             disabled: false,
             checkboxes: vec![],
         }
@@ -211,8 +211,8 @@ impl CheckboxGroup {
     }
 
     /// Set the selected index.
-    pub fn selected_indexes(mut self, indexes: Vec<usize>) -> Self {
-        self.selected_indexes = indexes;
+    pub fn checked_indexes(mut self, indexes: Vec<usize>) -> Self {
+        self.checked_indexes = indexes;
         self
     }
 
@@ -239,7 +239,7 @@ impl RenderOnce for CheckboxGroup {
     fn render(self, _window: &mut Window, _cx: &mut App) -> impl IntoElement {
         let on_change = self.on_change;
         let disabled = self.disabled;
-        let selected_indexes = Rc::new(RefCell::new(self.selected_indexes));
+        let checked_indexes = Rc::new(RefCell::new(self.checked_indexes));
 
         let base = if self.direction == Direction::Vertical {
             v_flex()
@@ -247,30 +247,30 @@ impl RenderOnce for CheckboxGroup {
             h_flex().flex_wrap()
         };
 
-        base.gap_3().children(
-            self.checkboxes
-                .into_iter()
-                .enumerate()
-                .map(|(index, checkbox)| {
-                    let selected_indexes = Rc::clone(&selected_indexes);
-                    let checked = selected_indexes.borrow().contains(&index);
+        let children = self
+            .checkboxes
+            .into_iter()
+            .enumerate()
+            .map(|(index, checkbox)| {
+                let checked_indexes = Rc::clone(&checked_indexes);
+                let checked = checked_indexes.borrow().contains(&index);
 
-                    checkbox.disabled(disabled).checked(checked).when_some(
-                        on_change.clone(),
-                        move |this, on_change| {
-                            this.on_click(move |_, window, cx| {
-                                let mut selected_indexes = selected_indexes.borrow_mut();
-                                if let Some(i) = selected_indexes.iter().position(|&i| i == index) {
-                                    selected_indexes.remove(i);
-                                } else {
-                                    selected_indexes.push(index);
-                                }
+                checkbox.disabled(disabled).checked(checked).when_some(
+                    on_change.clone(),
+                    move |this, on_change| {
+                        this.on_click(move |_, window, cx| {
+                            let mut checked_indexes = checked_indexes.borrow_mut();
+                            if let Some(i) = checked_indexes.iter().position(|&i| i == index) {
+                                checked_indexes.remove(i);
+                            } else {
+                                checked_indexes.push(index);
+                            }
 
-                                on_change(&selected_indexes, window, cx);
-                            })
-                        },
-                    )
-                }),
-        )
+                            on_change(&checked_indexes, window, cx);
+                        })
+                    },
+                )
+            });
+        base.gap_3().children(children)
     }
 }
