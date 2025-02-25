@@ -1,6 +1,6 @@
 #![allow(missing_docs)]
 
-use std::sync::Arc;
+use std::rc::Rc;
 
 use crate::prelude::*;
 use crate::Direction;
@@ -12,7 +12,7 @@ pub struct Radio {
     text: Option<Text>,
     checked: bool,
     disabled: bool,
-    on_click: Option<Arc<dyn Fn(&bool, &mut Window, &mut App) + 'static>>,
+    on_click: Option<Box<dyn Fn(&bool, &mut Window, &mut App) + 'static>>,
 }
 
 impl Radio {
@@ -42,7 +42,7 @@ impl Radio {
     }
 
     pub fn on_click(mut self, on_click: impl Fn(&bool, &mut Window, &mut App) + 'static) -> Self {
-        self.on_click = Some(Arc::new(on_click));
+        self.on_click = Some(Box::new(on_click));
         self
     }
 }
@@ -124,7 +124,7 @@ pub struct RadioGroup {
     direction: Direction,
     selected_index: Option<usize>,
     disabled: bool,
-    on_change: Option<Arc<dyn Fn(&usize, &mut Window, &mut App) + 'static>>,
+    on_change: Option<Rc<dyn Fn(&usize, &mut Window, &mut App) + 'static>>,
 }
 
 impl RadioGroup {
@@ -160,7 +160,7 @@ impl RadioGroup {
 
     /// Listen to the change event.
     pub fn on_change(mut self, handler: impl Fn(&usize, &mut Window, &mut App) + 'static) -> Self {
-        self.on_change = Some(Arc::new(handler));
+        self.on_change = Some(Rc::new(handler));
         self
     }
 
