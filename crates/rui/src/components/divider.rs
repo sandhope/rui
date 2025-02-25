@@ -1,40 +1,36 @@
-use gpui::{
-    div, prelude::FluentBuilder as _, px, Axis, Div, Hsla, IntoElement, ParentElement, RenderOnce,
-    SharedString, Styled,
-};
-
-use crate::ActiveTheme;
+use crate::{prelude::*, Direction, Text};
+use gpui::px;
 
 /// A divider that can be either vertical or horizontal.
 #[derive(IntoElement)]
 pub struct Divider {
     base: Div,
-    label: Option<SharedString>,
-    axis: Axis,
+    text: Option<Text>,
+    direction: Direction,
     color: Option<Hsla>,
 }
 
 impl Divider {
+    pub fn new() -> Self {
+        Self {
+            base: div().w_full(),
+            direction: Direction::Horizontal,
+            text: None,
+            color: None,
+        }
+    }
+
     pub fn vertical() -> Self {
         Self {
             base: div().h_full(),
-            axis: Axis::Vertical,
-            label: None,
+            direction: Direction::Vertical,
+            text: None,
             color: None,
         }
     }
 
-    pub fn horizontal() -> Self {
-        Self {
-            base: div().w_full(),
-            axis: Axis::Horizontal,
-            label: None,
-            color: None,
-        }
-    }
-
-    pub fn label(mut self, label: impl Into<SharedString>) -> Self {
-        self.label = Some(label.into());
+    pub fn text(mut self, text: impl Into<Text>) -> Self {
+        self.text = Some(text.into());
         self
     }
 
@@ -60,13 +56,13 @@ impl RenderOnce for Divider {
             .child(
                 div()
                     .absolute()
-                    .map(|this| match self.axis {
-                        Axis::Vertical => this.w(px(1.)).h_full(),
-                        Axis::Horizontal => this.h(px(1.)).w_full(),
+                    .map(|this| match self.direction {
+                        Direction::Vertical => this.w(px(1.)).h_full(),
+                        Direction::Horizontal => this.h(px(1.)).w_full(),
                     })
-                    .bg(self.color.unwrap_or(cx.theme().colors.border)),
+                    .bg(self.color.unwrap_or(cx.theme().colors.border_variant)),
             )
-            .when_some(self.label, |this, label| {
+            .when_some(self.text, |this, text| {
                 this.child(
                     div()
                         .px_2()
@@ -74,8 +70,7 @@ impl RenderOnce for Divider {
                         .mx_auto()
                         .text_xs()
                         .bg(cx.theme().colors.bg)
-                        .text_color(cx.theme().colors.text)
-                        .child(label),
+                        .child(text),
                 )
             })
     }
