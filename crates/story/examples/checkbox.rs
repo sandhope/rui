@@ -1,18 +1,19 @@
 use gpui::{px, size, Application, Bounds, Context, WindowBounds, WindowOptions};
 
-use rui::{prelude::*, Assets, Checkbox, Root, Section, Text, ToggleState};
+use rui::{prelude::*, Assets, Checkbox, CheckboxGroup, Root, Section, Text, ToggleState};
 
 struct CheckboxStory {
     state: bool,
     second_state: bool,
     disabled: bool,
+    selected_indexes: Vec<usize>,
 }
 
 impl Render for CheckboxStory {
     fn render(&mut self, _window: &mut Window, cx: &mut Context<Self>) -> impl IntoElement {
         Root! {
             Section! {
-                "switch";
+                "Checkbox";
                 Checkbox::new("id")
                     .checked(self.state)
                     .text("change disabled")
@@ -39,7 +40,33 @@ impl Render for CheckboxStory {
                         cx.theme_mut().toggle_builtin_appearance(window);
                     }))
             }
-            .gap_1()
+            //.gap_1()
+
+            Section! {
+                "Checkbox Group";
+                CheckboxGroup::new()
+                    .selected_indexes(self.selected_indexes.clone())
+                    .children(["One", "Two", "Three"])
+                    .on_change(cx.listener(|this, selected_indexes: &Vec<usize>, _, _| {
+                        println!("{:?}",*selected_indexes);
+                        this.selected_indexes = selected_indexes.clone();
+                    }))
+            }
+
+            Section! {
+                "Checkbox Group Vertical";
+                CheckboxGroup::new()
+                    .direction_vertical()
+                    .disabled(self.disabled)
+                    .selected_indexes(self.selected_indexes.clone())
+                    .child(Checkbox::new("one1").text("one1"))
+                    .child(Checkbox::new("one2").text("one2"))
+                    .child(Checkbox::new("one3").text(Text::new("one3")))
+                    .on_change(cx.listener(|this, selected_indexes: &Vec<usize>, _, _| {
+                        this.selected_indexes = selected_indexes.clone();
+                        println!("{:?} {:?}",*selected_indexes,this.selected_indexes);
+                    }))
+            }
         }
         .px_4()
     }
@@ -59,6 +86,7 @@ fn main() {
                     state: false,
                     second_state: false,
                     disabled: true,
+                    selected_indexes: Vec::new(),
                 })
             },
         )
