@@ -30,8 +30,8 @@ impl Render for CheckboxStory {
                         this.second_state = *v;
                     }))
 
-                Checkbox::new("id").checked(true)
-                Checkbox::new("id").checked(ToggleState::Indeterminate)
+                Checkbox::new("id").checked(true).text("checked")
+                Checkbox::new("id").checked(ToggleState::Indeterminate).text("Indeterminate")
 
                 Checkbox::new("id")
                     .checked(cx.theme().appearance.is_light())
@@ -40,7 +40,7 @@ impl Render for CheckboxStory {
                         cx.theme_mut().toggle_builtin_appearance(window);
                     }))
             }
-            //.gap_1()
+            .gap_1()
 
             Section! {
                 "Checkbox Group";
@@ -63,8 +63,8 @@ impl Render for CheckboxStory {
                     .child(Checkbox::new("one2").text("one2"))
                     .child(Checkbox::new("one3").text(Text::new("one3")))
                     .on_change(cx.listener(|this, selected_indexes: &Vec<usize>, _, _| {
+                        println!("{:?}",*selected_indexes);
                         this.selected_indexes = selected_indexes.clone();
-                        println!("{:?} {:?}",*selected_indexes,this.selected_indexes);
                     }))
             }
         }

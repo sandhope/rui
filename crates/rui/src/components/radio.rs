@@ -201,20 +201,18 @@ impl RenderOnce for RadioGroup {
             h_flex().flex_wrap()
         };
 
-        div().flex().child(
-            base.gap_3()
-                .children(self.radios.into_iter().enumerate().map(|(index, radio)| {
-                    let checked = selected_index == Some(index);
+        base.gap_3()
+            .children(self.radios.into_iter().enumerate().map(|(index, radio)| {
+                let checked = selected_index == Some(index);
 
-                    radio.disabled(disabled).checked(checked).when_some(
-                        on_change.clone(),
-                        |this, on_change| {
-                            this.on_click(move |_, window, cx| {
-                                on_change(&index, window, cx);
-                            })
-                        },
-                    )
-                })),
-        )
+                radio.disabled(disabled).checked(checked).when_some(
+                    on_change.clone(),
+                    |this, on_change| {
+                        this.on_click(move |_, window, cx| {
+                            on_change(&index, window, cx);
+                        })
+                    },
+                )
+            }))
     }
 }

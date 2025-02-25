@@ -19,14 +19,16 @@ Here are some of the components currently available:
   - **`Text`**: A component for displaying text.
   - **`Label`**: A component that combines `Text` and an `Icon`.
   - **`Card`**: A bordered card component.
+  - **`Divider`**: Divider component.
 
 - **Interactive Components:**
   - **`Button`**: A clickable button component. __todo__
   - **`Input`**: A component for user input. __todo__
-  - **`Switch`**: A toggle switch component. __todo__
+  - **`Switch`**: A toggle switch component.
   - **`Radio`**: A component for toggling between selected and unselected states.
   - **`RadioGroup`**: A set of radio buttons allowing only one to be selected at a time.
-  - **`Checkbox`**: A checkbox component for selecting multiple options. __todo__
+  - **`Checkbox`**: A checkbox component for selecting multiple options.
+  - **`CheckboxGroup`**: A component that manages multiple Checkbox elements for selecting several options.
   - **`Link`**: A hyperlink component for navigation. __todo__
   - **`Slider`**: A component for selecting a value from a range. __todo__
 

@@ -1,5 +1,6 @@
 use crate::{prelude::*, Direction, Icon, IconName, IconSize, Text};
 use gpui::{px, AnyView, CursorStyle};
+use std::cell::RefCell;
 use std::rc::Rc;
 
 /// # Checkbox
@@ -238,6 +239,7 @@ impl RenderOnce for CheckboxGroup {
     fn render(self, _window: &mut Window, _cx: &mut App) -> impl IntoElement {
         let on_change = self.on_change;
         let disabled = self.disabled;
+        let selected_indexes = Rc::new(RefCell::new(self.selected_indexes));
 
         let base = if self.direction == Direction::Vertical {
             v_flex()
@@ -245,35 +247,30 @@ impl RenderOnce for CheckboxGroup {
             h_flex().flex_wrap()
         };
 
-        div().flex().child(
-            base.gap_3()
-                .children(
-                    self.checkboxes
-                        .into_iter()
-                        .enumerate()
-                        .map(|(index, checkbox)| {
-                            let selected_indexes = self.selected_indexes.clone();
-                            let checked = selected_indexes.contains(&index);
+        base.gap_3().children(
+            self.checkboxes
+                .into_iter()
+                .enumerate()
+                .map(|(index, checkbox)| {
+                    let selected_indexes = Rc::clone(&selected_indexes);
+                    let checked = selected_indexes.borrow().contains(&index);
 
-                            checkbox.disabled(disabled).checked(checked).when_some(
-                                on_change.clone(),
-                                |this, on_change| {
-                                    this.on_click(move |_, window, cx| {
-                                        let mut selected_indexes = selected_indexes.clone();
-                                        if let Some(i) =
-                                            selected_indexes.iter().position(|&i| i == index)
-                                        {
-                                            selected_indexes.remove(i);
-                                        } else {
-                                            selected_indexes.push(index);
-                                        }
+                    checkbox.disabled(disabled).checked(checked).when_some(
+                        on_change.clone(),
+                        move |this, on_change| {
+                            this.on_click(move |_, window, cx| {
+                                let mut selected_indexes = selected_indexes.borrow_mut();
+                                if let Some(i) = selected_indexes.iter().position(|&i| i == index) {
+                                    selected_indexes.remove(i);
+                                } else {
+                                    selected_indexes.push(index);
+                                }
 
-                                        on_change(&selected_indexes, window, cx);
-                                    })
-                                },
-                            )
-                        }),
-                ),
+                                on_change(&selected_indexes, window, cx);
+                            })
+                        },
+                    )
+                }),
         )
     }
 }

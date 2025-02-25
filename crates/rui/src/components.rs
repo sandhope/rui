@@ -1,6 +1,7 @@
 mod button;
 mod card;
 mod checkbox;
+mod divider;
 mod icon;
 mod label;
 mod radio;
@@ -13,6 +14,7 @@ mod text;
 pub use button::*;
 pub use card::*;
 pub use checkbox::*;
+pub use divider::*;
 pub use icon::*;
 pub use label::*;
 pub use radio::*;
