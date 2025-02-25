@@ -73,7 +73,7 @@ impl Render for CheckboxStory {
                 }))
                 Divider::new().text("divider")
 
-                CheckboxGroup::new("id")
+                CheckboxGroup::new()
                     .checked_indexes(self.checked_indexes.clone())
                     .children(["One", "Two", "Three"])
                     .on_change(cx.listener(|this, checked_indexes: &Vec<usize>, _, _| {
@@ -83,7 +83,7 @@ impl Render for CheckboxStory {
 
             Section! {
                 "Checkbox Group Vertical";
-                CheckboxGroup::new("id")
+                CheckboxGroup::new()
                     .direction_vertical()
                     .disabled(self.disabled)
                     .checked_indexes(self.checked_indexes.clone())
