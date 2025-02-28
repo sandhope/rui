@@ -1,3 +1,4 @@
+mod avatar;
 mod button;
 mod card;
 mod checkbox;
@@ -11,6 +12,7 @@ mod stack;
 mod switch;
 mod text;
 
+pub use avatar::*;
 pub use button::*;
 pub use card::*;
 pub use checkbox::*;

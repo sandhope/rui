@@ -20,6 +20,7 @@ Here are some of the components currently available:
   - **`Label`**: A component that combines `Text` and an `Icon`.
   - **`Card`**: A bordered card component.
   - **`Divider`**: Divider component.
+  - **`Avatar`**: An element that renders a user avatar with customizable appearance options.
 
 - **Interactive Components:**
   - **`Button`**: A clickable button component. __todo__
