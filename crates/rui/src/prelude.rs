@@ -4,12 +4,9 @@ pub use gpui::{
     Styled, Window,
 };
 
-pub use crate::styles::{rems_from_px, vh, vw, PlatformStyle};
 pub use crate::traits::styled_ext::*;
 pub use crate::traits::toggleable::*;
-pub use crate::ActiveTheme;
-pub use crate::Card;
-pub use crate::RootView;
-pub use crate::Size;
-pub use crate::Theme;
-pub use crate::{h_flex, v_flex, Col, Row};
+pub use crate::{h_flex, v_flex, Col, Root, Row, Section};
+pub use crate::{rems_from_px, vh, vw, PlatformStyle, Size};
+pub use crate::{ActiveTheme, Assets, Theme};
+pub use crate::{Card, RootView};

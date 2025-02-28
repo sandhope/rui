@@ -1,6 +1,6 @@
 use gpui::{px, size, Application, Bounds, Context, WindowBounds, WindowOptions};
 
-use rui::{prelude::*, Assets, Checkbox, CheckboxGroup, Divider, Root, Section, Text, ToggleState};
+use rui::{prelude::*, Checkbox, CheckboxGroup, Divider, Text, ToggleState};
 
 struct CheckboxStory {
     state: bool,
@@ -71,7 +71,8 @@ impl Render for CheckboxStory {
                         this.all_state = true.into();
                     }
                 }))
-                Divider::new().text("divider")
+
+                Divider::new().py_2()
 
                 CheckboxGroup::new()
                     .checked_indexes(self.checked_indexes.clone())

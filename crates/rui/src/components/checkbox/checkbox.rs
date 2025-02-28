@@ -1,5 +1,5 @@
 use crate::{prelude::*, Icon, IconName, IconSize, Text};
-use gpui::{px, AnyView, CursorStyle};
+use gpui::{px, AnyView};
 
 /// # Checkbox
 ///
@@ -9,6 +9,7 @@ use gpui::{px, AnyView, CursorStyle};
 #[derive(IntoElement)]
 pub struct Checkbox {
     id: ElementId,
+    base: Div,
     state: ToggleState,
     disabled: bool,
     on_click: Option<Box<dyn Fn(&bool, &mut Window, &mut App) + 'static>>,
@@ -21,6 +22,7 @@ impl Checkbox {
     pub fn new(id: impl Into<ElementId>) -> Self {
         Self {
             id: id.into(),
+            base: div().flex().flex_row().items_center(),
             state: ToggleState::default(),
             disabled: false,
             on_click: None,
@@ -56,6 +58,12 @@ impl Checkbox {
     pub fn text(mut self, text: impl Into<Text>) -> Self {
         self.text = Some(text.into());
         self
+    }
+}
+
+impl Styled for Checkbox {
+    fn style(&mut self) -> &mut gpui::StyleRefinement {
+        self.base.style()
     }
 }
 
@@ -109,9 +117,7 @@ impl RenderOnce for Checkbox {
                     .bg(bg_color)
                     .border_1()
                     .border_color(border_color)
-                    .when(self.disabled, |this| {
-                        this.cursor(CursorStyle::OperationNotAllowed)
-                    })
+                    .when(self.disabled, |this| this.cursor_not_allowed())
                     .when(!self.disabled, |this| {
                         this.group_hover(group_id.clone(), |el| {
                             el.border_color(cx.theme().colors.element_hover)
@@ -120,10 +126,10 @@ impl RenderOnce for Checkbox {
                     .children(icon),
             );
 
-        h_flex()
+        self.base
             .id(self.id)
-            .gap(rems_from_px(6.0))
             .cursor_pointer()
+            .gap(rems_from_px(6.0))
             .child(checkbox)
             .when_some(
                 self.on_click.filter(|_| !self.disabled),
