@@ -57,6 +57,11 @@ impl Avatar {
         self
     }
 
+    pub fn square(mut self) -> Self {
+        self.shape = AvatarShape::Square;
+        self
+    }
+
     /// Applies a grayscale filter to the avatar image.
     ///
     /// # Examples

@@ -12,3 +12,4 @@ gpui.workspace = true
 rui.workspace = true
 rui_macros.workspace = true
 strum = { workspace = true, features = ["derive"] }
+reqwest_client = { git = "https://github.com/zed-industries/zed" }
