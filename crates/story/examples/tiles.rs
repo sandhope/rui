@@ -18,7 +18,7 @@ impl Render for Tiles {
             }
             .gap_4()
 
-            Button::new("btn_id", "Click Me").on_click(|_event, _cx, _app| {
+            Button::new("btn_id").text("Click Me").on_click(|_event, _cx, _app| {
                 println!("clicked");
             })
         }

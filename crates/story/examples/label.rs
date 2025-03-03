@@ -60,7 +60,7 @@ impl Render for LabelStory {
                 Row!{
                     Text::new("9,182,1 USD").text_2xl().masked(self.masked)
 
-                    Button::new("button_id", "btn-mask")
+                    Button::new("button_id").text("Mask")
                     .on_click(cx.listener(|this, _, _window,_cx| {
                         this.masked = !this.masked;
                     }))

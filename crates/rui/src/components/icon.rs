@@ -1,6 +1,6 @@
 use gpui::{img, svg, Hsla, Rems, Transformation};
 
-use crate::prelude::*;
+use crate::{prelude::*, Size};
 use rui_macros::DerivePathStr;
 use std::path::{Path, PathBuf};
 use std::sync::Arc;
@@ -22,6 +22,18 @@ pub enum IconSize {
     /// 48px
     XLarge,
     Custom(Rems),
+}
+
+impl From<Size> for IconSize {
+    fn from(size: Size) -> Self {
+        match size {
+            Size::XSmall => IconSize::XSmall,
+            Size::Small => IconSize::Small,
+            Size::Medium => IconSize::Medium,
+            Size::Large => IconSize::Large,
+            Size::Custom(size) => IconSize::Custom(size),
+        }
+    }
 }
 
 impl IconSize {
@@ -103,10 +115,10 @@ impl Icon {
     /// Sets a custom size for the icon, in [`Rems`].
     ///
     /// Not to be exposed outside of the `ui` crate.
-    // pub(crate) fn custom_size(mut self, size: Rems) -> Self {
-    //     self.size = size;
-    //     self
-    // }
+    pub(crate) fn custom_size(mut self, size: Rems) -> Self {
+        self.size = size;
+        self
+    }
 
     pub fn transform(mut self, transformation: Transformation) -> Self {
         self.transformation = transformation;
