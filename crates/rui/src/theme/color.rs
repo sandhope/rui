@@ -1,4 +1,4 @@
-use gpui::{hsla, Hsla};
+use gpui::Hsla;
 
 use crate::hsl;
 
@@ -6,7 +6,13 @@ use super::Appearance;
 
 #[derive(Debug, Clone, Copy)]
 pub struct ThemeColors {
+    pub default: Hsla,
     pub primary: Hsla,
+    pub secondary: Hsla,
+    pub info: Hsla,
+    pub success: Hsla,
+    pub warning: Hsla,
+    pub danger: Hsla,
     pub primary_disabled: Hsla,
     /// Border color. Used for most borders, is usually a high contrast color.
     pub border: Hsla,
@@ -29,6 +35,7 @@ pub struct ThemeColors {
 
     pub text: Hsla,
     pub bg: Hsla,
+    pub fg: Hsla,
     pub switch_checked_bg: Hsla,
     pub switch_checked_hover_bg: Hsla,
     pub switch_unchecked_bg: Hsla,
@@ -39,15 +46,22 @@ pub struct ThemeColors {
 impl ThemeColors {
     pub fn light() -> Self {
         Self {
-            primary: hsl(216., 100., 49.),
-            primary_disabled: hsla(208. / 360., 0.97, 0.85, 1.0),
+            default: hsl(240., 6., 10.),
+            primary: hsl(212., 100., 47.),
+            secondary: hsl(270., 67., 47.),
+            info: hsl(240., 5., 84.),
+            success: hsl(146., 79., 44.),
+            warning: hsl(37., 91., 55.),
+            danger: hsl(339., 90., 51.),
+            primary_disabled: hsl(208., 97., 85.),
             border: hsl(210., 1., 67.),
             border_variant: hsl(240.0, 5.9, 90.0),
             icon_accent: hsl(216., 100., 49.),
             element_bg: hsl(240., 2., 92.),
             element_hover: hsl(216., 100., 49.),
             text: hsl(214., 11., 12.),
-            bg: hsla(0., 0., 1., 1.),
+            bg: hsl(0., 0., 100.),
+            fg: hsl(0., 0., 0.),
             switch_checked_bg: hsl(126., 50., 47.),
             switch_checked_hover_bg: hsl(127., 51., 38.),
             switch_unchecked_bg: hsl(240., 5., 85.),
@@ -57,15 +71,22 @@ impl ThemeColors {
 
     pub fn dark() -> Self {
         Self {
-            primary: hsla(210.0 / 360., 1.0, 0.66, 1.),
-            primary_disabled: hsla(214. / 360., 0.73, 0.34, 1.),
+            default: hsl(0., 0., 90.),
+            primary: hsl(210.0, 100., 66.),
+            secondary: hsl(270., 67., 47.),
+            info: hsl(240., 5., 84.),
+            success: hsl(146., 79., 44.),
+            warning: hsl(37., 91., 55.),
+            danger: hsl(339., 90., 51.),
+            primary_disabled: hsl(214., 73., 34.),
             border: hsl(0., 0., 98.),
             border_variant: hsl(240.0, 3.7, 16.9),
             icon_accent: hsl(210., 100., 66.),
-            element_bg: hsla(0., 0., 1., 1.),
+            element_bg: hsl(0., 0., 100.),
             element_hover: hsl(210., 100., 66.),
             text: hsl(0., 0., 98.),
-            bg: hsla(0., 0., 0., 1.),
+            bg: hsl(0., 0., 0.),
+            fg: hsl(0., 0., 100.),
             switch_checked_bg: hsl(126., 50., 47.),
             switch_checked_hover_bg: hsl(127., 51., 38.),
             switch_unchecked_bg: hsl(240., 5., 85.),

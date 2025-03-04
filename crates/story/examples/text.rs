@@ -1,13 +1,11 @@
 use gpui::{px, rems, size, Application, Bounds, Context, FontWeight, WindowBounds, WindowOptions};
 
-use rui::{prelude::*, Button, Col, Root, Row, Section, Text};
+use rui::{prelude::*, Root, Row, Section, Text};
 
-struct TextStory {
-    masked: bool,
-}
+struct TextStory;
 
 impl Render for TextStory {
-    fn render(&mut self, _window: &mut Window, cx: &mut Context<Self>) -> impl IntoElement {
+    fn render(&mut self, _window: &mut Window, _cx: &mut Context<Self>) -> impl IntoElement {
         Root! {
             Section! {
                 "label";
@@ -30,25 +28,8 @@ impl Render for TextStory {
                         .line_height(rems(1.8)),
                 )
             }
-
-            Section! {
-                "Maksed Text";
-                Col! {
-                    Row!{
-                        Text::new("9,182,1 USD").text_2xl().masked(self.masked)
-
-                        Button::new("button_id").text("btn-mask")
-                        .on_click(cx.listener(|this, _, _window,_cx| {
-                            this.masked = !this.masked;
-                        }))
-                    }
-
-                    Text::new("500 USD").text_xl().masked(self.masked)
-                }
-                .w_full()
-                .gap_4()
-            }
         }
+        .px_4()
         .text_xl()
     }
 }
@@ -62,7 +43,7 @@ fn main() {
                 window_bounds: Some(WindowBounds::Windowed(bounds)),
                 ..Default::default()
             },
-            |_, cx| cx.new(|_| TextStory { masked: false }),
+            |_, cx| cx.new(|_| TextStory {}),
         )
         .unwrap();
     });

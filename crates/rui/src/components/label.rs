@@ -18,11 +18,6 @@ impl Label {
         }
     }
 
-    pub fn masked(mut self, masked: bool) -> Self {
-        self.text = self.text.masked(masked);
-        self
-    }
-
     pub fn icon_right(mut self) -> Self {
         self.icon_right = true;
         self

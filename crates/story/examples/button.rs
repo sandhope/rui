@@ -1,25 +1,45 @@
-use gpui::{px, size, Application, Bounds, Context, WindowBounds, WindowOptions};
+use gpui::{px, size, Application, Bounds, ClickEvent, Context, WindowBounds, WindowOptions};
 
 use rui::{prelude::*, Button, ButtonGroup, Root, Theme};
 
 struct ButtonStory;
 
+impl ButtonStory {
+    fn on_click(e: &ClickEvent, _window: &mut Window, _cx: &mut App) {
+        println!("Button clicked! {:?}", e);
+    }
+}
+
 impl Render for ButtonStory {
     fn render(&mut self, _window: &mut Window, _cx: &mut Context<Self>) -> impl IntoElement {
         Root! {
             Row! {
-                Button::new("id")
-                    .text("Click me")
-                    .on_click(|_,_,_| println!("Button clicked!"))
+                Button::new("id").text("Default")
+                Button::new("id").text("Primary").primary()
+                Button::new("id").text("Secondary").secondary()
+                Button::new("id").text("Info").info()
+                Button::new("id").text("Success").success()
+                Button::new("id").text("Warning").warning()
+                Button::new("id").text("Danger").danger()
             }
+            .gap_2()
+
+            Row! {
+                Button::new("id").text("XSmall").size(Size::XSmall)
+                Button::new("id").text("Small").size(Size::Small)
+                Button::new("id").text("Medium")
+                Button::new("id").text("Large").size(Size::Large)
+            }
+            .gap_2()
+
+            ButtonGroup::new().children(vec!["One","Two","Three"]).on_click(|v,_,_| println!("Button clicked!{}",v))
 
             Button::new("id")
                 .text("Click me")
-                .on_click(|_,_,_| println!("Button clicked!"))
-
-            ButtonGroup::new().children(vec!["One","Two","Three"]).on_click(|v,_,_| println!("Button clicked!{}",v))
+                .on_click(Self::on_click)
         }
         .p_4()
+        .gap_1()
     }
 }
 

@@ -1,15 +1,11 @@
 use gpui::{px, rems, size, Application, Bounds, Context, FontWeight, WindowBounds, WindowOptions};
 
-use rui::{
-    prelude::*, Assets, Button, Col, Icon, IconName, IconSize, Label, Root, Row, Section, Text,
-};
+use rui::{prelude::*, Assets, Col, Icon, IconName, IconSize, Label, Root, Row, Section, Text};
 
-struct LabelStory {
-    masked: bool,
-}
+struct LabelStory;
 
 impl Render for LabelStory {
-    fn render(&mut self, _window: &mut Window, cx: &mut Context<Self>) -> impl IntoElement {
+    fn render(&mut self, _window: &mut Window, _cx: &mut Context<Self>) -> impl IntoElement {
         Root! {
             Section! {
                 "Label row";
@@ -54,23 +50,9 @@ impl Render for LabelStory {
                 }
                 .gap_3()
             }
-
-            Section! {
-                "Maksed Label";
-                Row!{
-                    Text::new("9,182,1 USD").text_2xl().masked(self.masked)
-
-                    Button::new("button_id").text("Mask")
-                    .on_click(cx.listener(|this, _, _window,_cx| {
-                        this.masked = !this.masked;
-                    }))
-                }
-
-                Text::new("500 USD").text_xl().masked(self.masked)
-            }
         }
         .font_family(".SystemUIFont")
-        .px_8()
+        .px_4()
     }
 }
 
@@ -83,7 +65,7 @@ fn main() {
                 window_bounds: Some(WindowBounds::Windowed(bounds)),
                 ..Default::default()
             },
-            |_, cx| cx.new(|_| LabelStory { masked: true }),
+            |_, cx| cx.new(|_| LabelStory {}),
         )
         .unwrap();
     });

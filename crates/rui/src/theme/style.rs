@@ -1,4 +1,4 @@
-use gpui::{px, Hsla, Pixels, SharedString};
+use gpui::{px, Pixels, SharedString};
 
 use crate::ScrollbarShow;
 
@@ -8,7 +8,6 @@ pub struct ThemeStyles {
     pub font_size: Pixels,
     pub radius: Pixels,
     pub shadow: bool,
-    pub transparent: Hsla,
     /// Show the scrollbar mode, default: Scrolling
     pub scrollbar_show: ScrollbarShow,
     /// Tile grid size, default is 4px.
@@ -20,7 +19,6 @@ pub struct ThemeStyles {
 impl Default for ThemeStyles {
     fn default() -> Self {
         Self {
-            transparent: Hsla::transparent_black(),
             font_size: px(16.),
             font_family: ".SystemUIFont".into(),
             radius: px(4.),
