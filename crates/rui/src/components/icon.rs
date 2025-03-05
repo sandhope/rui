@@ -255,6 +255,7 @@ pub enum IconName {
     Link,
     ListTree,
     ListX,
+    Loading,
     LockOutlined,
     MagnifyingGlass,
     MailOpen,

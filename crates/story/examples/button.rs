@@ -1,12 +1,15 @@
 use gpui::{px, size, Application, Bounds, ClickEvent, Context, WindowBounds, WindowOptions};
 
-use rui::{prelude::*, Button, ButtonGroup, ButtonVariant, Color, Root, Text, Theme};
+use rui::{
+    prelude::*, Button, ButtonGroup, ButtonVariant, Color, Icon, IconName, IconSize, Root, Text,
+    Theme,
+};
 
 struct ButtonStory;
 
 impl ButtonStory {
-    fn on_click(e: &ClickEvent, _window: &mut Window, _cx: &mut App) {
-        println!("Button clicked! {:?}", e);
+    fn on_click(_e: &ClickEvent, window: &mut Window, cx: &mut App) {
+        cx.theme_mut().toggle_builtin_appearance(window);
     }
 }
 
@@ -60,6 +63,12 @@ impl Render for ButtonStory {
                 Button::new("id").text("Small").size(Size::Small)
                 Button::new("id").text("Medium")
                 Button::new("id").text("Large").size(Size::Large)
+
+                Button::new("id").icon(IconName::Check)
+                Button::new("id").text("icon").icon(IconName::Mic)
+                Button::new("id").text("icon_right").icon(Icon::new(IconName::Mic).size(IconSize::Large))
+                Button::new("id").text("icon_right").icon(IconName::Mic).icon_right()
+                Button::new("id").text("Loading").loading(true)
             }
             .gap_2()
 
@@ -67,7 +76,6 @@ impl Render for ButtonStory {
 
             Button::new("id")
                 .text("Click me")
-                .soft()
                 .primary()
                 .on_click(Self::on_click)
         }
@@ -77,7 +85,7 @@ impl Render for ButtonStory {
 }
 
 fn main() {
-    Application::new().run(|cx: &mut App| {
+    Application::new().with_assets(Assets).run(|cx: &mut App| {
         Theme::init(cx, None, None);
         let bounds = Bounds::centered(None, size(px(1024.), px(700.0)), cx);
         cx.open_window(

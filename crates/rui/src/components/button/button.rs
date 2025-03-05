@@ -1,5 +1,9 @@
-use crate::{prelude::*, Color, Icon, Size};
-use gpui::{AnyElement, AnyView, ClickEvent, ElementId, MouseButton};
+use crate::{prelude::*, Color, Icon, IconName, Size};
+use gpui::{
+    linear, percentage, Animation, AnimationExt as _, AnyElement, AnyView, ClickEvent, ElementId,
+    MouseButton, Transformation,
+};
+use std::time::Duration;
 
 #[derive(IntoElement)]
 pub struct Button {
@@ -7,8 +11,10 @@ pub struct Button {
     id: ElementId,
     text: Option<SharedString>,
     icon: Option<Icon>,
+    icon_right: bool,
     size: Size,
     disabled: bool,
+    loading: bool,
     tooltip: Option<Box<dyn Fn(&mut Window, &mut App) -> AnyView>>,
     on_click: Option<Box<dyn Fn(&ClickEvent, &mut Window, &mut App) + 'static>>,
     children: Vec<AnyElement>,
@@ -32,8 +38,10 @@ impl Button {
             id: id.into(),
             text: None,
             icon: None,
+            icon_right: false,
             size: Size::default(),
             disabled: false,
+            loading: false,
             on_click: None,
             tooltip: None,
             children: Vec::new(),
@@ -52,6 +60,11 @@ impl Button {
         self
     }
 
+    pub fn icon_right(mut self) -> Self {
+        self.icon_right = true;
+        self
+    }
+
     pub fn size(mut self, size: Size) -> Self {
         self.size = size;
         self
@@ -59,6 +72,11 @@ impl Button {
 
     pub fn disabled(mut self, disabled: bool) -> Self {
         self.disabled = disabled;
+        self
+    }
+
+    pub fn loading(mut self, loading: bool) -> Self {
+        self.loading = loading;
         self
     }
 
@@ -140,6 +158,19 @@ impl RenderOnce for Button {
         let outline_color = color.opacity(0.8);
         let soft_color = color.soft();
         // let soft_color = color.opacity(0.3);
+        let icon_color = match self.variant {
+            ButtonVariant::Solid => bg,
+            _ => color,
+        };
+        let loading_icon = Icon::new(IconName::Loading)
+            .color(icon_color)
+            .with_animation(
+                "loading",
+                Animation::new(Duration::from_secs(1))
+                    .repeat()
+                    .with_easing(linear),
+                |this, delta| this.transform(Transformation::rotate(percentage(delta))),
+            );
 
         self.base
             .flex()
@@ -149,7 +180,7 @@ impl RenderOnce for Button {
             .items_center()
             .text_center()
             .overflow_hidden()
-            .gap(rems_from_px(4.))
+            .gap_2()
             .rounded_md()
             .border_1()
             .map(|this| match self.variant {
@@ -159,12 +190,24 @@ impl RenderOnce for Button {
                 ButtonVariant::Ghost => this.text_color(color),
                 ButtonVariant::Plain => this.text_color(color),
             })
-            .map(|this| match self.size {
-                Size::XSmall => this.h_7().px_2p5(),
-                Size::Small => this.h_8().px_3p5(),
-                Size::Medium => this.h_9().px_4(),
-                Size::Large => this.h_10().px_5(),
-                Size::Custom(size) => this.w(size).h(size * 0.1 + rems(1.5)),
+            .map(|this| {
+                if self.text.is_some() {
+                    match self.size {
+                        Size::XSmall => this.h_7().px_2p5(),
+                        Size::Small => this.h_8().px_3p5(),
+                        Size::Medium => this.h_9().px_4(),
+                        Size::Large => this.h_10().px_5(),
+                        Size::Custom(size) => this.w(size).h(size * 0.1 + rems(1.5)),
+                    }
+                } else {
+                    match self.size {
+                        Size::XSmall => this.size_7(),
+                        Size::Small => this.size_8(),
+                        Size::Medium => this.size_9(),
+                        Size::Large => this.size_10(),
+                        Size::Custom(size) => this.size(size),
+                    }
+                }
             })
             .when(self.disabled, |this| this.cursor_not_allowed())
             .when(!self.disabled, |this| {
@@ -191,8 +234,27 @@ impl RenderOnce for Button {
             .when_some(self.tooltip, |this, tooltip| {
                 this.tooltip(move |window, cx| tooltip(window, cx))
             })
-            .when_some(self.icon, |this, icon| this.child(icon))
-            .when_some(self.text, |this, text| this.child(text))
+            .when(self.loading, |this| {
+                this.child(loading_icon)
+                    .when_some(self.text.clone(), |this, text| this.child(text))
+            })
+            .when(!self.loading, |this| {
+                // this.when(self.icon_right, |this| {
+                //     this.when_some(self.text.clone(), |this, text| this.child(text))
+                // })
+                // .when_some(self.icon, |this, icon| this.child(icon.color(icon_color)))
+                // .when(!self.icon_right, |this| {
+                //     this.when_some(self.text, |this, text| this.child(text))
+                // })
+                this.map(|this| match self.icon_right {
+                    true => this
+                        .when_some(self.text, |this, text| this.child(text))
+                        .when_some(self.icon, |this, icon| this.child(icon.color(icon_color))),
+                    false => this
+                        .when_some(self.icon, |this, icon| this.child(icon.color(icon_color)))
+                        .when_some(self.text, |this, text| this.child(text)),
+                })
+            })
             .children(self.children)
     }
 }
