@@ -8,7 +8,6 @@ pub enum Color {
     Default,
     Primary,
     Secondary,
-    Info,
     Success,
     Warning,
     Danger,
@@ -17,12 +16,11 @@ pub enum Color {
 
 impl Color {
     /// Returns the Color's HSLA value.
-    pub fn color(&self, cx: &App) -> Hsla {
+    pub fn hsla(&self, cx: &App) -> Hsla {
         match self {
             Color::Default => cx.theme().colors.text,
             Color::Primary => cx.theme().colors.primary,
             Color::Secondary => cx.theme().colors.secondary,
-            Color::Info => cx.theme().colors.info,
             Color::Success => cx.theme().colors.success,
             Color::Warning => cx.theme().colors.warning,
             Color::Danger => cx.theme().colors.danger,

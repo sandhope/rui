@@ -1,4 +1,4 @@
-use crate::{prelude::*, Color, Icon, Size, Text};
+use crate::{prelude::*, Color, Icon, Size};
 use gpui::{AnyElement, AnyView, ClickEvent, ElementId, MouseButton};
 
 #[derive(IntoElement)]
@@ -13,7 +13,7 @@ pub struct Button {
     on_click: Option<Box<dyn Fn(&ClickEvent, &mut Window, &mut App) + 'static>>,
     children: Vec<AnyElement>,
     variant: ButtonVariant,
-    color: ButtonColor,
+    color: Color,
 }
 
 #[derive(Clone, Copy, PartialEq, Eq)]
@@ -23,33 +23,6 @@ pub enum ButtonVariant {
     Outline,
     Ghost,
     Plain,
-}
-
-#[derive(Clone, Copy, PartialEq, Eq)]
-pub enum ButtonColor {
-    Default,
-    Primary,
-    Secondary,
-    Info,
-    Success,
-    Warning,
-    Danger,
-    Custom(Hsla),
-}
-
-impl ButtonColor {
-    fn hsla(&self, cx: &App) -> Hsla {
-        match self {
-            Self::Default => cx.theme().colors.default,
-            Self::Primary => cx.theme().colors.primary,
-            Self::Secondary => cx.theme().colors.secondary,
-            Self::Info => cx.theme().colors.info,
-            Self::Success => cx.theme().colors.success,
-            Self::Warning => cx.theme().colors.warning,
-            Self::Danger => cx.theme().colors.danger,
-            Self::Custom(color) => *color,
-        }
-    }
 }
 
 impl Button {
@@ -65,7 +38,7 @@ impl Button {
             tooltip: None,
             children: Vec::new(),
             variant: ButtonVariant::Solid,
-            color: ButtonColor::Default,
+            color: Color::Default,
         }
     }
 
@@ -128,32 +101,28 @@ impl Button {
         self
     }
 
-    pub fn color(mut self, color: ButtonColor) -> Self {
-        self.color = color;
+    pub fn color(mut self, color: impl Into<Color>) -> Self {
+        self.color = color.into();
         self
     }
     pub fn primary(mut self) -> Self {
-        self.color = ButtonColor::Primary;
+        self.color = Color::Primary;
         self
     }
     pub fn secondary(mut self) -> Self {
-        self.color = ButtonColor::Secondary;
-        self
-    }
-    pub fn info(mut self) -> Self {
-        self.color = ButtonColor::Info;
+        self.color = Color::Secondary;
         self
     }
     pub fn success(mut self) -> Self {
-        self.color = ButtonColor::Success;
+        self.color = Color::Success;
         self
     }
     pub fn warning(mut self) -> Self {
-        self.color = ButtonColor::Warning;
+        self.color = Color::Warning;
         self
     }
     pub fn danger(mut self) -> Self {
-        self.color = ButtonColor::Danger;
+        self.color = Color::Danger;
         self
     }
 }
@@ -166,6 +135,12 @@ impl Styled for Button {
 
 impl RenderOnce for Button {
     fn render(self, _window: &mut Window, cx: &mut App) -> impl IntoElement {
+        let bg = cx.theme().colors.bg;
+        let color = self.color.hsla(cx);
+        let outline_color = color.opacity(0.8);
+        let soft_color = color.soft();
+        // let soft_color = color.opacity(0.3);
+
         self.base
             .flex()
             .id(self.id.clone())
@@ -176,36 +151,13 @@ impl RenderOnce for Button {
             .overflow_hidden()
             .gap(rems_from_px(4.))
             .rounded_md()
+            .border_1()
             .map(|this| match self.variant {
-                ButtonVariant::Solid => this,
-                ButtonVariant::Soft => this,
-                ButtonVariant::Outline => this.border_1().border_color(cx.theme().colors.border),
-                ButtonVariant::Ghost => this,
-                ButtonVariant::Plain => this,
-            })
-            .map(|this| match self.color {
-                ButtonColor::Default => this
-                    .bg(cx.theme().colors.default)
-                    .text_color(cx.theme().colors.bg),
-                ButtonColor::Primary => this
-                    .bg(cx.theme().colors.primary)
-                    .text_color(cx.theme().colors.bg),
-                ButtonColor::Secondary => this
-                    .bg(cx.theme().colors.secondary)
-                    .text_color(cx.theme().colors.bg),
-                ButtonColor::Info => this
-                    .bg(cx.theme().colors.secondary)
-                    .text_color(cx.theme().colors.bg),
-                ButtonColor::Success => this
-                    .bg(cx.theme().colors.success)
-                    .text_color(cx.theme().colors.bg),
-                ButtonColor::Warning => this
-                    .bg(cx.theme().colors.warning)
-                    .text_color(cx.theme().colors.bg),
-                ButtonColor::Danger => this
-                    .bg(cx.theme().colors.danger)
-                    .text_color(cx.theme().colors.bg),
-                ButtonColor::Custom(color) => this.bg(color),
+                ButtonVariant::Solid => this.bg(color).text_color(bg),
+                ButtonVariant::Soft => this.bg(soft_color).text_color(color),
+                ButtonVariant::Outline => this.border_color(outline_color).text_color(color),
+                ButtonVariant::Ghost => this.text_color(color),
+                ButtonVariant::Plain => this.text_color(color),
             })
             .map(|this| match self.size {
                 Size::XSmall => this.h_7().px_2p5(),
@@ -218,10 +170,10 @@ impl RenderOnce for Button {
             .when(!self.disabled, |this| {
                 this.cursor_pointer()
                     .hover(|this| match self.variant {
-                        ButtonVariant::Solid => this.opacity(0.98),
-                        ButtonVariant::Soft => this.opacity(0.9),
-                        ButtonVariant::Outline => this.opacity(0.9),
-                        ButtonVariant::Ghost => this.opacity(0.9),
+                        ButtonVariant::Solid => this.opacity(0.95),
+                        ButtonVariant::Soft => this.bg(color.opacity(0.6)),
+                        ButtonVariant::Outline => this.bg(soft_color),
+                        ButtonVariant::Ghost => this.bg(soft_color),
                         ButtonVariant::Plain => this.opacity(0.9),
                     })
                     .active(|this| this)

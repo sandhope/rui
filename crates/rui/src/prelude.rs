@@ -4,8 +4,7 @@ pub use gpui::{
     SharedString, Styled, Window,
 };
 
-pub use crate::traits::styled_ext::*;
-pub use crate::traits::toggleable::*;
+pub use crate::traits::*;
 pub use crate::{h_flex, v_flex, Col, Root, Row, Section};
 pub use crate::{rems_from_px, vh, vw, PlatformStyle, Size};
 pub use crate::{ActiveTheme, Assets, Theme};
