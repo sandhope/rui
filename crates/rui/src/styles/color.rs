@@ -68,7 +68,7 @@ impl Color {
         Self::hsl(192., 91., 36.)
     }
     pub const fn orange() -> Hsla {
-        Self::hsl(21., 90., 48.)
+        Self::hsl(30., 100., 50.)
     }
     pub const fn yellow() -> Hsla {
         Self::hsl(50., 98., 64.)

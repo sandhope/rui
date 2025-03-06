@@ -1,5 +1,5 @@
 use gpui::{px, rgb, size, Application, Bounds, Context, WindowBounds, WindowOptions};
-use rui::{prelude::*, Col, Row, Text};
+use rui::{prelude::*, Col, Color, Row, Text};
 
 struct ColorStory {
     title: SharedString,
@@ -10,6 +10,20 @@ impl Render for ColorStory {
         Col! {
             Row! {
                 Text::new(self.title.clone())
+            }
+            Row! {
+                div().size_8().bg(Color::red())
+                div().size_8().bg(Color::green())
+                div().size_8().bg(Color::gray())
+                div().size_8().bg(Color::blue())
+                div().size_8().bg(Color::teal())
+                div().size_8().bg(Color::pink())
+                div().size_8().bg(Color::purple())
+                div().size_8().bg(Color::cyan())
+                div().size_8().bg(Color::orange())
+                div().size_8().bg(Color::yellow())
+                div().size_8().bg(Color::black())
+                div().size_8().bg(Color::white())
             }
             Row! {
                 div().size_8().bg(gpui::red())
@@ -24,14 +38,8 @@ impl Render for ColorStory {
                 div().size_8().bg(rui::rgb(255, 255, 255)).opacity(0.5)
                 div().size_8().bg(rui::rgba(255, 255, 255, 0.5))
                 div().size_8().bg(gpui::hsla(0., 0., 1., 0.5))
-                div().size_8().bg(gpui::Hsla {
-                    h: 0.,
-                    s: 0.,
-                    l: 1.,
-                    a: 0.5,
-                })
             }
-            .gap_2()
+            .gap_1()
         }
         .gap_3()
         .bg(rgb(0x505050))
