@@ -24,6 +24,7 @@ impl RenderOnce for RootView {
             .flex()
             .flex_col()
             .size_full()
+            .text_color(cx.theme().colors.text)
             .bg(cx.theme().colors.bg)
     }
 }
