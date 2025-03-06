@@ -85,7 +85,7 @@ impl Render for CheckboxStory {
             Section! {
                 "Checkbox Group Vertical";
                 CheckboxGroup::new()
-                    .direction_vertical()
+                    .vertical()
                     .disabled(self.disabled)
                     .checked_indexes(self.checked_indexes.clone())
                     .child(Checkbox::new("one1").text("one1"))

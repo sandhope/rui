@@ -1,26 +1,9 @@
 use crate::{prelude::*, Color, Icon, IconName, Size};
 use gpui::{
-    linear, percentage, Animation, AnimationExt as _, AnyElement, AnyView, ClickEvent, ElementId,
-    MouseButton, Transformation,
+    linear, percentage, Animation, AnimationExt as _, AnyElement, AnyView, ClickEvent, Corners,
+    Edges, ElementId, MouseButton, Transformation,
 };
 use std::time::Duration;
-
-#[derive(IntoElement)]
-pub struct Button {
-    base: Div,
-    id: ElementId,
-    text: Option<SharedString>,
-    icon: Option<Icon>,
-    icon_right: bool,
-    size: Size,
-    disabled: bool,
-    loading: bool,
-    tooltip: Option<Box<dyn Fn(&mut Window, &mut App) -> AnyView>>,
-    on_click: Option<Box<dyn Fn(&ClickEvent, &mut Window, &mut App) + 'static>>,
-    children: Vec<AnyElement>,
-    variant: ButtonVariant,
-    color: Color,
-}
 
 #[derive(Clone, Copy, PartialEq, Eq)]
 pub enum ButtonVariant {
@@ -31,6 +14,26 @@ pub enum ButtonVariant {
     Plain,
 }
 
+#[derive(IntoElement)]
+pub struct Button {
+    base: Div,
+    id: ElementId,
+    text: Option<SharedString>,
+    icon: Option<Icon>,
+    icon_right: bool,
+    loading_icon: Icon,
+    size: Size,
+    disabled: bool,
+    loading: bool,
+    tooltip: Option<Box<dyn Fn(&mut Window, &mut App) -> AnyView>>,
+    on_click: Option<Box<dyn Fn(&ClickEvent, &mut Window, &mut App) + 'static>>,
+    children: Vec<AnyElement>,
+    variant: ButtonVariant,
+    color: Color,
+    border_corners: Corners<bool>,
+    border_edges: Edges<bool>,
+}
+
 impl Button {
     pub fn new(id: impl Into<ElementId>) -> Self {
         Self {
@@ -39,6 +42,7 @@ impl Button {
             text: None,
             icon: None,
             icon_right: false,
+            loading_icon: Icon::new(IconName::Loading),
             size: Size::default(),
             disabled: false,
             loading: false,
@@ -47,6 +51,8 @@ impl Button {
             children: Vec::new(),
             variant: ButtonVariant::Solid,
             color: Color::Default,
+            border_corners: Corners::all(true),
+            border_edges: Edges::all(true),
         }
     }
 
@@ -97,11 +103,10 @@ impl Button {
         self.variant = variant;
         self
     }
-    // default
-    // pub fn solid(mut self) -> Self {
-    //     self.variant = ButtonVariant::Solid;
-    //     self
-    // }
+    pub fn solid(mut self) -> Self {
+        self.variant = ButtonVariant::Solid;
+        self
+    }
     pub fn soft(mut self) -> Self {
         self.variant = ButtonVariant::Soft;
         self
@@ -143,6 +148,23 @@ impl Button {
         self.color = Color::Danger;
         self
     }
+
+    pub fn loading_icon(mut self, icon: impl Into<Icon>) -> Self {
+        self.loading_icon = icon.into();
+        self
+    }
+
+    /// Set the border corners side of the Button.
+    pub fn border_corners(mut self, corners: impl Into<Corners<bool>>) -> Self {
+        self.border_corners = corners.into();
+        self
+    }
+
+    /// Set the border edges of the Button.
+    pub fn border_edges(mut self, edges: impl Into<Edges<bool>>) -> Self {
+        self.border_edges = edges.into();
+        self
+    }
 }
 
 impl Styled for Button {
@@ -162,15 +184,13 @@ impl RenderOnce for Button {
             ButtonVariant::Solid => bg,
             _ => color,
         };
-        let loading_icon = Icon::new(IconName::Loading)
-            .color(icon_color)
-            .with_animation(
-                "loading",
-                Animation::new(Duration::from_secs(1))
-                    .repeat()
-                    .with_easing(linear),
-                |this, delta| this.transform(Transformation::rotate(percentage(delta))),
-            );
+        let loading_icon = self.loading_icon.color(icon_color).with_animation(
+            "loading",
+            Animation::new(Duration::from_secs(1))
+                .repeat()
+                .with_easing(linear),
+            |this, delta| this.transform(Transformation::rotate(percentage(delta))),
+        );
 
         self.base
             .flex()
@@ -181,8 +201,16 @@ impl RenderOnce for Button {
             .text_center()
             .overflow_hidden()
             .gap_2()
-            .rounded_md()
-            .border_1()
+            .when(self.border_edges.left, |this| this.border_l_1())
+            .when(self.border_edges.right, |this| this.border_r_1())
+            .when(self.border_edges.top, |this| this.border_t_1())
+            .when(self.border_edges.bottom, |this| this.border_b_1())
+            .when(self.border_corners.top_left, |this| this.rounded_tl_md())
+            .when(self.border_corners.bottom_left, |this| this.rounded_bl_md())
+            .when(self.border_corners.top_right, |this| this.rounded_tr_md())
+            .when(self.border_corners.bottom_right, |this| {
+                this.rounded_br_md()
+            })
             .map(|this| match self.variant {
                 ButtonVariant::Solid => this.bg(color).text_color(bg),
                 ButtonVariant::Soft => this.bg(soft_color).text_color(color),
@@ -234,26 +262,39 @@ impl RenderOnce for Button {
             .when_some(self.tooltip, |this, tooltip| {
                 this.tooltip(move |window, cx| tooltip(window, cx))
             })
-            .when(self.loading, |this| {
-                this.child(loading_icon)
-                    .when_some(self.text.clone(), |this, text| this.child(text))
-            })
-            .when(!self.loading, |this| {
-                // this.when(self.icon_right, |this| {
-                //     this.when_some(self.text.clone(), |this, text| this.child(text))
-                // })
-                // .when_some(self.icon, |this, icon| this.child(icon.color(icon_color)))
-                // .when(!self.icon_right, |this| {
-                //     this.when_some(self.text, |this, text| this.child(text))
-                // })
-                this.map(|this| match self.icon_right {
+            // .when(self.loading, |this| {
+            //     this.child(loading_icon)
+            //         .when_some(self.text.clone(), |this, text| this.child(text))
+            // })
+            // .when(!self.loading, |this| {
+            //     // this.when(self.icon_right, |this| {
+            //     //     this.when_some(self.text.clone(), |this, text| this.child(text))
+            //     // })
+            //     // .when_some(self.icon, |this, icon| this.child(icon.color(icon_color)))
+            //     // .when(!self.icon_right, |this| {
+            //     //     this.when_some(self.text, |this, text| this.child(text))
+            //     // })
+            //     this.map(|this| match self.icon_right {
+            //         true => this
+            //             .when_some(self.text, |this, text| this.child(text))
+            //             .when_some(self.icon, |this, icon| this.child(icon.color(icon_color))),
+            //         false => this
+            //             .when_some(self.icon, |this, icon| this.child(icon.color(icon_color)))
+            //             .when_some(self.text, |this, text| this.child(text)),
+            //     })
+            // })
+            .map(|this| match self.loading {
+                true => this
+                    .child(loading_icon)
+                    .when_some(self.text, |this, text| this.child(text)),
+                false => this.map(|this| match self.icon_right {
                     true => this
                         .when_some(self.text, |this, text| this.child(text))
                         .when_some(self.icon, |this, icon| this.child(icon.color(icon_color))),
                     false => this
                         .when_some(self.icon, |this, icon| this.child(icon.color(icon_color)))
                         .when_some(self.text, |this, text| this.child(text)),
-                })
+                }),
             })
             .children(self.children)
     }

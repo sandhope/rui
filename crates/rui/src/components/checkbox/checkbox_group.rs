@@ -6,6 +6,7 @@ use std::rc::Rc;
 /// A Checkbox group element.
 #[derive(IntoElement)]
 pub struct CheckboxGroup {
+    base: Div,
     checkboxes: Vec<Checkbox>,
     direction: Direction,
     checked_indexes: Vec<usize>,
@@ -16,6 +17,7 @@ pub struct CheckboxGroup {
 impl CheckboxGroup {
     pub fn new() -> Self {
         Self {
+            base: div(),
             on_change: None,
             direction: Direction::Horizontal,
             checked_indexes: vec![],
@@ -32,15 +34,8 @@ impl CheckboxGroup {
 
     /// Sets the direction of the Checkbox group to vertical.
     /// This is a convenience method for setting the direction to vertical without passing an argument.
-    pub fn direction_vertical(mut self) -> Self {
+    pub fn vertical(mut self) -> Self {
         self.direction = Direction::Vertical;
-        self
-    }
-
-    /// Sets the direction of the Checkbox group to horizontal.
-    /// This is a convenience method for setting the direction to horizontal without passing an argument.
-    pub fn direction_horizontal(mut self) -> Self {
-        self.direction = Direction::Horizontal;
         self
     }
 
@@ -84,12 +79,6 @@ impl RenderOnce for CheckboxGroup {
         let disabled = self.disabled;
         let checked_indexes = Rc::new(RefCell::new(self.checked_indexes));
 
-        let base = if self.direction == Direction::Vertical {
-            v_flex()
-        } else {
-            h_flex().flex_wrap()
-        };
-
         let children = self
             .checkboxes
             .into_iter()
@@ -115,6 +104,12 @@ impl RenderOnce for CheckboxGroup {
                 )
             });
 
-        base.gap_3().children(children)
+        self.base
+            .map(|this| match self.direction {
+                Direction::Vertical => this.v_flex(),
+                Direction::Horizontal => this.h_flex().flex_wrap(),
+            })
+            .gap_3()
+            .children(children)
     }
 }

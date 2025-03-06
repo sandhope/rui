@@ -72,7 +72,13 @@ impl Render for ButtonStory {
             }
             .gap_2()
 
-            ButtonGroup::new().children(vec!["One","Two","Three"]).on_click(|v,_,_| println!("Button clicked!{}",v))
+            Row! {
+                ButtonGroup::new().children(vec!["One","Two","Three"])
+                ButtonGroup::new().children(vec!["One","Two","Three"]).soft().secondary()
+                ButtonGroup::new().children(vec!["One","Two","Three"]).outline().primary()
+                ButtonGroup::new().children(vec!["One","Two","Three"]).ghost().success()
+            }
+            .gap_2()
 
             Button::new("id")
                 .text("Click me")
