@@ -17,6 +17,7 @@ fn color_row(text: impl Into<SharedString>, color: Hsla) -> Div {
     Row! {
         Text::new(text).w_20()
         Button::new("id").text("Solid").color(color)
+        Button::new("id").text("Soft").color(color).surface()
         Button::new("id").text("Soft").color(color).soft()
         Button::new("id").text("Outline").color(color).outline()
         Button::new("id").text("Ghost").color(color).ghost()
@@ -47,22 +48,23 @@ fn variant_row(text: impl Into<SharedString>, variant: ButtonVariant) -> Div {
 impl Render for ButtonStory {
     fn render(&mut self, _window: &mut Window, _cx: &mut Context<Self>) -> impl IntoElement {
         Root! {
-            variant_row("solid", ButtonVariant::Solid)
-            variant_row("soft", ButtonVariant::Soft)
-            variant_row("outline", ButtonVariant::Outline)
-            variant_row("ghost", ButtonVariant::Ghost)
-            variant_row("plain", ButtonVariant::Plain)
+            variant_row("Solid", ButtonVariant::Solid)
+            variant_row("Surface", ButtonVariant::Surface)
+            variant_row("Soft", ButtonVariant::Soft)
+            variant_row("Outline", ButtonVariant::Outline)
+            variant_row("Ghost", ButtonVariant::Ghost)
+            variant_row("Plain", ButtonVariant::Plain)
 
-            color_row("black", Color::black())
-            color_row("red", Color::red())
-            color_row("green", Color::green())
-            color_row("blue", Color::blue())
-            color_row("teal", Color::teal())
-            color_row("pink", Color::pink())
-            color_row("purple", Color::purple())
-            color_row("cyan", Color::cyan())
-            color_row("orange", Color::orange())
-            color_row("yellow", Color::yellow())
+            color_row("Black", Color::black())
+            color_row("Red", Color::red())
+            color_row("Green", Color::green())
+            color_row("Blue", Color::blue())
+            color_row("Teal", Color::teal())
+            color_row("Pink", Color::pink())
+            color_row("Purple", Color::purple())
+            color_row("Cyan", Color::cyan())
+            color_row("Orange", Color::orange())
+            color_row("Yellow", Color::yellow())
 
             Row! {
                 Button::new("id").text("XSmall").size(Size::XSmall)

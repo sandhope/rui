@@ -9,6 +9,7 @@ use std::time::Duration;
 pub enum ButtonVariant {
     Solid,
     Soft,
+    Surface,
     Outline,
     Ghost,
     Plain,
@@ -109,6 +110,10 @@ impl Button {
     }
     pub fn soft(mut self) -> Self {
         self.variant = ButtonVariant::Soft;
+        self
+    }
+    pub fn surface(mut self) -> Self {
+        self.variant = ButtonVariant::Surface;
         self
     }
     pub fn outline(mut self) -> Self {
@@ -215,6 +220,7 @@ impl RenderOnce for Button {
             .map(|this| match self.variant {
                 ButtonVariant::Solid => this.bg(color),
                 ButtonVariant::Soft => this.bg(soft_color),
+                ButtonVariant::Surface => this.bg(soft_color).border_color(color.opacity(0.4)),
                 ButtonVariant::Outline => this.border_color(outline_color),
                 ButtonVariant::Ghost | ButtonVariant::Plain => this,
             })
@@ -243,6 +249,7 @@ impl RenderOnce for Button {
                     .hover(|this| match self.variant {
                         ButtonVariant::Solid => this.opacity(0.95),
                         ButtonVariant::Soft => this.bg(color.opacity(0.6)),
+                        ButtonVariant::Surface => this.bg(color.opacity(0.6)),
                         ButtonVariant::Outline => this.bg(soft_color),
                         ButtonVariant::Ghost => this.bg(soft_color),
                         ButtonVariant::Plain => this.opacity(0.9),
