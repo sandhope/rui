@@ -71,14 +71,18 @@ impl Render for ButtonStory {
                 Button::new("id").text("Large").size(Size::Large)
 
                 Button::new("id").icon(IconName::Mic)
+                Button::new("id").icon(IconName::Close).danger()
                 Button::new("id").text("icon").icon(IconName::Mic)
-                Button::new("id").text("icon right").icon(Icon::new(IconName::Mic).size(IconSize::Large))
+                Button::new("id").text("icon size").icon(Icon::new(IconName::Mic).size(IconSize::Large))
                 Button::new("id").text("icon right").icon(IconName::Mic).icon_right()
-                Button::new("id").text("icon custom").child(Icon::new(IconName::Mic).color(Color::red()))
+                Button::new("id").text("icon color").icon(Icon::new(IconName::Mic).color(Color::red()))
                 Button::new("id")
-                    .child(Icon::new(IconName::Mic).size(IconSize::Large).color(Color::red()))
-                    .child(Text::new("text custom").color(Color::blue()))
+                    .icon(Icon::new(IconName::Mic).color(Color::blue()))
+                    .text(Text::new("custom").color(Color::blue()))
                 Button::new("id").text("Loading").loading(true)
+                Button::new("id")
+                    .text("Loading")
+                    .loading_icon(Icon::new(IconName::LoadingHalf).color(Color::pink())).loading(true)
             }
             .gap_2()
 

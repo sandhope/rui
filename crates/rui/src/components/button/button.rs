@@ -1,4 +1,4 @@
-use crate::{prelude::*, Color, Icon, IconName, Size};
+use crate::{prelude::*, Color, Icon, IconName, Size, Text};
 use gpui::{
     linear, percentage, Animation, AnimationExt as _, AnyElement, AnyView, ClickEvent, Corners,
     Edges, ElementId, MouseButton, Transformation,
@@ -18,7 +18,7 @@ pub enum ButtonVariant {
 pub struct Button {
     base: Div,
     id: ElementId,
-    text: Option<SharedString>,
+    text: Option<Text>,
     icon: Option<Icon>,
     icon_right: bool,
     loading_icon: Icon,
@@ -56,7 +56,7 @@ impl Button {
         }
     }
 
-    pub fn text(mut self, text: impl Into<SharedString>) -> Self {
+    pub fn text(mut self, text: impl Into<Text>) -> Self {
         self.text = Some(text.into());
         self
     }
@@ -180,13 +180,13 @@ impl RenderOnce for Button {
         let outline_color = color.opacity(0.8);
         let soft_color = color.soft();
         // let soft_color = color.opacity(0.3);
-        let icon_color = match self.variant {
+        let text_color = match self.variant {
             ButtonVariant::Solid => bg,
             _ => color,
         };
-        let loading_icon = self.loading_icon.color(icon_color).with_animation(
+        let loading_icon = self.loading_icon.with_animation(
             "loading",
-            Animation::new(Duration::from_secs(1))
+            Animation::new(Duration::from_millis(800))
                 .repeat()
                 .with_easing(linear),
             |this, delta| this.transform(Transformation::rotate(percentage(delta))),
@@ -201,6 +201,7 @@ impl RenderOnce for Button {
             .text_center()
             .overflow_hidden()
             .gap_2()
+            .text_color(text_color)
             .when(self.border_edges.left, |this| this.border_l_1())
             .when(self.border_edges.right, |this| this.border_r_1())
             .when(self.border_edges.top, |this| this.border_t_1())
@@ -212,11 +213,10 @@ impl RenderOnce for Button {
                 this.rounded_br_md()
             })
             .map(|this| match self.variant {
-                ButtonVariant::Solid => this.bg(color).text_color(bg),
-                ButtonVariant::Soft => this.bg(soft_color).text_color(color),
-                ButtonVariant::Outline => this.border_color(outline_color).text_color(color),
-                ButtonVariant::Ghost => this.text_color(color),
-                ButtonVariant::Plain => this.text_color(color),
+                ButtonVariant::Solid => this.bg(color),
+                ButtonVariant::Soft => this.bg(soft_color),
+                ButtonVariant::Outline => this.border_color(outline_color),
+                ButtonVariant::Ghost | ButtonVariant::Plain => this,
             })
             .map(|this| {
                 if self.text.is_none() && self.children.is_empty() {
@@ -247,7 +247,7 @@ impl RenderOnce for Button {
                         ButtonVariant::Ghost => this.bg(soft_color),
                         ButtonVariant::Plain => this.opacity(0.9),
                     })
-                    .active(|this| this)
+                    .active(|this| this.opacity(0.9))
             })
             .when_some(
                 self.on_click.filter(|_| !self.disabled),
@@ -290,9 +290,9 @@ impl RenderOnce for Button {
                 false => this.map(|this| match self.icon_right {
                     true => this
                         .when_some(self.text, |this, text| this.child(text))
-                        .when_some(self.icon, |this, icon| this.child(icon.color(icon_color))),
+                        .when_some(self.icon, |this, icon| this.child(icon)),
                     false => this
-                        .when_some(self.icon, |this, icon| this.child(icon.color(icon_color)))
+                        .when_some(self.icon, |this, icon| this.child(icon))
                         .when_some(self.text, |this, text| this.child(text)),
                 }),
             })
