@@ -127,8 +127,8 @@ impl Icon {
 }
 
 impl RenderOnce for Icon {
-    fn render(self, _: &mut Window, cx: &mut App) -> impl IntoElement {
-        let color = self.color.unwrap_or_else(|| cx.theme().colors.text);
+    fn render(self, window: &mut Window, _cx: &mut App) -> impl IntoElement {
+        let color = self.color.unwrap_or(window.text_style().color);
 
         match self.source {
             IconSource::Svg(path) => svg()
@@ -147,7 +147,7 @@ impl RenderOnce for Icon {
     }
 }
 
-#[derive(Debug, Copy, Clone, EnumIter, EnumString, IntoStaticStr, DerivePathStr)]
+#[derive(Debug, IntoElement, Copy, Clone, EnumIter, EnumString, IntoStaticStr, DerivePathStr)]
 #[strum(serialize_all = "snake_case")]
 #[path_str(prefix = "icons", suffix = ".svg")]
 pub enum IconName {
@@ -256,6 +256,7 @@ pub enum IconName {
     ListTree,
     ListX,
     Loading,
+    LoadingHalf,
     LockOutlined,
     MagnifyingGlass,
     MailOpen,
@@ -353,6 +354,12 @@ pub enum IconName {
     ZedPredict,
     ZedPredictDisabled,
     ZedXCopilot,
+}
+
+impl RenderOnce for IconName {
+    fn render(self, _: &mut Window, _cx: &mut App) -> impl IntoElement {
+        Icon::new(self)
+    }
 }
 
 impl From<IconName> for Icon {
