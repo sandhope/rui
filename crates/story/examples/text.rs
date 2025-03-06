@@ -1,4 +1,4 @@
-use gpui::{px, rems, size, Application, Bounds, Context, FontWeight, WindowBounds, WindowOptions};
+use gpui::{size, Application, Bounds, Context, FontWeight, WindowBounds, WindowOptions};
 
 use rui::{prelude::*, Root, Row, Section, Text};
 

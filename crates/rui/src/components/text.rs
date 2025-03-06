@@ -29,9 +29,9 @@ impl Styled for Text {
 }
 
 impl RenderOnce for Text {
-    fn render(self, _window: &mut Window, cx: &mut App) -> impl IntoElement {
+    fn render(self, window: &mut Window, _cx: &mut App) -> impl IntoElement {
         self.base
-            .text_color(self.color.unwrap_or(cx.theme().colors.text))
+            .text_color(self.color.unwrap_or(window.text_style().color))
             .child(self.text)
     }
 }
