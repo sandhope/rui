@@ -219,15 +219,7 @@ impl RenderOnce for Button {
                 ButtonVariant::Plain => this.text_color(color),
             })
             .map(|this| {
-                if self.text.is_some() {
-                    match self.size {
-                        Size::XSmall => this.h_7().px_2p5(),
-                        Size::Small => this.h_8().px_3p5(),
-                        Size::Medium => this.h_9().px_4(),
-                        Size::Large => this.h_10().px_5(),
-                        Size::Custom(size) => this.w(size).h(size * 0.1 + rems(1.5)),
-                    }
-                } else {
+                if self.text.is_none() && self.children.is_empty() {
                     match self.size {
                         Size::XSmall => this.size_7(),
                         Size::Small => this.size_8(),
@@ -235,9 +227,17 @@ impl RenderOnce for Button {
                         Size::Large => this.size_10(),
                         Size::Custom(size) => this.size(size),
                     }
+                } else {
+                    match self.size {
+                        Size::XSmall => this.h_7().px_2p5(),
+                        Size::Small => this.h_8().px_3p5(),
+                        Size::Medium => this.h_9().px_4(),
+                        Size::Large => this.h_10().px_5(),
+                        Size::Custom(size) => this.w(size).h(size * 0.1 + rems(1.5)),
+                    }
                 }
             })
-            .when(self.disabled, |this| this.cursor_not_allowed())
+            .when(self.disabled, |this| this.cursor_not_allowed().opacity(0.5))
             .when(!self.disabled, |this| {
                 this.cursor_pointer()
                     .hover(|this| match self.variant {

@@ -34,6 +34,12 @@ fn variant_row(text: impl Into<SharedString>, variant: ButtonVariant) -> Div {
         Button::new("id").text("Success").variant(variant).success()
         Button::new("id").text("Warning").variant(variant).warning()
         Button::new("id").text("Danger").variant(variant).danger()
+        Button::new("id").text("Default").variant(variant).disabled(true)
+        Button::new("id").text("Default").variant(variant).primary().disabled(true)
+        Button::new("id").text("Secondary").variant(variant).secondary().disabled(true)
+        Button::new("id").text("Success").variant(variant).success().disabled(true)
+        Button::new("id").text("Warning").variant(variant).warning().disabled(true)
+        Button::new("id").text("Default").variant(variant).danger().disabled(true)
     }
     .gap_2()
 }
@@ -64,10 +70,14 @@ impl Render for ButtonStory {
                 Button::new("id").text("Medium")
                 Button::new("id").text("Large").size(Size::Large)
 
-                Button::new("id").icon(IconName::Check)
+                Button::new("id").icon(IconName::Mic)
                 Button::new("id").text("icon").icon(IconName::Mic)
-                Button::new("id").text("icon_right").icon(Icon::new(IconName::Mic).size(IconSize::Large))
-                Button::new("id").text("icon_right").icon(IconName::Mic).icon_right()
+                Button::new("id").text("icon right").icon(Icon::new(IconName::Mic).size(IconSize::Large))
+                Button::new("id").text("icon right").icon(IconName::Mic).icon_right()
+                Button::new("id").text("icon custom").child(Icon::new(IconName::Mic).color(Color::red()))
+                Button::new("id")
+                    .child(Icon::new(IconName::Mic).size(IconSize::Large).color(Color::red()))
+                    .child(Text::new("text custom").color(Color::blue()))
                 Button::new("id").text("Loading").loading(true)
             }
             .gap_2()
