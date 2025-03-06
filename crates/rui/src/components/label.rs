@@ -6,6 +6,7 @@ pub struct Label {
     icon: Icon,
     text: Text,
     icon_right: bool,
+    color: Option<Hsla>,
 }
 
 impl Label {
@@ -15,6 +16,7 @@ impl Label {
             icon: icon.into(),
             text: text.into(),
             icon_right: false,
+            color: None,
         }
     }
 
@@ -24,9 +26,7 @@ impl Label {
     }
 
     pub fn color(mut self, color: impl Into<Hsla>) -> Self {
-        let color = color.into();
-        self.icon = self.icon.color(color.clone());
-        self.text = self.text.text_color(color);
+        self.color = Some(color.into());
         self
     }
 }
@@ -39,15 +39,11 @@ impl Styled for Label {
 
 impl RenderOnce for Label {
     fn render(self, _window: &mut Window, _cx: &mut App) -> impl IntoElement {
-        //let text = div().flex_none().line_height(relative(1.)).child(self.text);
         self.base
-            // .line_height(relative(1.))
-            .map(|this| {
-                if self.icon_right {
-                    this.child(self.text).child(self.icon)
-                } else {
-                    this.child(self.icon).child(self.text)
-                }
+            .when_some(self.color, |this, color| this.text_color(color))
+            .map(|this| match self.icon_right {
+                true => this.child(self.text).child(self.icon),
+                false => this.child(self.icon).child(self.text),
             })
     }
 }
