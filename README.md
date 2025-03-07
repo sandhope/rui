@@ -23,14 +23,15 @@ Here are some of the components currently available:
   - **`Avatar`**: An element that renders a user avatar with customizable appearance options.
 
 - **Interactive Components:**
-  - **`Button`**: A clickable button component. __todo__
+  - **`Button`**: A clickable button component.
+  - **`ButtonGroup`**: A group of related buttons.
   - **`Input`**: A component for user input. __todo__
   - **`Switch`**: A toggle switch component.
-  - **`Radio`**: A component for toggling between selected and unselected states.
-  - **`RadioGroup`**: A set of radio buttons allowing only one to be selected at a time.
-  - **`Checkbox`**: A checkbox component for selecting multiple options.
-  - **`CheckboxGroup`**: A component that manages multiple Checkbox elements for selecting several options.
-  - **`Link`**: A hyperlink component for navigation. __todo__
+  - **`Radio`**: A single selection toggle component.
+  - **`RadioGroup`**: A set of radio buttons for single selection.
+  - **`Checkbox`**: A component for selecting multiple options.
+  - **`CheckboxGroup`**: Manages multiple checkboxes for selection.
+  - **`Link`**: A hyperlink component, similar to an `<a>` tag in HTML.
   - **`Slider`**: A component for selecting a value from a range. __todo__
 
 - **Navigation Components:**
