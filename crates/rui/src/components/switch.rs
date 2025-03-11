@@ -93,9 +93,6 @@ impl RenderOnce for Switch {
                 .rounded_full()
                 .px(px(2.))
                 .bg(bg_color)
-                .when(self.disabled, |this| {
-                    this.cursor(CursorStyle::OperationNotAllowed)
-                })
                 .when(!self.disabled, |this| {
                     this.group_hover(group_id.clone(), |el| el.bg(bg_hover_color))
                 })
@@ -114,6 +111,9 @@ impl RenderOnce for Switch {
             .id(self.id)
             .gap(rems_from_px(6.))
             .cursor_pointer()
+            .when(self.disabled, |this| {
+                this.cursor(CursorStyle::OperationNotAllowed)
+            })
             .child(switch)
             .when_some(
                 self.on_click.filter(|_| !self.disabled),

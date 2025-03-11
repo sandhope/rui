@@ -31,7 +31,7 @@ impl Render for SwitchStory {
 
                 Switch::new("id")
                     .checked(cx.theme().appearance.is_light())
-                    .text(Text::new("appearance").text_color(gpui::blue()))
+                    .text(Text::new(cx.theme().appearance.to_string()).color(gpui::blue()))
                     .on_click(cx.listener(|_, _v, window, cx| {
                         cx.theme_mut().toggle_builtin_appearance(window);
                     }))
