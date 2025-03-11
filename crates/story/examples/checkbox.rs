@@ -1,6 +1,6 @@
 use gpui::{px, size, Application, Bounds, Context, WindowBounds, WindowOptions};
 
-use rui::{prelude::*, Checkbox, CheckboxGroup, Divider, Text, ToggleState};
+use rui::{prelude::*, Checkbox, CheckboxGroup, Divider, Switch, Text, ToggleState};
 
 struct CheckboxStory {
     state: bool,
@@ -27,6 +27,13 @@ impl Render for CheckboxStory {
         Root! {
             Section! {
                 "Checkbox";
+                Switch::new("id")
+                    .checked(cx.theme().appearance.is_light())
+                    .text(cx.theme().appearance.to_string())
+                    .on_click(cx.listener(|_, _v, window, cx| {
+                        cx.theme_mut().toggle_builtin_appearance(window);
+                    }))
+
                 Checkbox::new("id")
                     .checked(self.state)
                     .text("change disabled")

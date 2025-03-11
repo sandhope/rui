@@ -86,17 +86,14 @@ impl RenderOnce for Checkbox {
             ToggleState::Unselected => None,
         };
 
-        let bg_color = match (self.disabled, !self.state.unselected()) {
-            (true, true) => cx.theme().colors.primary_disabled,
-            (false, true) => cx.theme().colors.primary,
-            (_, false) => cx.theme().colors.bg,
+        let bg_color = match self.state {
+            ToggleState::Unselected => cx.theme().colors.bg,
+            _ => cx.theme().colors.primary,
         };
 
-        let border_color = match (self.disabled, !self.state.unselected()) {
-            (true, true) => cx.theme().colors.primary_disabled,
-            (false, true) => cx.theme().colors.primary,
-            (true, false) => cx.theme().colors.border.opacity(0.6),
-            (false, false) => cx.theme().colors.border,
+        let border_color = match self.state {
+            ToggleState::Unselected => cx.theme().colors.border,
+            _ => cx.theme().colors.primary,
         };
 
         let checkbox = h_flex()
@@ -116,20 +113,22 @@ impl RenderOnce for Checkbox {
                     .rounded_sm()
                     .bg(bg_color)
                     .border_1()
-                    .border_color(border_color)
-                    .when(self.disabled, |this| this.cursor_not_allowed())
-                    .when(!self.disabled, |this| {
-                        this.group_hover(group_id.clone(), |el| {
-                            el.border_color(cx.theme().colors.element_hover)
-                        })
+                    .map(|this| match self.disabled {
+                        true => this.border_color(border_color.opacity(0.5)),
+                        false => this
+                            .border_color(border_color)
+                            .group_hover(group_id.clone(), |this| {
+                                this.border_color(cx.theme().colors.element_hover)
+                            }),
                     })
                     .children(icon),
             );
 
         self.base
             .id(self.id)
-            .cursor_pointer()
             .gap(rems_from_px(6.0))
+            .cursor_pointer()
+            .when(self.disabled, |this| this.cursor_not_allowed().opacity(0.5))
             .child(checkbox)
             .when_some(
                 self.on_click.filter(|_| !self.disabled),

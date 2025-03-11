@@ -12,7 +12,6 @@ pub struct ThemeColors {
     pub success: Hsla,
     pub warning: Hsla,
     pub danger: Hsla,
-    pub primary_disabled: Hsla,
     /// Border color. Used for most borders, is usually a high contrast color.
     pub border: Hsla,
     /// Border color. Used for deemphasized borders, like a visual divider between two sections
@@ -51,7 +50,6 @@ impl ThemeColors {
             success: hsl(146., 79., 44.),
             warning: hsl(37., 91., 55.),
             danger: hsl(339., 90., 51.),
-            primary_disabled: hsl(208., 97., 85.),
             border: hsl(210., 1., 67.),
             border_variant: hsl(240., 2., 88.),
             icon_accent: hsl(216., 100., 49.),
@@ -75,7 +73,6 @@ impl ThemeColors {
             success: hsl(146., 79., 44.),
             warning: hsl(37., 91., 55.),
             danger: hsl(339., 90., 51.),
-            primary_disabled: hsl(214., 73., 34.),
             border: hsl(0., 0., 98.),
             border_variant: hsl(218., 13., 24.),
             icon_accent: hsl(210., 100., 66.),
