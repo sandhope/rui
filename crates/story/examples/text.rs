@@ -1,6 +1,6 @@
 use gpui::{size, Application, Bounds, Context, FontWeight, WindowBounds, WindowOptions};
 
-use rui::{prelude::*, Button, Divider, IconName, Root, Row, Section, Text};
+use rui::{prelude::*, Button, DividerTitle, IconName, Root, Row, Section, Text};
 
 struct TextStory {
     masked: bool,
@@ -30,7 +30,7 @@ impl Render for TextStory {
                         .line_height(rems(1.8)),
                 )
 
-                Divider::new().text("Styles")
+                DividerTitle::new("Styles")
 
                 Row! {
                     Col! {
@@ -56,7 +56,7 @@ impl Render for TextStory {
                 }
                 .gap_4()
 
-                Divider::new().text("Special Cases")
+                DividerTitle::new("Special Cases")
                 Row! {
                     Col! {
                         Text::new("Single Line")
@@ -69,7 +69,7 @@ impl Render for TextStory {
                 }
                 .gap_4()
 
-                Divider::new().text("Masked")
+                DividerTitle::new("Masked")
                 Row! {
                     Text::new("123,456,789 $").text_2xl().masked(self.masked).w_40()
                     Button::new("btn-mask")

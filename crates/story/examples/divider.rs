@@ -1,6 +1,6 @@
 use gpui::{px, size, Application, Bounds, Context, WindowBounds, WindowOptions};
 
-use rui::{prelude::*, Assets, Divider, Root, Text};
+use rui::{prelude::*, Assets, Divider, DividerTitle, Root, Text};
 
 struct DividerStory;
 
@@ -13,6 +13,7 @@ impl Render for DividerStory {
                 Divider::new().dashed().mb_3()
                 Divider::new().dashed().text("divider").margin_bottom(3.)
                 Divider::new().text("divider").margin_bottom(3.)
+                DividerTitle::new("divider".to_uppercase()).margin_bottom(3.)
             }
 
             Section! {
