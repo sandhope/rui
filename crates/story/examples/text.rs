@@ -1,11 +1,13 @@
 use gpui::{size, Application, Bounds, Context, FontWeight, WindowBounds, WindowOptions};
 
-use rui::{prelude::*, Root, Row, Section, Text};
+use rui::{prelude::*, Button, Divider, IconName, Root, Row, Section, Text};
 
-struct TextStory;
+struct TextStory {
+    masked: bool,
+}
 
 impl Render for TextStory {
-    fn render(&mut self, _window: &mut Window, _cx: &mut Context<Self>) -> impl IntoElement {
+    fn render(&mut self, _window: &mut Window, cx: &mut Context<Self>) -> impl IntoElement {
         Root! {
             Section! {
                 "label";
@@ -21,21 +23,75 @@ impl Render for TextStory {
                     .font_weight(FontWeight::SEMIBOLD)
                     .line_height(rems(1.8))
                     .padding(10.0)
-                Text::new("Text").padding_left(20.)
+
 
                 div().w(px(200.)).child(
                     Text::new("Label should support text wrap in default, if the text is too long, it should wrap to the next line.")
                         .line_height(rems(1.8)),
                 )
+
+                Divider::new().text("Styles")
+
+                Row! {
+                    Col! {
+                        Text::new("Default")
+                        Text::new("Normal Text")
+                    }
+                    Col! {
+                        Text::new("Bold")
+                        Text::new("Bold").font_weight(gpui::FontWeight::BOLD)
+                    }
+                    Col! {
+                        Text::new("Italic")
+                        Text::new("Italic").italic()
+                    }
+                    Col! {
+                        Text::new("Strikethrough")
+                        Text::new("Strikethrough").strikethrough()
+                    }
+                    Col! {
+                        Text::new("Underline")
+                        Text::new("Underline").underline()
+                    }
+                }
+                .gap_4()
+
+                Divider::new().text("Special Cases")
+                Row! {
+                    Col! {
+                        Text::new("Single Line")
+                        Text::new("Line 1\nLine 2\nLine 3").single_line()
+                    }
+                    Col! {
+                        Text::new("Text Ellipsis")
+                        Text::new("This is a very long file name that should be truncated: very_long_file_name_with_many_words.rs").max_w_24().truncate()
+                    }
+                }
+                .gap_4()
+
+                Divider::new().text("Masked")
+                Row! {
+                    Text::new("123,456,789 $").text_2xl().masked(self.masked).w_40()
+                    Button::new("btn-mask")
+                        .icon(if self.masked {
+                            IconName::EyeOff
+                        } else {
+                            IconName::Eye
+                        })
+                        .ghost()
+                        .on_click(cx.listener(|this, _, _, _| {
+                            this.masked = !this.masked;
+                        }))
+                }
+                .gap_4()
             }
         }
         .px_4()
-        .text_xl()
     }
 }
 
 fn main() {
-    Application::new().run(|cx: &mut App| {
+    Application::new().with_assets(Assets).run(|cx: &mut App| {
         Theme::init(cx, None, None);
         let bounds = Bounds::centered(None, size(px(1024.), px(700.0)), cx);
         cx.open_window(
@@ -43,7 +99,7 @@ fn main() {
                 window_bounds: Some(WindowBounds::Windowed(bounds)),
                 ..Default::default()
             },
-            |_, cx| cx.new(|_| TextStory {}),
+            |_, cx| cx.new(|_| TextStory { masked: false }),
         )
         .unwrap();
     });
