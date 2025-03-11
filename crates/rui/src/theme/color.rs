@@ -32,7 +32,11 @@ pub struct ThemeColors {
     pub element_hover: Hsla,
 
     pub text: Hsla,
+    /// Text Color. Color of muted or deemphasized text. It is a subdued version of the standard text color.
+    pub text_muted: Hsla,
     pub bg: Hsla,
+    /// Background color. Used for elevated surfaces, like a context menu, popup, or dialog.
+    pub bg_elevated_surface: Hsla,
     pub fg: Hsla,
     pub switch_checked_bg: Hsla,
     pub switch_checked_hover_bg: Hsla,
@@ -56,7 +60,9 @@ impl ThemeColors {
             element_bg: hsl(240., 2., 92.),
             element_hover: hsl(216., 100., 49.),
             text: hsl(214., 11., 12.),
+            text_muted: hsl(240., 1., 35.),
             bg: hsl(0., 0., 100.),
+            bg_elevated_surface: hsl(240., 3., 92.),
             fg: hsl(0., 0., 0.),
             switch_checked_bg: hsl(126., 50., 47.),
             switch_checked_hover_bg: hsl(127., 51., 38.),
@@ -79,7 +85,9 @@ impl ThemeColors {
             element_bg: hsl(0., 0., 100.),
             element_hover: hsl(210., 100., 66.),
             text: hsl(0., 0., 98.),
+            text_muted: hsl(221., 12., 70.),
             bg: hsl(0., 0., 0.),
+            bg_elevated_surface: hsl(220., 14., 21.),
             fg: hsl(0., 0., 100.),
             switch_checked_bg: hsl(126., 50., 47.),
             switch_checked_hover_bg: hsl(127., 51., 38.),

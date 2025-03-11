@@ -13,6 +13,7 @@ mod scrollbar;
 mod stack;
 mod switch;
 mod text;
+mod tooltip;
 
 pub use avatar::*;
 pub use button::*;
@@ -29,3 +30,4 @@ pub use scrollbar::*;
 pub use stack::*;
 pub use switch::*;
 pub use text::*;
+pub use tooltip::*;

@@ -81,6 +81,7 @@ impl Render for RadioStory {
 
 fn main() {
     Application::new().with_assets(Assets).run(|cx: &mut App| {
+        cx.activate(true);
         Theme::init(cx, None, Some(ThemeMode::Dark));
         let bounds = Bounds::centered(None, size(px(1024.), px(700.0)), cx);
         cx.open_window(

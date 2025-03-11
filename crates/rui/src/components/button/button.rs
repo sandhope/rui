@@ -180,6 +180,7 @@ impl Styled for Button {
 
 impl RenderOnce for Button {
     fn render(self, _window: &mut Window, cx: &mut App) -> impl IntoElement {
+        let is_light = cx.theme().appearance.is_light();
         let bg = cx.theme().colors.bg;
         let color = self.color.hsla(cx);
         let outline_color = color.opacity(0.8);
@@ -247,14 +248,19 @@ impl RenderOnce for Button {
             .when(!self.disabled, |this| {
                 this.cursor_pointer()
                     .hover(|this| match self.variant {
-                        ButtonVariant::Solid => this.opacity(0.95),
+                        ButtonVariant::Solid => {
+                            this.bg(color.opacity(if is_light { 0.9 } else { 0.7 }))
+                        }
                         ButtonVariant::Soft => this.bg(color.opacity(0.6)),
                         ButtonVariant::Surface => this.bg(color.opacity(0.6)),
                         ButtonVariant::Outline => this.bg(soft_color),
                         ButtonVariant::Ghost => this.bg(soft_color),
                         ButtonVariant::Plain => this.opacity(0.9),
                     })
-                    .active(|this| this.opacity(0.9))
+                    .active(|this| match self.variant {
+                        ButtonVariant::Solid => this.bg(color.opacity(1.)),
+                        _ => this,
+                    })
             })
             .when_some(
                 self.on_click.filter(|_| !self.disabled),

@@ -1,5 +1,5 @@
 use crate::{prelude::*, ActiveTheme};
-use gpui::{ClickEvent, MouseButton, Stateful};
+use gpui::{AnyView, ClickEvent, MouseButton, Stateful};
 
 #[derive(IntoElement)]
 pub struct Link {
@@ -7,6 +7,7 @@ pub struct Link {
     href: Option<SharedString>,
     disabled: bool,
     on_click: Option<Box<dyn Fn(&ClickEvent, &mut Window, &mut App) + 'static>>,
+    tooltip: Option<Box<dyn Fn(&mut Window, &mut App) -> AnyView>>,
 }
 
 impl Link {
@@ -16,6 +17,7 @@ impl Link {
             href: None,
             on_click: None,
             disabled: false,
+            tooltip: None,
         }
     }
 
@@ -34,6 +36,11 @@ impl Link {
 
     pub fn disabled(mut self, disabled: bool) -> Self {
         self.disabled = disabled;
+        self
+    }
+
+    pub fn tooltip(mut self, tooltip: impl Fn(&mut Window, &mut App) -> AnyView + 'static) -> Self {
+        self.tooltip = Some(Box::new(tooltip));
         self
     }
 }
@@ -71,6 +78,9 @@ impl RenderOnce for Link {
                 if let Some(on_click) = &self.on_click {
                     on_click(event, window, cx);
                 }
+            })
+            .when_some(self.tooltip, |this, tooltip| {
+                this.tooltip(move |window, cx| tooltip(window, cx))
             })
     }
 }

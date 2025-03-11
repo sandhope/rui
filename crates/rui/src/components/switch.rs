@@ -1,5 +1,5 @@
 use crate::{prelude::*, Size, Text};
-use gpui::{px, CursorStyle};
+use gpui::{px, AnyView, CursorStyle};
 
 /// # Switch
 ///
@@ -12,6 +12,7 @@ pub struct Switch {
     on_click: Option<Box<dyn Fn(&bool, &mut Window, &mut App) + 'static>>,
     text: Option<Text>,
     size: Size,
+    tooltip: Option<Box<dyn Fn(&mut Window, &mut App) -> AnyView>>,
 }
 
 impl Switch {
@@ -24,6 +25,7 @@ impl Switch {
             on_click: None,
             text: None,
             size: Size::default(),
+            tooltip: None,
         }
     }
 
@@ -52,6 +54,12 @@ impl Switch {
 
     pub fn size(mut self, size: impl Into<Size>) -> Self {
         self.size = size.into();
+        self
+    }
+
+    /// Sets the tooltip for the Switch.
+    pub fn tooltip(mut self, tooltip: impl Fn(&mut Window, &mut App) -> AnyView + 'static) -> Self {
+        self.tooltip = Some(Box::new(tooltip));
         self
     }
 }
@@ -130,5 +138,8 @@ impl RenderOnce for Switch {
             //     _ => this.child(text.text_sm()),
             // })
             .when_some(self.text, |this, text| this.child(text))
+            .when_some(self.tooltip, |this, tooltip| {
+                this.tooltip(move |window, cx| tooltip(window, cx))
+            })
     }
 }

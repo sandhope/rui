@@ -16,12 +16,12 @@ impl ButtonStory {
 fn color_row(text: impl Into<SharedString>, color: Hsla) -> Div {
     Row! {
         Text::new(text).w_20()
-        Button::new("id").text("Solid").color(color)
-        Button::new("id").text("Soft").color(color).surface()
-        Button::new("id").text("Soft").color(color).soft()
-        Button::new("id").text("Outline").color(color).outline()
-        Button::new("id").text("Ghost").color(color).ghost()
-        Button::new("id").text("Plain").color(color).plain()
+        Button::new("id-Solid").text("Solid").color(color)
+        Button::new("id-Surface").text("Surface").color(color).surface()
+        Button::new("id-Soft").text("Soft").color(color).soft()
+        Button::new("id-Outline").text("Outline").color(color).outline()
+        Button::new("id-Ghost").text("Ghost").color(color).ghost()
+        Button::new("id-Plain").text("Plain").color(color).plain()
     }
     .gap_2()
 }
@@ -29,18 +29,18 @@ fn color_row(text: impl Into<SharedString>, color: Hsla) -> Div {
 fn variant_row(text: impl Into<SharedString>, variant: ButtonVariant) -> Div {
     Row! {
         Text::new(text).w_20()
-        Button::new("id").text("Default").variant(variant)
-        Button::new("id").text("Primary").variant(variant).primary()
-        Button::new("id").text("Secondary").variant(variant).secondary()
-        Button::new("id").text("Success").variant(variant).success()
-        Button::new("id").text("Warning").variant(variant).warning()
-        Button::new("id").text("Danger").variant(variant).danger()
-        Button::new("id").text("Default").variant(variant).disabled(true)
-        Button::new("id").text("Default").variant(variant).primary().disabled(true)
-        Button::new("id").text("Secondary").variant(variant).secondary().disabled(true)
-        Button::new("id").text("Success").variant(variant).success().disabled(true)
-        Button::new("id").text("Warning").variant(variant).warning().disabled(true)
-        Button::new("id").text("Default").variant(variant).danger().disabled(true)
+        Button::new("id-Default").text("Default").variant(variant)
+        Button::new("id-Primary").text("Primary").variant(variant).primary()
+        Button::new("id-Secondary").text("Secondary").variant(variant).secondary()
+        Button::new("id-Success").text("Success").variant(variant).success()
+        Button::new("id-Warning").text("Warning").variant(variant).warning()
+        Button::new("id-Danger").text("Danger").variant(variant).danger()
+        Button::new("id-Default-disabled").text("Default").variant(variant).disabled(true)
+        Button::new("id-Primary-disabled").text("Primary").variant(variant).primary().disabled(true)
+        Button::new("id-Secondary-disabled").text("Secondary").variant(variant).secondary().disabled(true)
+        Button::new("id-Success-disabled").text("Success").variant(variant).success().disabled(true)
+        Button::new("id-Warning-disabled").text("Warning").variant(variant).warning().disabled(true)
+        Button::new("id-Default-disabled").text("Default").variant(variant).danger().disabled(true)
     }
     .gap_2()
 }
@@ -108,6 +108,7 @@ impl Render for ButtonStory {
 
 fn main() {
     Application::new().with_assets(Assets).run(|cx: &mut App| {
+        cx.activate(true);
         Theme::init(cx, None, None);
         let bounds = Bounds::centered(None, size(px(1024.), px(700.0)), cx);
         cx.open_window(
