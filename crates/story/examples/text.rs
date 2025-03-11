@@ -10,7 +10,7 @@ impl Render for TextStory {
     fn render(&mut self, _window: &mut Window, cx: &mut Context<Self>) -> impl IntoElement {
         Root! {
             Section! {
-                "label";
+                "Text";
                 Row!{
                     Text::new("row")
                     Text::new("row")

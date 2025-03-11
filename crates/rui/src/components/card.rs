@@ -32,7 +32,8 @@ impl Card {
     pub fn title(mut self, title: impl Into<SharedString>) -> Self {
         self.base = self.base.child(
             Text::new(title)
-                .margin((-10., 0., 10., 0.))
+                .text_xl()
+                .margin((0., 0., 10., 0.))
                 .font_weight(FontWeight::SEMIBOLD),
         );
         self
@@ -84,10 +85,6 @@ impl Styled for Card {
 
 impl RenderOnce for Card {
     fn render(self, _window: &mut Window, cx: &mut App) -> impl IntoElement {
-        let color = self
-            .border_color
-            .unwrap_or_else(|| cx.theme().colors.border_variant);
-
         self.base
             .flex()
             .map(|this| {
@@ -101,7 +98,10 @@ impl RenderOnce for Card {
             .margin(self.margin)
             .rounded(self.radius)
             .border(self.border_width)
-            .border_color(color)
+            .border_color(
+                self.border_color
+                    .unwrap_or(cx.theme().colors.border_variant),
+            )
             .when(self.shadow, |this| {
                 // this.shadow_sm()
                 this.shadow(smallvec::smallvec![box_shadow(

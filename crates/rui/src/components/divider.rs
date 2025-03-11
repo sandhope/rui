@@ -83,7 +83,7 @@ impl Divider {
                         Direction::Horizontal => this.h_px().w_full(),
                         Direction::Vertical => this.w_px().h_full(),
                     })
-                    .bg(self.color.unwrap_or(cx.theme().colors.border_variant)),
+                    .bg(self.color.unwrap_or(cx.theme().colors.border)),
             )
             .when_some(self.text, |this, text| {
                 this.child(
@@ -111,7 +111,7 @@ impl Divider {
             Direction::Horizontal => (segment_min_w, px(1.)),
             Direction::Vertical => (px(1.), segment_min_w),
         };
-        let color = self.color.unwrap_or(cx.theme().colors.border_variant);
+        let color = self.color.unwrap_or(cx.theme().colors.border);
 
         self.base
             .flex()
@@ -175,13 +175,15 @@ impl Styled for DividerTitle {
 
 impl RenderOnce for DividerTitle {
     fn render(self, _: &mut Window, cx: &mut App) -> impl IntoElement {
+        let color = self.color.unwrap_or(cx.theme().colors.border);
+
         self.base
             .flex()
             .items_center()
             .gap_3()
             .pb_1()
-            .child(div().h_px().w_4().bg(cx.theme().colors.border))
+            .child(div().h_px().w_4().bg(color))
             .child(div().flex_none().text_size(self.text_size).child(self.text))
-            .child(div().h_px().w_full().flex_1().bg(cx.theme().colors.border))
+            .child(div().h_px().w_full().flex_1().bg(color))
     }
 }

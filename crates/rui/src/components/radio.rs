@@ -57,26 +57,21 @@ impl RenderOnce for Radio {
             .id(self.id)
             .gap_x_2()
             .group("")
-            //.line_height(relative(1.))
+            .map(|this| {
+                if self.disabled {
+                    this.cursor_not_allowed().opacity(0.5)
+                } else {
+                    this.cursor_pointer().group_hover("", |this| {
+                        this.border_color(cx.theme().colors.element_hover)
+                    })
+                }
+            })
             .child(
                 div()
                     .size(outer_diameter)
                     .rounded(outer_diameter / 2.)
                     .border_color(cx.theme().colors.border)
                     .border(border_width)
-                    // .when(self.disabled, |this| this.opacity(0.5))
-                    // .when(!self.disabled, |this| {
-                    //     this.group_hover("", |this| this.border_color(cx.theme().element_hover))
-                    // })
-                    .map(|this| {
-                        if self.disabled {
-                            this.opacity(0.5)
-                        } else {
-                            this.group_hover("", |this| {
-                                this.border_color(cx.theme().colors.element_hover)
-                            })
-                        }
-                    })
                     .when(self.checked, |this| {
                         this.child(
                             div()
