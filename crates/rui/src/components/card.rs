@@ -1,5 +1,5 @@
 use crate::{box_shadow, prelude::*, Direction, Text};
-use gpui::{px, AnyElement, FontWeight, Pixels};
+use gpui::{FontWeight, Pixels};
 
 #[derive(IntoElement)]
 pub struct Card {

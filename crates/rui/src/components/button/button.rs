@@ -15,6 +15,20 @@ pub enum ButtonVariant {
     Plain,
 }
 
+// use std::fmt::{self, Display, Formatter};
+// impl Display for ButtonVariant {
+//     fn fmt(&self, f: &mut Formatter) -> fmt::Result {
+//         match self {
+//             Self::Solid => write!(f, "Solid"),
+//             Self::Soft => write!(f, "Soft"),
+//             Self::Surface => write!(f, "Surface"),
+//             Self::Outline => write!(f, "Outline"),
+//             Self::Ghost => write!(f, "Ghost"),
+//             Self::Plain => write!(f, "Plain"),
+//         }
+//     }
+// }
+
 #[derive(IntoElement)]
 pub struct Button {
     base: Div,

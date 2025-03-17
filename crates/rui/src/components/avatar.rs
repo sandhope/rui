@@ -1,6 +1,6 @@
 use crate::prelude::*;
 
-use gpui::{img, AbsoluteLength, AnyElement, ImageSource, Img};
+use gpui::{img, AbsoluteLength, ImageSource, Img};
 
 /// An element that renders a user avatar with customizable appearance options.
 ///

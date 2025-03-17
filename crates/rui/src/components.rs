@@ -1,8 +1,10 @@
+mod alert_modal;
 mod avatar;
 mod button;
 mod card;
 mod checkbox;
 mod divider;
+mod headline;
 mod icon;
 mod indicator;
 mod label;
@@ -15,11 +17,13 @@ mod switch;
 mod text;
 mod tooltip;
 
+pub use alert_modal::*;
 pub use avatar::*;
 pub use button::*;
 pub use card::*;
 pub use checkbox::*;
 pub use divider::*;
+pub use headline::*;
 pub use icon::*;
 pub use indicator::*;
 pub use label::*;

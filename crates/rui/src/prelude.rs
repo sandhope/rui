@@ -1,7 +1,7 @@
 pub use gpui::prelude::*;
 pub use gpui::{
-    div, px, relative, rems, App, Div, ElementId, Hsla, IntoElement, ParentElement, RenderOnce,
-    SharedString, Styled, Window,
+    div, px, relative, rems, AnyElement, App, Div, ElementId, Hsla, IntoElement, ParentElement,
+    RenderOnce, SharedString, Styled, Window,
 };
 
 pub use crate::traits::*;

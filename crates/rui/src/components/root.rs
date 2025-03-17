@@ -1,5 +1,4 @@
 use crate::prelude::*;
-use gpui::AnyElement;
 
 #[derive(IntoElement)]
 pub struct RootView {
