@@ -33,6 +33,8 @@ Here are some of the components currently available:
   - **`CheckboxGroup`**: Manages multiple checkboxes for selection.
   - **`Link`**: A hyperlink component, similar to an `<a>` tag in HTML.
   - **`Slider`**: A component for selecting a value from a range. __todo__
+  - **`Modal`**: Modal is used to show a dialog or a box when you click a button. __todo__
+  - **`Toast`**: Used to display a temporary message to the user. __todo__
 
 - **Navigation Components:**
   - **`Menu`**: A component for creating navigation menus. __todo__

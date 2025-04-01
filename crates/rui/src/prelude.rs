@@ -4,6 +4,7 @@ pub use gpui::{
     RenderOnce, SharedString, Styled, Window,
 };
 
+pub use crate::animation::{AnimationDirection, AnimationDuration, DefaultAnimations};
 pub use crate::traits::*;
 pub use crate::{h_flex, v_flex, Col, Root, Row, Section};
 pub use crate::{rems_from_px, vh, vw, PlatformStyle, Size};
