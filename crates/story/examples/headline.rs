@@ -1,12 +1,10 @@
-use gpui::{px, size, Application, Bounds, Context, WindowBounds, WindowOptions};
-
 use rui::{prelude::*, Button, Headline, HeadlineSize, Root, Theme};
 
 struct HeadlineStory;
 
 impl Render for HeadlineStory {
     fn render(&mut self, _window: &mut Window, cx: &mut Context<Self>) -> impl IntoElement {
-        Root! {
+        Col! {
             Section!{
                 "Headline";
                 Headline::new("XLarge")
@@ -42,7 +40,10 @@ fn main() {
                 window_bounds: Some(WindowBounds::Windowed(bounds)),
                 ..Default::default()
             },
-            |_, cx| cx.new(|_| HeadlineStory {}),
+            |_, cx| {
+                let view = cx.new(|_| HeadlineStory {});
+                cx.new(|cx| Root::new(cx, view.into()))
+            },
         )
         .unwrap();
     });

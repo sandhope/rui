@@ -1,12 +1,11 @@
-use gpui::{px, rems, size, Application, Bounds, Context, FontWeight, WindowBounds, WindowOptions};
-
+use gpui::FontWeight;
 use rui::{prelude::*, Assets, Col, Icon, IconName, IconSize, Label, Root, Row, Section, Text};
 
 struct LabelStory;
 
 impl Render for LabelStory {
     fn render(&mut self, _window: &mut Window, _cx: &mut Context<Self>) -> impl IntoElement {
-        Root! {
+        Col! {
             Section! {
                 "Label row";
                 Row!{
@@ -66,7 +65,10 @@ fn main() {
                 window_bounds: Some(WindowBounds::Windowed(bounds)),
                 ..Default::default()
             },
-            |_, cx| cx.new(|_| LabelStory {}),
+            |_, cx| {
+                let view = cx.new(|_| LabelStory {});
+                cx.new(|cx| Root::new(cx, view.into()))
+            },
         )
         .unwrap();
     });

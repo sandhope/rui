@@ -40,24 +40,6 @@ pub fn col(input: TokenStream) -> TokenStream {
     layout::col(input)
 }
 
-/// A macro to create a root layout with multiple children.
-///
-/// This macro takes a list of expressions and adds them as children to a root layout.
-///
-/// # Example
-///
-/// ```rust
-/// root! {
-///     child1
-///     child2
-///     child3
-/// }
-/// ```
-#[proc_macro]
-pub fn root(input: TokenStream) -> TokenStream {
-    layout::root(input)
-}
-
 /// A macro to create a section layout with a title and multiple children.
 ///
 /// This macro allows you to create a layout section that includes a title and a list of child components.

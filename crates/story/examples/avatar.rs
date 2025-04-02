@@ -1,8 +1,4 @@
-use gpui::{
-    img, px, size, Application, Bounds, Context, KeyBinding, Menu, MenuItem, SharedUri,
-    WindowBounds, WindowOptions,
-};
-
+use gpui::{img, KeyBinding, Menu, MenuItem, SharedUri};
 use reqwest_client::ReqwestClient;
 use rui::{prelude::*, Assets, Avatar};
 use std::path::PathBuf;
@@ -16,7 +12,7 @@ struct AvatarStory {
 
 impl Render for AvatarStory {
     fn render(&mut self, _window: &mut Window, _cx: &mut Context<Self>) -> impl IntoElement {
-        Root! {
+        Col! {
             Avatar::new(self.local_resource.clone()).size(px(48.))
             Avatar::new(self.local_resource.clone()).size(px(48.)).square()
             Avatar::new(self.asset_resource.clone()).size(px(48.))
@@ -61,13 +57,14 @@ fn main() {
                     ..Default::default()
                 },
                 |_, cx| {
-                    cx.new(|_| AvatarStory {
+                    let view = cx.new(|_| AvatarStory {
                         local_resource: manifest_dir
                             .join("../../assets/images/app-icon.png")
                             .into(),
                         remote_resource: "https://picsum.photos/512/512".into(),
                         asset_resource: "images/logo.jpg".into(),
-                    })
+                    });
+                    cx.new(|cx| Root::new(cx, view.into()))
                 },
             )
             .unwrap();

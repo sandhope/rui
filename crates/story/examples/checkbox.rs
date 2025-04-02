@@ -1,5 +1,3 @@
-use gpui::{px, size, Application, Bounds, Context, WindowBounds, WindowOptions};
-
 use rui::{prelude::*, Checkbox, CheckboxGroup, Divider, Switch, Text, ToggleState};
 
 struct CheckboxStory {
@@ -24,7 +22,7 @@ impl CheckboxStory {
 
 impl Render for CheckboxStory {
     fn render(&mut self, _window: &mut Window, cx: &mut Context<Self>) -> impl IntoElement {
-        Root! {
+        Col! {
             Section! {
                 "Checkbox";
                 Switch::new("id")
@@ -118,13 +116,14 @@ fn main() {
                 ..Default::default()
             },
             |_, cx| {
-                cx.new(|_| CheckboxStory {
+                let view = cx.new(|_| CheckboxStory {
                     state: false,
                     second_state: false,
                     disabled: true,
                     checked_indexes: Vec::new(),
                     all_state: ToggleState::Unselected,
-                })
+                });
+                cx.new(|cx| Root::new(cx, view.into()))
             },
         )
         .unwrap();

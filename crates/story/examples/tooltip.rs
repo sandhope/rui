@@ -1,12 +1,10 @@
-use gpui::{px, size, Application, Bounds, Context, WindowBounds, WindowOptions};
-
 use rui::{prelude::*, Button, Checkbox, IconName, Link, Root, Switch, Theme, Tooltip};
 
 struct TooltipStory;
 
 impl Render for TooltipStory {
     fn render(&mut self, _window: &mut Window, cx: &mut Context<Self>) -> impl IntoElement {
-        Root! {
+        Col! {
             Button::new("appearance")
                 .text(cx.theme().appearance.to_string())
                 .tooltip(Tooltip::text("This is a tooltip!"))
@@ -43,7 +41,10 @@ fn main() {
                 window_bounds: Some(WindowBounds::Windowed(bounds)),
                 ..Default::default()
             },
-            |_, cx| cx.new(|_| TooltipStory {}),
+            |_, cx| {
+                let view = cx.new(|_| TooltipStory {});
+                cx.new(|cx| Root::new(cx, view.into()))
+            },
         )
         .unwrap();
     });

@@ -1,12 +1,10 @@
-use gpui::{px, size, Application, Bounds, Context, WindowBounds, WindowOptions};
-
 use rui::{prelude::*, Assets, Divider, DividerTitle, Root, Text};
 
 struct DividerStory;
 
 impl Render for DividerStory {
     fn render(&mut self, _window: &mut Window, _cx: &mut Context<Self>) -> impl IntoElement {
-        Root! {
+        Col! {
             Section! {
                 "Horizontal";
                 Divider::new().mb_3()
@@ -42,7 +40,10 @@ fn main() {
                 window_bounds: Some(WindowBounds::Windowed(bounds)),
                 ..Default::default()
             },
-            |_, cx| cx.new(|_| DividerStory {}),
+            |_, cx| {
+                let view = cx.new(|_| DividerStory {});
+                cx.new(|cx| Root::new(cx, view.into()))
+            },
         )
         .unwrap();
     });

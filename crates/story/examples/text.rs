@@ -1,5 +1,4 @@
-use gpui::{size, Application, Bounds, Context, FontWeight, WindowBounds, WindowOptions};
-
+use gpui::FontWeight;
 use rui::{prelude::*, Button, DividerTitle, IconName, Root, Row, Section, Text};
 
 struct TextStory {
@@ -8,7 +7,7 @@ struct TextStory {
 
 impl Render for TextStory {
     fn render(&mut self, _window: &mut Window, cx: &mut Context<Self>) -> impl IntoElement {
-        Root! {
+        Col! {
             Section! {
                 "Text";
                 Row!{
@@ -100,7 +99,10 @@ fn main() {
                 window_bounds: Some(WindowBounds::Windowed(bounds)),
                 ..Default::default()
             },
-            |_, cx| cx.new(|_| TextStory { masked: false }),
+            |_, cx| {
+                let view = cx.new(|_| TextStory { masked: false });
+                cx.new(|cx| Root::new(cx, view.into()))
+            },
         )
         .unwrap();
     });

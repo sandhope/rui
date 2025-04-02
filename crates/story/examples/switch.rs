@@ -1,5 +1,3 @@
-use gpui::{px, size, Application, Bounds, Context, WindowBounds, WindowOptions};
-
 use rui::{prelude::*, Root, Section, Switch, Text};
 
 struct SwitchStory {
@@ -10,7 +8,7 @@ struct SwitchStory {
 
 impl Render for SwitchStory {
     fn render(&mut self, _window: &mut Window, cx: &mut Context<Self>) -> impl IntoElement {
-        Root! {
+        Col! {
             Section! {
                 "switch";
                 Switch::new("id")
@@ -59,11 +57,12 @@ fn main() {
                 ..Default::default()
             },
             |_, cx| {
-                cx.new(|_| SwitchStory {
+                let view = cx.new(|_| SwitchStory {
                     state: false,
                     second_state: false,
                     disabled: true,
-                })
+                });
+                cx.new(|cx| Root::new(cx, view.into()))
             },
         )
         .unwrap();

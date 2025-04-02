@@ -1,5 +1,3 @@
-use gpui::{px, size, Application, Bounds, ClickEvent, Context, WindowBounds, WindowOptions};
-
 use rui::{
     prelude::*, Button, ButtonGroup, ButtonVariant, Color, Icon, IconName, IconSize, Root, Text,
     Theme,
@@ -47,7 +45,7 @@ fn variant_row(text: impl Into<SharedString>, variant: ButtonVariant) -> Div {
 
 impl Render for ButtonStory {
     fn render(&mut self, _window: &mut Window, _cx: &mut Context<Self>) -> impl IntoElement {
-        Root! {
+        Col! {
             variant_row("Solid", ButtonVariant::Solid)
             variant_row("Surface", ButtonVariant::Surface)
             variant_row("Soft", ButtonVariant::Soft)
@@ -116,7 +114,10 @@ fn main() {
                 window_bounds: Some(WindowBounds::Windowed(bounds)),
                 ..Default::default()
             },
-            |_, cx| cx.new(|_| ButtonStory {}),
+            |_, cx| {
+                let view = cx.new(|_| ButtonStory {});
+                cx.new(|cx| Root::new(cx, view.into()))
+            },
         )
         .unwrap();
     });

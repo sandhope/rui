@@ -1,12 +1,11 @@
-use gpui::{px, size, Application, Bounds, Context, FontWeight, WindowBounds, WindowOptions};
-
+use gpui::FontWeight;
 use rui::{prelude::*, Root, Row, Section, StyledExt, Text};
 
 struct LayoutStory;
 
 impl Render for LayoutStory {
     fn render(&mut self, _window: &mut Window, _cx: &mut Context<Self>) -> impl IntoElement {
-        Root! {
+        Col! {
             Row!{
                 Text::new("row").padding(0.).border_1().border_color(gpui::black())
                 Text::new("row").padding((0., 10.0)).border_1().border_color(gpui::black())
@@ -61,7 +60,10 @@ fn main() {
                 window_bounds: Some(WindowBounds::Windowed(bounds)),
                 ..Default::default()
             },
-            |_, cx| cx.new(|_| LayoutStory {}),
+            |_, cx| {
+                let view = cx.new(|_| LayoutStory {});
+                cx.new(|cx| Root::new(cx, view.into()))
+            },
         )
         .unwrap();
     });

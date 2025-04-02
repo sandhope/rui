@@ -1,5 +1,3 @@
-use gpui::{px, size, Application, Bounds, Context, WindowBounds, WindowOptions};
-
 use rui::{prelude::*, Radio, RadioGroup, Root, Section, Text};
 
 struct RadioStory {
@@ -9,7 +7,7 @@ struct RadioStory {
 
 impl Render for RadioStory {
     fn render(&mut self, _window: &mut Window, cx: &mut Context<Self>) -> impl IntoElement {
-        Root! {
+        Col! {
             Radio::new("appearance, to do: change to switch")
             .text(cx.theme().appearance.to_string())
             .checked(cx.theme().appearance.is_light())
@@ -72,10 +70,11 @@ fn main() {
                 ..Default::default()
             },
             |_, cx| {
-                cx.new(|_| RadioStory {
+                let view = cx.new(|_| RadioStory {
                     enabled: false,
                     selected_index: None,
-                })
+                });
+                cx.new(|cx| Root::new(cx, view.into()))
             },
         )
         .unwrap();

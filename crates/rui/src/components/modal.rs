@@ -11,13 +11,11 @@ const CONTEXT: &str = "Modal";
 
 pub struct Modal {
     focus_handle: FocusHandle,
-    base: Div,
-    children: SmallVec<[AnyElement; 2]>,
+    title: SharedString,
     primary_button: Button,
     dismiss_button: Button,
-    header: AnyElement,
-    footer: Option<AnyElement>,
     show_close: bool,
+    content_builder: Option<Box<dyn Fn(&mut Window, &mut Context<Self>) -> AnyElement>>,
 }
 
 impl Focusable for Modal {
@@ -33,16 +31,20 @@ impl Modal {
     pub fn new(cx: &mut App, title: impl Into<SharedString>) -> Self {
         Self {
             focus_handle: cx.focus_handle(),
-            base: div(),
-            children: smallvec![],
+            title: title.into(),
             primary_button: Button::new("Ok").text("Ok"),
             dismiss_button: Button::new("Cancel").text("Cancel").soft(),
-            header: Headline::new(title)
-                .size(HeadlineSize::Small)
-                .into_any_element(),
-            footer: None,
             show_close: false,
+            content_builder: None,
         }
+    }
+
+    pub fn content<F>(mut self, builder: F) -> Self
+    where
+        F: 'static + Fn(&mut Window, &mut Context<Self>) -> AnyElement,
+    {
+        self.content_builder = Some(Box::new(builder));
+        self
     }
 
     pub fn bind_keys(cx: &mut App) {
@@ -64,39 +66,70 @@ impl Modal {
 
 impl Render for Modal {
     fn render(&mut self, window: &mut Window, cx: &mut Context<Self>) -> impl IntoElement {
-        // let is_light = cx.theme().appearance.is_light();
-
         v_flex()
             .key_context(CONTEXT)
+            .track_focus(&self.focus_handle)
             .on_action(cx.listener(Self::cancel))
-            .on_action(move |_: &Escape, _window, _cx| println!("xxx"))
             .elevation_3(cx)
             .w_96()
             .h_auto()
             .p_4()
             .gap_2()
-            .when(self.show_close, |this| {
-                this.child(
-                    Button::new(SharedString::from("modal-close"))
-                        .absolute()
-                        .top_2()
-                        .right_2()
-                        .ghost()
-                        .icon(IconName::Close)
-                        .ghost()
-                        .size(Size::XSmall)
-                        .on_click(move |_, _window, _cx| {
-                            // window.close_modal(cx);
-                            //
-                        }),
-                )
-            })
+            // .when(self.show_close, |this| {
+            //     this.child(
+            //         Button::new("modal-close")
+            //             .absolute()
+            //             .top_4()
+            //             .right_2()
+            //             .ghost()
+            //             .icon(IconName::Close)
+            //             .size(Size::XSmall)
+            //             .on_click(cx.listener(move |_, _, window, cx| {
+            //                 cx.spawn_in(window, async move |this, cx| {
+            //                     this.update(cx, |_, cx| cx.emit(DismissEvent)).ok();
+            //                 })
+            //                 .detach();
+            //             })),
+            //     )
+            // })
             .child(
                 h_flex()
                     .w_full()
                     .justify_between()
-                    .child(Headline::new("Give Feedback")),
+                    .child(Headline::new(self.title.clone()))
+                    .when(self.show_close, |this| {
+                        this.child(
+                            Button::new("modal-close")
+                                .ghost()
+                                .icon(IconName::Close)
+                                .size(Size::XSmall)
+                                .on_click(cx.listener(move |_, _, window, cx| {
+                                    cx.spawn_in(window, async move |this, cx| {
+                                        this.update(cx, |_, cx| cx.emit(DismissEvent)).ok();
+                                    })
+                                    .detach();
+                                })),
+                        )
+                    }),
             )
+            .when_some(self.content_builder.as_ref(), |this, builder| {
+                this.child(builder(window, cx))
+            })
+        // .child(
+        //     h_flex()
+        //         .h(rems(1.75))
+        //         .items_center()
+        //         .pt_4()
+        //         .child(div().flex_1())
+        //         .child(
+        //             h_flex()
+        //                 .items_center()
+        //                 .gap_1()
+        //                 .child(self.dismiss_button.clone())
+        //                 .child(self.primary_button),
+        //         )
+        //         .into_any_element(),
+        // )
 
         // self.base
         //     .v_flex()
@@ -132,17 +165,5 @@ impl Render for Modal {
         //                 .into_any_element(),
         //         ),
         //     )
-    }
-}
-
-impl ParentElement for Modal {
-    fn extend(&mut self, elements: impl IntoIterator<Item = AnyElement>) {
-        self.children.extend(elements)
-    }
-}
-
-impl Styled for Modal {
-    fn style(&mut self) -> &mut gpui::StyleRefinement {
-        self.base.style()
     }
 }

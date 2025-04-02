@@ -1,5 +1,3 @@
-use gpui::{px, size, Application, Bounds, Context, WindowBounds, WindowOptions};
-
 use rui::{prelude::*, Button, Root, Row, Text};
 
 struct Tiles {
@@ -8,7 +6,7 @@ struct Tiles {
 
 impl Render for Tiles {
     fn render(&mut self, _window: &mut Window, _cx: &mut Context<Self>) -> impl IntoElement {
-        Root! {
+        Col! {
             Text::new(self.text.clone())
 
             Row!{
@@ -37,9 +35,10 @@ fn main() {
                 ..Default::default()
             },
             |_, cx| {
-                cx.new(|_| Tiles {
+                let view = cx.new(|_| Tiles {
                     text: "Hello World!".into(),
-                })
+                });
+                cx.new(|cx| Root::new(cx, view.into()))
             },
         )
         .unwrap();

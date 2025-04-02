@@ -57,31 +57,6 @@ macro_rules! Row {
     };
 }
 
-/// A macro to create a root layout with multiple children.
-///
-/// This macro takes a list of expressions and adds them as children to a root layout.
-///
-/// # Example
-///
-/// ```rust
-/// Root! {
-///     child1
-///     child2
-///     child3
-/// }
-/// ```
-#[macro_export]
-macro_rules! Root {
-    { $( $child:expr )* } => {
-        {
-            RootView::new()
-            $(
-                .child($child)
-            )*
-        }
-    };
-}
-
 /// A macro to create a section layout with a title and multiple children.
 ///
 /// This macro allows you to create a layout section that includes a title and a list of child components.

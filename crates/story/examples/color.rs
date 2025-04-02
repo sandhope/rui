@@ -1,4 +1,4 @@
-use gpui::{px, rgb, size, Application, Bounds, Context, WindowBounds, WindowOptions};
+use gpui::{px, rgb};
 use rui::{prelude::*, Col, Color, Row, Text};
 
 struct ColorStory {

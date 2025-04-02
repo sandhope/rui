@@ -1,12 +1,10 @@
-use gpui::{px, size, Application, Bounds, Context, WindowBounds, WindowOptions};
-
 use rui::{prelude::*, Root, Theme};
 
 struct CardStory;
 
 impl Render for CardStory {
     fn render(&mut self, _window: &mut Window, _cx: &mut Context<Self>) -> impl IntoElement {
-        Root! {
+        Col! {
             Card::new()
                 .child("Vertical")
 
@@ -28,7 +26,10 @@ fn main() {
                 window_bounds: Some(WindowBounds::Windowed(bounds)),
                 ..Default::default()
             },
-            |_, cx| cx.new(|_| CardStory {}),
+            |_, cx| {
+                let view = cx.new(|_| CardStory {});
+                cx.new(|cx| Root::new(cx, view.into()))
+            },
         )
         .unwrap();
     });

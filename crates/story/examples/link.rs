@@ -1,11 +1,10 @@
-use gpui::{size, Application, Bounds, WindowBounds, WindowOptions};
 use rui::{prelude::*, Color, Icon, IconName, Link, LinkPreview, Root, Row, Switch, Text, Tooltip};
 
 struct LinkStory;
 
 impl Render for LinkStory {
     fn render(&mut self, _window: &mut Window, cx: &mut Context<Self>) -> impl IntoElement {
-        Root! {
+        Col! {
             Row! {
                 Text::new("Appearance: ").w_1_4()
                 Switch::new("appearance")
@@ -43,7 +42,10 @@ fn main() {
                 window_bounds: Some(WindowBounds::Windowed(bounds)),
                 ..Default::default()
             },
-            |_, cx| cx.new(|_| LinkStory {}),
+            |_, cx| {
+                let view = cx.new(|_| LinkStory {});
+                cx.new(|cx| Root::new(cx, view.into()))
+            },
         )
         .unwrap();
     });

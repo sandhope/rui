@@ -60,36 +60,6 @@ pub fn row(input: TokenStream) -> TokenStream {
     TokenStream::from(expanded)
 }
 
-pub fn root(input: TokenStream) -> TokenStream {
-    // let exprs = parse_macro_input!(input with parse_input);
-    let LayoutInput { exprs } = parse_macro_input!(input as LayoutInput);
-
-    // let children = exprs.iter().map(|expr| {
-    //     quote! {
-    //         .child(#expr)
-    //     }
-    // });
-    // let expanded = quote! {
-    //     {
-    //         RootView::new()
-    //         #(#children)*
-    //     }
-    // };
-    //
-    let child = exprs.iter();
-
-    let expanded = quote! {
-        {
-            RootView::new()
-            #(
-                .child(#child)
-            )*
-        }
-    };
-
-    TokenStream::from(expanded)
-}
-
 struct SectionInput {
     title: Option<LitStr>,
     children: Vec<Expr>,

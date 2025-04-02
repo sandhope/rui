@@ -1,5 +1,3 @@
-use gpui::{px, size, Application, Bounds, Context, WindowBounds, WindowOptions};
-
 use rui::{prelude::*, Assets, IconName, Root, Row, Text};
 use strum::IntoEnumIterator;
 
@@ -7,7 +5,7 @@ struct IconStory;
 
 impl Render for IconStory {
     fn render(&mut self, _window: &mut Window, _cx: &mut Context<Self>) -> impl IntoElement {
-        Root! {
+        Col! {
             Text::new("All Icons").pb_3()
 
             Row! {}
@@ -31,7 +29,10 @@ fn main() {
                 window_bounds: Some(WindowBounds::Windowed(bounds)),
                 ..Default::default()
             },
-            |_, cx| cx.new(|_| IconStory {}),
+            |_, cx| {
+                let view = cx.new(|_| IconStory {});
+                cx.new(|cx| Root::new(cx, view.into()))
+            },
         )
         .unwrap();
     });
