@@ -104,7 +104,7 @@ impl RenderOnce for Card {
             )
             .when(self.shadow, |this| {
                 // this.shadow_sm()
-                this.shadow(smallvec::smallvec![box_shadow(
+                this.shadow(vec![box_shadow(
                     0.,
                     4.,
                     20.,
@@ -115,7 +115,7 @@ impl RenderOnce for Card {
             .when(self.shadow_hover, |this| {
                 this.hover(|this| {
                     // this.shadow_md()
-                    this.shadow(smallvec::smallvec![box_shadow(
+                    this.shadow(vec![box_shadow(
                         0.,
                         8.,
                         30.,

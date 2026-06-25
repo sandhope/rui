@@ -29,7 +29,7 @@ pub enum AnimationDirection {
     FromTop,
 }
 
-pub trait DefaultAnimations: Styled + Sized {
+pub trait DefaultAnimations: Styled + Sized + AnimationExt {
     fn animate_in(
         self,
         animation_type: AnimationDirection,
@@ -89,4 +89,4 @@ pub trait DefaultAnimations: Styled + Sized {
     }
 }
 
-impl<E: Styled> DefaultAnimations for E {}
+impl<E: Styled + gpui::IntoElement + 'static> DefaultAnimations for E {}

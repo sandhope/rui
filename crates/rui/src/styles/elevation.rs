@@ -2,7 +2,6 @@ use std::fmt::{self, Display, Formatter};
 
 use crate::ActiveTheme;
 use gpui::{hsla, point, px, App, BoxShadow};
-use smallvec::{smallvec, SmallVec};
 
 /// Today, elevation is primarily used to add shadows to elements, and set the correct background for elements like buttons.
 ///
@@ -40,14 +39,14 @@ impl Display for ElevationIndex {
 
 impl ElevationIndex {
     /// Returns an appropriate shadow for the given elevation index.
-    pub fn shadow(self, cx: &App) -> SmallVec<[BoxShadow; 2]> {
+    pub fn shadow(self, cx: &App) -> Vec<BoxShadow> {
         let is_light = cx.theme().appearance.is_light();
 
         match self {
-            ElevationIndex::Surface => smallvec![],
-            ElevationIndex::EditorSurface => smallvec![],
+            ElevationIndex::Surface => vec![],
+            ElevationIndex::EditorSurface => vec![],
 
-            ElevationIndex::ElevatedSurface => smallvec![
+            ElevationIndex::ElevatedSurface => vec![
                 BoxShadow {
                     color: hsla(0., 0., 0., 0.12),
                     offset: point(px(0.), px(2.)),
@@ -62,7 +61,7 @@ impl ElevationIndex {
                 }
             ],
 
-            ElevationIndex::ModalSurface => smallvec![
+            ElevationIndex::ModalSurface => vec![
                 BoxShadow {
                     color: hsla(0., 0., 0., if is_light { 0.06 } else { 0.12 }),
                     offset: point(px(0.), px(2.)),
@@ -89,7 +88,7 @@ impl ElevationIndex {
                 },
             ],
 
-            _ => smallvec![],
+            _ => vec![],
         }
     }
 

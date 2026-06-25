@@ -68,7 +68,7 @@ pub fn tooltip_container<V>(
             .rounded_lg()
             .border_1()
             .border_color(cx.theme().colors.border_variant)
-            .shadow(smallvec::smallvec![
+            .shadow(vec![
                 BoxShadow {
                     color: hsla(0., 0., 0., 0.12),
                     offset: point(px(0.), px(2.)),

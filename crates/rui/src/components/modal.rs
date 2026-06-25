@@ -1,9 +1,8 @@
-use crate::{prelude::*, Button, Headline, HeadlineSize, IconName, ModalView, Text};
+use crate::{prelude::*, Button, Headline, IconName, ModalView};
 use gpui::{
     actions, App, Context, DismissEvent, EventEmitter, FocusHandle, Focusable, KeyBinding, Render,
     Window,
 };
-use smallvec::{smallvec, SmallVec};
 
 actions!(modal, [Escape, Enter]);
 
