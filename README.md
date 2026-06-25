@@ -1,108 +1,143 @@
-## rui
+# Rui
 
-> _This project is in an early stage of development; APIs may change frequently._
+[English](./README.md) | [简体中文](./README.zh-CN.md)
 
 `rui` provides UI components for building fantastic desktop applications using [GPUI](https://gpui.rs).
 
-## Components
+## ✨ Features
 
-Here are some of the components currently available:
+- **SwiftUI-style Syntax**: Declarative component composition with macros like `Row!{}`, `Col!{}`, and `Section!{}`.
+- **Rich Components**: Buttons, inputs, dialogs, tooltips, avatars, and more.
+- **Theme Support**: Customizable themes with built-in color palettes.
+- **Easy to Use**: Simple API design inspired by modern UI frameworks.
+- **Cross-platform**: Runs on macOS, Windows, and Linux via GPUI.
 
-- **Layout Components:**
-  - **`Col`**: A column layout for arranging child components vertically.
-  - **`Row`**: A row layout for arranging child components horizontally.
-  - **`Root`**: A macro to create a root layout with multiple children.
-  - **`Section`**: A macro to create a section layout with a title and multiple children.
+## 🚀 Quick Start
 
-- **Display Components:**
-  - **`Icon`**: A vector graphic component.
-  - **`Text`**: A component for displaying text.
-  - **`Label`**: A component that combines `Text` and an `Icon`.
-  - **`Card`**: A bordered card component.
-  - **`Divider`**: Divider component.
-  - **`Avatar`**: An element that renders a user avatar with customizable appearance options.
+### Installation
 
-- **Interactive Components:**
-  - **`Button`**: A clickable button component.
-  - **`ButtonGroup`**: A group of related buttons.
-  - **`Input`**: A component for user input. __todo__
-  - **`Switch`**: A toggle switch component.
-  - **`Radio`**: A single selection toggle component.
-  - **`RadioGroup`**: A set of radio buttons for single selection.
-  - **`Checkbox`**: A component for selecting multiple options.
-  - **`CheckboxGroup`**: Manages multiple checkboxes for selection.
-  - **`Link`**: A hyperlink component, similar to an `<a>` tag in HTML.
-  - **`Slider`**: A component for selecting a value from a range. __todo__
-  - **`Modal`**: Modal is used to show a dialog or a box when you click a button. __todo__
-  - **`Toast`**: Used to display a temporary message to the user. __todo__
-
-- **Navigation Components:**
-  - **`Menu`**: A component for creating navigation menus. __todo__
-
-> _More components are actively under development and will be added soon!_
-
-## Features
-
-- `Theme`: __todo__.
-- `Notification`: __todo__.
-
-## Utility Functions
-
-- **Color Utilities:**
-  - `rgb`: Function to create RGB color values.
-  - `rgba`: Function to create RGBA color values.
-
-## Extension Methods
-
-- **CSS-style padding and margin methods**
-  - `padding`: Sets the padding of the element, in pixels.
-  - `margin`: Sets the margin of the element, in pixels.
-
-### Examples
-
-```rust
-element.padding(10.0); // Sets padding for all sides to 10.0
-element.padding((10.0, 20.0)); // Sets vertical padding to 10.0 and horizontal padding to 20.0
-element.padding((10.0, 20.0, 30.0, 40.0)); // Sets padding for top, right, bottom, and left respectively
-
-element.margin(10.0); // Sets margin for all sides to 10.0
-element.margin((10.0, 20.0)); // Sets vertical margin to 10.0 and horizontal margin to 20.0
-element.margin((10.0, 20.0, 30.0, 40.0)); // Sets margin for top, right, bottom, and left respectively
-```
-
-- **Methods for setting padding or margin in px units**
-  - `padding_top`: Sets the top padding of the element, in pixels.
-  - `padding_right`: Sets the right padding of the element, in pixels.
-  - `padding_bottom`: Sets the bottom padding of the element, in pixels.
-  - `padding_left`: Sets the left padding of the element, in pixels.
-  - `padding_x`: Sets the horizontal padding of the element, in pixels.
-  - `padding_y`: Sets the vertical padding of the element, in pixels.
-  - `margin_top`: Sets the top margin of the element, in pixels.
-  - `margin_right`: Sets the right margin of the element, in pixels.
-  - `margin_bottom`: Sets the bottom margin of the element, in pixels.
-  - `margin_left`: Sets the left margin of the element, in pixels.
-  - `margin_x`: Sets the horizontal margin of the element, in pixels.
-  - `margin_y`: Sets the vertical margin of the element, in pixels.
-
-## Usage
-
-As both `GPUI` and `rui` are still in development, you will need to include them as dependencies directly from Git repositories. Add the following to your `Cargo.toml`:
+Add the following to your `Cargo.toml`:
 
 ```toml
+[dependencies]
 gpui = { git = "https://github.com/zed-industries/zed" }
 rui = { git = "https://github.com/sandhope/rui.git" }
 ```
 
-## Development
+### Basic Example
+
+```rust
+use gpui::*;
+use rui::prelude::*;
+
+fn main() {
+    Application::new().run(|cx: &mut App| {
+        cx.open_window(WindowOptions::default(), |_, cx| {
+            cx.new(|_| {
+                Root! {
+                    Section! {
+                        "Hello Rui";
+                        Text::new("Welcome to Rui!")
+                        Button::new("Click me")
+                            .on_click(|_, _, _| println!("Button clicked!"))
+                    }
+                }
+            })
+        })
+        .unwrap();
+    });
+}
+```
+
+## 📦 Components
+
+### Layout Components
+
+- **`Row`** / **`Col`**: Horizontal and vertical layout containers (macro-based).
+- **`Root`**: Root container macro for window content.
+- **`Section`**: Sectioned layout with optional title (macro-based).
+
+### Display Components
+
+- **`Text`**: Text display component.
+- **`Label`**: Combined text and icon label.
+- **`Icon`**: SVG icon component.
+- **`Avatar`**: User avatar with customizable styles.
+- **`Card`**: Bordered card container.
+- **`Divider`**: Horizontal or vertical separator.
+- **`Headline`**: Heading text for section titles.
+- **`Indicator`**: Status indicator element.
+- **`Scrollbar`**: Customizable scrollbar.
+
+### Interactive Components
+
+- **`Button`** / **`ButtonGroup`**: Clickable buttons and button groups.
+- **`Switch`**: Toggle switch.
+- **`Checkbox`** / **`CheckboxGroup`**: Checkbox selection.
+- **`Radio`** / **`RadioGroup`**: Radio button selection.
+- **`Link`**: Hyperlink component.
+- **`Modal`** / **`AlertModal`**: Modal dialogs and alerts.
+- **`Toast`**: Temporary notification messages.
+- **`Tooltip`**: Hover tooltip.
+
+### Work in Progress
+
+- `Input`: Text input field
+- `Slider`: Range selector
+- `Menu`: Dropdown menu
+- `Table`: Data table
+- `Theme`: Theme system
+- `Notification`: Notification center
+
+> More components are actively under development!
+
+## 🎨 SwiftUI-style Macros
+
+Rui introduces a declarative syntax similar to SwiftUI, making component composition cleaner:
+
+```rust
+// Traditional GPUI style
+div()
+    .flex()
+    .child(Text::new("Hello"))
+    .child(Button::new("Click"))
+
+// Rui's SwiftUI-style
+Row! {
+    Text::new("Hello")
+    Button::new("Click")
+}
+```
+
+## 🛠️ Development
+
+### Run Story Gallery
+
+The `story` crate showcases all available components:
 
 ```bash
 cargo run
 ```
 
-More examples can be found in `examples` directory.
+### Run Examples
 
-Checkout [DEVELOPMENT](DEVELOPMENT) to see more details.
+```bash
+# Tiles example
+cargo run --example tiles
+```
 
-## License
+More examples can be found in the `examples` directory.
 
-license = "GPL-3.0-or-later"
+See [DEVELOPMENT](DEVELOPMENT) for more details.
+
+## 📖 Documentation
+
+For detailed API documentation, check out the source code in `crates/rui/src/components/`.
+
+## 🤝 Contributing
+
+Contributions are welcome! Please read our contributing guidelines before submitting PRs.
+
+## 📄 License
+
+GPL-3.0-or-later

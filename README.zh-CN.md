@@ -1,108 +1,143 @@
-## rui
+# Rui
 
-> _该项目处于开发早期阶段；API可能会频繁更改。_
+[English](./README.md) | [简体中文](./README.zh-CN.md)
 
 `rui` 提供用于构建出色桌面应用程序的 UI 组件，使用 [GPUI](https://gpui.rs)。
 
-## 组件
+## ✨ 特性
 
-以下是当前可用的一些组件：
+- **SwiftUI 风格语法**: 使用 `Row!{}`、`Col!{}`、`Section!{}` 等宏进行声明式组件组合。
+- **丰富组件**: 按钮、输入框、对话框、提示、头像等多种组件。
+- **主题支持**: 可定制主题，内置颜色调色板。
+- **易于使用**: 受现代 UI 框架启发的简洁 API 设计。
+- **跨平台**: 通过 GPUI 支持 macOS、Windows 和 Linux。
 
-- **布局组件：**
-  - **`Col`**: 用于垂直排列子组件的列布局。
-  - **`Row`**: 用于水平排列子组件的行布局。
-  - **`Root`**: 一个宏，用于创建具有多个子组件的根布局。
-  - **`Section`**: 一个宏，用于创建具有标题和多个子组件的区域布局。
+## 🚀 快速开始
 
-- **显示组件：**
-  - **`Icon`**: 矢量图形组件。
-  - **`Text`**: 用于显示文本的组件。
-  - **`Label`**: 结合 `Text` 和 `Icon` 的组件。
-  - **`Card`**: 带边框的卡片组件。
-  - **`Divider`**: 分隔组件。
-  - **`Avatar`**: 一个能够渲染用户头像并提供可定制外观选项的元素。
+### 安装
 
-- **交互组件：**
-  - **`Button`**: 可点击的按钮组件。
-  - **`ButtonGroup`**: 一组相关的按钮。
-  - **`Input`**: 用户输入组件。 __待办__
-  - **`Switch`**: 切换开关组件。
-  - **`Radio`**: 单选切换组件。
-  - **`RadioGroup`**: 一组单选按钮，仅能选择一个。
-  - **`Checkbox`**: 可选择多个选项的复选框组件。
-  - **`CheckboxGroup`**: 管理多个复选框以供选择。
-  - **`Link`**: 超链接组件，类似于 HTML 中的 <a> 标签。
-  - **`Slider`**: 用于从范围中选择值的组件。 __待办__
-  - **`Modal`**: 模态对话框组件. __待办__
-  - **`Toast`**: toast提示组件. __待办__
-
-- **导航组件：**
-  - **`Menu`**: 用于创建导航菜单的组件。 __待办__
-
-> _更多组件正在积极开发中，敬请期待！_
-
-## 特性
-
-- `Theme`: __待办__。
-- `Notification`: __待办__。
-
-## 工具函数
-
-- **颜色工具：**
-  - `rgb`: 创建 RGB 颜色值的函数。
-  - `rgba`: 创建 RGBA 颜色值的函数。
-
-## 扩展方法
-
-- **CSS 风格的内边距和外边距方法**
-  - `padding`: 设置元素的内边距，单位为像素。
-  - `margin`: 设置元素的外边距，单位为像素。
-
-### 示例
-
-```rust
-element.padding(10.0); // 设置所有边的内边距为 10.0
-element.padding((10.0, 20.0)); // 设置垂直内边距为 10.0，水平内边距为 20.0
-element.padding((10.0, 20.0, 30.0, 40.0)); // 分别设置上、右、下、左的内边距
-
-element.margin(10.0); // 设置所有边的外边距为 10.0
-element.margin((10.0, 20.0)); // 设置垂直外边距为 10.0，水平外边距为 20.0
-element.margin((10.0, 20.0, 30.0, 40.0)); // 分别设置上、右、下、左的外边距
-```
-
-- **以 px 单位设置内边距或外边距的方法**
-  - `padding_top`: 设置元素的上内边距，单位为像素。
-  - `padding_right`: 设置元素的右内边距，单位为像素。
-  - `padding_bottom`: 设置元素的下内边距，单位为像素。
-  - `padding_left`: 设置元素的左内边距，单位为像素。
-  - `padding_x`: 设置元素的水平内边距，单位为像素。
-  - `padding_y`: 设置元素的垂直内边距，单位为像素。
-  - `margin_top`: 设置元素的上外边距，单位为像素。
-  - `margin_right`: 设置元素的右外边距，单位为像素。
-  - `margin_bottom`: 设置元素的下外边距，单位为像素。
-  - `margin_left`: 设置元素的左外边距，单位为像素。
-  - `margin_x`: 设置元素的水平外边距，单位为像素。
-  - `margin_y`: 设置元素的垂直外边距，单位为像素。
-
-## 使用
-
-由于 `GPUI` 和 `rui` 仍在开发中，您需要直接从 Git 仓库将它们作为依赖项包含。将以下内容添加到您的 `Cargo.toml` 中：
+在 `Cargo.toml` 中添加以下依赖：
 
 ```toml
+[dependencies]
 gpui = { git = "https://github.com/zed-industries/zed" }
 rui = { git = "https://github.com/sandhope/rui.git" }
 ```
 
-## 开发
+### 基础示例
+
+```rust
+use gpui::*;
+use rui::prelude::*;
+
+fn main() {
+    Application::new().run(|cx: &mut App| {
+        cx.open_window(WindowOptions::default(), |_, cx| {
+            cx.new(|_| {
+                Root! {
+                    Section! {
+                        "Hello Rui";
+                        Text::new("欢迎使用 Rui!")
+                        Button::new("点击我")
+                            .on_click(|_, _, _| println!("按钮被点击了!"))
+                    }
+                }
+            })
+        })
+        .unwrap();
+    });
+}
+```
+
+## 📦 组件
+
+### 布局组件
+
+- **`Row`** / **`Col`**: 水平和垂直布局容器（基于宏）。
+- **`Root`**: 窗口内容的根容器宏。
+- **`Section`**: 带可选标题的分区域布局宏。
+
+### 显示组件
+
+- **`Text`**: 文本显示组件。
+- **`Label`**: 组合文本和图标的标签。
+- **`Icon`**: SVG 图标组件。
+- **`Avatar`**: 可自定义样式的用户头像。
+- **`Card`**: 带边框的卡片容器。
+- **`Divider`**: 水平或垂直分隔线。
+- **`Headline`**: 章节标题文本。
+- **`Indicator`**: 状态指示器。
+- **`Scrollbar`**: 可自定义的滚动条。
+
+### 交互组件
+
+- **`Button`** / **`ButtonGroup`**: 可点击按钮和按钮组。
+- **`Switch`**: 切换开关。
+- **`Checkbox`** / **`CheckboxGroup`**: 复选框选择。
+- **`Radio`** / **`RadioGroup`**: 单选按钮选择。
+- **`Link`**: 超链接组件。
+- **`Modal`** / **`AlertModal`**: 模态对话框和警告框。
+- **`Toast`**: 临时通知消息。
+- **`Tooltip`**: 悬停提示。
+
+### 开发中
+
+- `Input`: 文本输入框
+- `Slider`: 范围选择器
+- `Menu`: 下拉菜单
+- `Table`: 数据表格
+- `Theme`: 主题系统
+- `Notification`: 通知中心
+
+> 更多组件正在积极开发中！
+
+## 🎨 SwiftUI 风格宏
+
+Rui 引入了类似 SwiftUI 的声明式语法，让组件组合更简洁：
+
+```rust
+// 传统 GPUI 风格
+div()
+    .flex()
+    .child(Text::new("Hello"))
+    .child(Button::new("Click"))
+
+// Rui 的 SwiftUI 风格
+Row! {
+    Text::new("Hello")
+    Button::new("Click")
+}
+```
+
+## 🛠️ 开发
+
+### 运行 Story 画廊
+
+`story` crate 展示了所有可用组件：
 
 ```bash
 cargo run
 ```
 
-更多示例可以在 `examples` 目录中找到。
+### 运行示例
 
-查看 [DEVELOPMENT](DEVELOPMENT) 以获取更多详细信息。
+```bash
+# Tiles 示例
+cargo run --example tiles
+```
 
-## 许可证
+更多示例可在 `examples` 目录中找到。
 
-license = "GPL-3.0-or-later"
+详见 [DEVELOPMENT](DEVELOPMENT)。
+
+## 📖 文档
+
+详细 API 文档请查看源代码 `crates/rui/src/components/`。
+
+## 🤝 贡献
+
+欢迎贡献！提交 PR 前请先阅读我们的贡献指南。
+
+## 📄 许可证
+
+GPL-3.0-or-later

@@ -6,10 +6,10 @@ resolver = "2"
 
 [workspace.package]
 publish = false
-edition = "2021"
+edition = "2024"
 
 [workspace.dependencies]
-gpui = { git = "https://github.com/zed-industries/zed" }
+gpui = { version = "*" }
 story = { path = "crates/story" }
 rui = { path = "crates/rui" }
 rui_macros = { path = "crates/rui_macros" }
